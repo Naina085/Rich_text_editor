@@ -292,48 +292,75 @@ function selectAllText() {
     }
 
 //cut the selected text
-  async function cutText() {
-    const textArea = document.getElementById("textArea");
+async function cutText() {
+  const selection = window.getSelection();
+  let selectedText = selection.toString();
+  const textArea = document.getElementById("textArea");
+
+  // If nothing is selected, cut all text
+  if (!selectedText || selectedText.trim().length === 0) {
+    selectedText = textArea.innerText || textArea.textContent;
+    if (!selectedText || selectedText.trim().length === 0) {
+      alert('Editor is empty.');
+      return;
+    }
+    // Select all text in the editor
     const range = document.createRange();
     range.selectNodeContents(textArea);
-    const selection2 = window.getSelection();
-    if (selection2.rangeCount > 0) {
-    const range = document.createRange();
-
-      // Ensure selection is inside textArea
-      if (textArea.contains(range.commonAncestorContainer)) {
-        const selectedText = selection2.toString();
-
-        // Copy to clipboard using modern API
-        try {
-          await navigator.clipboard.writeText(selectedText);
-        } catch (err) {
-          console.error("Clipboard copy failed:", err);
-        }
-
-        // Remove the selected content
-        range.deleteContents();
-        selection2.removeAllRanges(); // collapse selection
-      }
-    }
+    selection.removeAllRanges();
+    selection.addRange(range);
   }
+
+  // Now, cut the selected text
+  if (selection.rangeCount > 0 && textArea.contains(selection.anchorNode)) {
+    try {
+      await navigator.clipboard.writeText(selection.toString());
+      selection.deleteFromDocument();
+      alert('Cut to clipboard!');
+    } catch (err) {
+      textArea.focus();
+      document.execCommand('cut');
+      alert('Cut using fallback method. If not working, check browser permissions.');
+    }
+  } else {
+    alert('Please select text inside the editor.');
+  }
+}
+
+//paste clipboard text at cursor position
+async function pasteText() {
+  const textArea = document.getElementById("textArea");
+  textArea.focus();
+  try {
+    const text = await navigator.clipboard.readText();
+    document.execCommand("insertText", false, text);
+  } catch (err) {
+    // Fallback: use execCommand('paste')
+    document.execCommand('paste');
+    alert('Pasted using fallback method. If not working, check browser permissions.');
+  }
+}
 
 //copy the selected text
     function copySelectedText() {
       const selection = window.getSelection();
-      const selectedText = selection.toString();
+      let selectedText = selection.toString();
 
-      console.log("Selected text:", selectedText);
-  
-      if (selectedText && selectedText.trim().length > 0) {
-        navigator.clipboard.writeText(selectedText).then(() => {
-          alert('Copied to clipboard!');
-        }).catch(err => {
-          alert('Failed to copy: ' + err);
-        });
-      } else {
-        alert('Please select some text first.');
+      // If nothing is selected, copy all text from editor
+      if (!selectedText || selectedText.trim().length === 0) {
+        const textArea = document.getElementById("textArea");
+        selectedText = textArea.innerText || textArea.textContent;
+        if (!selectedText || selectedText.trim().length === 0) {
+          alert('Editor is empty.');
+          return;
+        }
       }
+
+      navigator.clipboard.writeText(selectedText).then(() => {
+        alert('Copied to clipboard!');
+      }).catch(err => {
+        alert('Failed to copy: ' + err);
+      });
     }
 // Font family change
 // function handleFontFamilyChange() {
