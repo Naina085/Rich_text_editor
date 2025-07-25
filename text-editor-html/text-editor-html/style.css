@@ -6,8 +6,9 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        /* Modern, professional style improvements */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 2rem;
@@ -46,14 +47,13 @@
         }
 
         .editor-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            max-width: 1100px;
+            margin: 32px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(76, 81, 255, 0.12), 0 1.5px 6px rgba(120, 119, 198, 0.08);
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #e0e7ff;
             position: relative;
             z-index: 10;
         }
@@ -103,61 +103,58 @@
 
         /* Navbar Styles */
         .navbar {
-            background-color: #f3f4f6;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 8px 16px;
+            background: #f7f8fa;
+            border-bottom: 1px solid #e0e7ff;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            border-radius: 18px 18px 0 0;
         }
 
-        .navbar>ul {
+        .navbar > ul {
             list-style: none;
             display: flex;
-            gap: 24px;
+            gap: 28px;
         }
 
         .navbar li {
-            padding: 4px 12px;
+            padding: 6px 18px;
             cursor: pointer;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: background-color 0.2s;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #4f46e5;
+            transition: background 0.2s, color 0.2s;
         }
 
         .navbar li:hover {
-            background-color: #42a7f5;
+            background: #e0e7ff;
+            color: #312e81;
         }
 
         /* Toolbar Styles */
         .toolbar {
-            background-color: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 12px;
+            background: #f4f6fb;
+            border-bottom: 1px solid #e0e7ff;
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            gap: 16px;
         }
 
-        .toolbar-left {
+        .toolbar-left, .toolbar-right {
             display: flex;
             align-items: center;
-            gap: 0;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            /* overflow: hidden; */
+            gap: 8px;
+            background: #fff;
+            border: 1px solid #e0e7ff;
+            border-radius: 8px;
+            padding: 4px 8px;
         }
 
-        .toolbar-right {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .toolbar-left .toolbar-btn {
+        .toolbar-btn {
             width: 36px;
             height: 36px;
             border: none;
@@ -166,42 +163,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            transition: all 0.2s;
-            border-right: 1px solid #e5e7eb;
+            font-size: 16px;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .toolbar-btn:hover, .toolbar-btn.active {
+            background: #e0e7ff;
+            color: #312e81;
+            box-shadow: 0 2px 8px rgba(76, 81, 255, 0.08);
         }
 
-        .toolbar-left .toolbar-btn:hover {
-            background-color: #f3f4f6;
-        }
-
-        .toolbar-left .toolbar-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .font-family-select {
-            width: 200px;
+        .font-family-select, .font-size-select {
             height: 36px;
-            padding: 4px 8px;
-            border: none;
-            border-right: 1px solid #e5e7eb;
-            background: transparent;
-            font-size: 14px;
-            cursor: pointer;
+            padding: 4px 12px;
+            border: 1px solid #e0e7ff;
+            border-radius: 6px;
+            background: #f7f8fa;
+            font-size: 15px;
+            margin-right: 8px;
             outline: none;
+            transition: border 0.2s;
         }
-
-        .font-size-select {
-            width: 60px;
-            height: 36px;
-            padding: 4px 8px;
-            border: none;
-            border-right: 1px solid #e5e7eb;
-            background: transparent;
-            font-size: 14px;
-            cursor: pointer;
-            outline: none;
+        .font-family-select:focus, .font-size-select:focus {
+            border: 1.5px solid #6366f1;
         }
 
         /* .color-picker-container {
@@ -694,39 +678,39 @@
         }
 
         .text-area-container {
-            padding: 16px;
+            padding: 24px 32px 16px 32px;
         }
 
         .text-area {
             width: 100%;
-            height: 400px;
-            padding: 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            resize: none;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-            line-height: 1.5;
+            min-height: 320px;
+            border: 1.5px solid #e0e7ff;
+            border-radius: 10px;
+            padding: 20px 18px;
+            font-size: 16px;
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.7;
+            background: #f9fafb;
+            box-shadow: 0 2px 8px rgba(76, 81, 255, 0.04);
             outline: none;
-            transition: border-color 0.2s;
-            overflow: scroll;
-            position: relative;
-            white-space: pre-wrap;
+            transition: border 0.2s, box-shadow 0.2s;
+            margin-top: 12px;
         }
-
         .text-area:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border: 1.5px solid #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+            background: #fff;
         }
 
         .status-bar {
-            background-color: #f3f4f6;
-            border-top: 1px solid #e5e7eb;
-            padding: 8px 16px;
+            background: #f7f8fa;
+            border-top: 1px solid #e0e7ff;
+            padding: 10px 24px;
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
-            color: #6b7280;
+            font-size: 15px;
+            color: #6366f1;
+            border-radius: 0 0 18px 18px;
         }
 
         @media (max-width: 768px) {
@@ -840,11 +824,19 @@
         }
 
         #submitBtn {
-            background-color: #3b82f6;
-            color: white;
-            padding: 10px 20px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 10px 28px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(76, 81, 255, 0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        #submitBtn:hover {
+            background: linear-gradient(90deg, #764ba2 0%, #667eea 100%);
+            box-shadow: 0 4px 16px rgba(76, 81, 255, 0.12);
         }
 
 
@@ -1253,40 +1245,48 @@
         /* File tab styles */
         #fileTabs {
             display: flex;
-            gap: 5px;
-            padding: 8px 10px;
-            background: #eee;
-            border-bottom: 1px solid #ccc;
+            gap: 8px;
+            padding: 10px 24px 0 24px;
+            background: #f4f6fb;
+            border-bottom: 1px solid #e0e7ff;
             overflow-x: auto;
         }
 
         .tab {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
+            padding: 7px 18px;
+            border: 1.5px solid #e0e7ff;
             border-bottom: none;
-            background: #ddd;
+            background: #e0e7ff;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             cursor: pointer;
-            border-radius: 5px 5px 0 0;
+            border-radius: 8px 8px 0 0;
+            font-size: 15px;
+            font-weight: 500;
+            color: #4f46e5;
+            transition: background 0.2s, color 0.2s;
         }
 
         .tab.active {
-            background: white;
+            background: #fff;
+            color: #312e81;
             font-weight: bold;
+            border-bottom: 2.5px solid #fff;
         }
 
         .tab button {
             border: none;
             background: none;
-            color: red;
+            color: #f87171;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            margin-left: 6px;
+            transition: color 0.2s;
         }
 
-        .text-area-container {
-            padding: 10px;
+        .tab button:hover {
+            color: #b91c1c;
         }
 
         /* for text color and background color  */
@@ -1426,4 +1426,40 @@
         .list button.active {
             background-color: #3b82f6;
             color: white;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 900px) {
+            .editor-container {
+                max-width: 98vw;
+                margin: 12px;
+            }
+            .text-area-container {
+                padding: 12px 6vw 8px 6vw;
+            }
+            .toolbar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px 6vw;
+            }
+            #fileTabs {
+                padding: 8px 6vw 0 6vw;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .editor-container {
+                max-width: 100vw;
+                margin: 0;
+                border-radius: 0;
+            }
+            .text-area-container {
+                padding: 8px 2vw 4px 2vw;
+            }
+            .toolbar {
+                padding: 8px 2vw;
+            }
+            #fileTabs {
+                padding: 6px 2vw 0 2vw;
+            }
         }

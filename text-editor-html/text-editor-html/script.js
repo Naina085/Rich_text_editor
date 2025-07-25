@@ -1527,26 +1527,15 @@ async function openPDF() {
         const textAreaDiv = document.getElementById("textArea");
         textAreaDiv.innerHTML = ""; // Clear previous content
 
+        let htmlContent = "";
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
-
-            // Render image using canvas
-            const viewport = page.getViewport({ scale: 1.5 });
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            await page.render({ canvasContext: context, viewport: viewport }).promise;
-            textAreaDiv.appendChild(canvas);
-
-            // Extract text content
-            //   const textContent = await page.getTextContent();
-            //   const textDiv = document.createElement("div");
-            //   textDiv.innerText = textContent.items.map(item => item.str).join(" ");
-            //   textDiv.style.marginBottom = "20px";
-            //   textAreaDiv.appendChild(textDiv);
+            const textContent = await page.getTextContent();
+            // Each item as a span, each page as a paragraph
+            const pageHtml = textContent.items.map(item => `<span>${item.str}</span>`).join(" ");
+            htmlContent += `<p>${pageHtml}</p>`;
         }
+        textAreaDiv.innerHTML = htmlContent.trim();
     } catch (err) {
         console.error("Error:", err);
         alert("Failed to open or read PDF file.");
