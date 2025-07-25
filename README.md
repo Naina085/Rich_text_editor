@@ -138,7 +138,7 @@ The server will run at `http://127.0.0.1:5000` by default.
 
 ---
 
-## Contribution Guidelines
+<!-- ## Contribution Guidelines
 - Fork the repository and create your branch from `main`.
 - Write clear, concise commit messages.
 - Ensure code is well-documented and tested.
@@ -164,4 +164,4 @@ For questions, suggestions, or support:
 - [x] Detailed documentation provided
 - [x] Assessment import, edit, highlight, notes, bookmark, save/load workflow defined
 - [x] API endpoints and user features listed
-- [ ] Further enhancements and contributions welcome!
+- [ ] Further enhancements and contributions welcome! -->
