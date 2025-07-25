@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Copy Selected Text</title>
+</head>
+<body>
+  <button onclick="copySelectedText()">Copy</button>
+
+  <div id="textArea" contenteditable="true" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
+    This is editable text. Select some of it and click the "Copy" button.
+  </div>
+
+  <script>
+    function copySelectedText() {
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        const selectedText = selection.toString().trim();
+        if (selectedText.length > 0) {
+          navigator.clipboard.writeText(selectedText)
+            .then(() => {
+              alert("Text copied to clipboard!");
+            })
+            .catch(err => {
+              console.error("Failed to copy: ", err);
+            });
+        } else {
+          alert("No text selected.");
+        }
+      } else {
+        alert("No selection found.");
+      }
+    }
+  </script>
+</body>
+</html>

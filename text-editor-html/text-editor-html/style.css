@@ -1,0 +1,1429 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            33% {
+                transform: translateY(-20px) rotate(1deg);
+            }
+
+            66% {
+                transform: translateY(10px) rotate(-1deg);
+            }
+        }
+
+        .editor-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header gradient */
+        .header-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1px;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .header-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 23px 23px 0 0;
+        }
+
+
+
+
+
+
+
+
+
+
+        /* * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9fafb;
+            padding: 20px;
+        }
+ */
+        .editor-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #f3f4f6;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 8px 16px;
+        }
+
+        .navbar>ul {
+            list-style: none;
+            display: flex;
+            gap: 24px;
+        }
+
+        .navbar li {
+            padding: 4px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .navbar li:hover {
+            background-color: #42a7f5;
+        }
+
+        /* Toolbar Styles */
+        .toolbar {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            /* overflow: hidden; */
+        }
+
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .toolbar-left .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .toolbar-left .toolbar-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .toolbar-left .toolbar-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .font-family-select {
+            width: 200px;
+            height: 36px;
+            padding: 4px 8px;
+            border: none;
+            border-right: 1px solid #e5e7eb;
+            background: transparent;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .font-size-select {
+            width: 60px;
+            height: 36px;
+            padding: 4px 8px;
+            border: none;
+            border-right: 1px solid #e5e7eb;
+            background: transparent;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* .color-picker-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .color-picker-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-right: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+
+        .color-picker-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .color-picker-btn:last-child {
+            border-right: none;
+        }
+
+        .color-picker-dropdown {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 12px;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 280px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .color-picker-dropdown.show {
+            display: block;
+        }
+
+        .color-section {
+            margin-bottom: 12px;
+        }
+
+        .color-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 3px;
+            margin-bottom: 8px;
+        }
+
+        .color-grid.large {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .color-option {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #e5e7eb;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: #3b82f6;
+            z-index: 1;
+        }
+
+        .gradient-option {
+            width: 40px;
+            height: 28px;
+            border: 2px solid #e5e7eb;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .gradient-option:hover {
+            transform: scale(1.05);
+            border-color: #3b82f6;
+        }
+
+        .custom-color-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .custom-color-input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .color-input-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .color-input-group input[type="text"] {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        .recent-colors {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .recent-color {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #d1d5db;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .recent-color:hover {
+            transform: scale(1.1);
+        }
+
+        .opacity-slider {
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 30px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        } */
+
+        .toolbar-right .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .toolbar-right .toolbar-btn:last-child {
+            border-right: none;
+        }
+
+        .toolbar-right .toolbar-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .toolbar-right .toolbar-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* Font-specific styling for dropdown options */
+        .font-family-select option {
+            padding: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* System Fonts */
+        .font-family-select option[value="Arial"] {
+            font-family: Arial, sans-serif;
+        }
+
+        .font-family-select option[value="Helvetica"] {
+            font-family: Helvetica, sans-serif;
+        }
+
+        .font-family-select option[value="Times New Roman"] {
+            font-family: "Times New Roman", serif;
+        }
+
+        .font-family-select option[value="Times"] {
+            font-family: Times, serif;
+        }
+
+        .font-family-select option[value="Courier New"] {
+            font-family: "Courier New", monospace;
+        }
+
+        .font-family-select option[value="Courier"] {
+            font-family: Courier, monospace;
+        }
+
+        .font-family-select option[value="Verdana"] {
+            font-family: Verdana, sans-serif;
+        }
+
+        .font-family-select option[value="Georgia"] {
+            font-family: Georgia, serif;
+        }
+
+        .font-family-select option[value="Palatino"] {
+            font-family: Palatino, serif;
+        }
+
+        .font-family-select option[value="Garamond"] {
+            font-family: Garamond, serif;
+        }
+
+        .font-family-select option[value="Bookman"] {
+            font-family: Bookman, serif;
+        }
+
+        .font-family-select option[value="Comic Sans MS"] {
+            font-family: "Comic Sans MS", cursive;
+        }
+
+        .font-family-select option[value="Trebuchet MS"] {
+            font-family: "Trebuchet MS", sans-serif;
+        }
+
+        .font-family-select option[value="Arial Black"] {
+            font-family: "Arial Black", sans-serif;
+        }
+
+        .font-family-select option[value="Impact"] {
+            font-family: Impact, sans-serif;
+        }
+
+        /* Sans-Serif Google Fonts */
+        .font-family-select option[value="Roboto"] {
+            font-family: "Roboto", sans-serif;
+        }
+
+        .font-family-select option[value="Open Sans"] {
+            font-family: "Open Sans", sans-serif;
+        }
+
+        .font-family-select option[value="Lato"] {
+            font-family: "Lato", sans-serif;
+        }
+
+        .font-family-select option[value="Montserrat"] {
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .font-family-select option[value="Source Sans Pro"] {
+            font-family: "Source Sans Pro", sans-serif;
+        }
+
+        .font-family-select option[value="Ubuntu"] {
+            font-family: "Ubuntu", sans-serif;
+        }
+
+        .font-family-select option[value="Nunito"] {
+            font-family: "Nunito", sans-serif;
+        }
+
+        .font-family-select option[value="Raleway"] {
+            font-family: "Raleway", sans-serif;
+        }
+
+        .font-family-select option[value="Poppins"] {
+            font-family: "Poppins", sans-serif;
+        }
+
+        .font-family-select option[value="Inter"] {
+            font-family: "Inter", sans-serif;
+        }
+
+        .font-family-select option[value="PT Sans"] {
+            font-family: "PT Sans", sans-serif;
+        }
+
+        .font-family-select option[value="Fira Sans"] {
+            font-family: "Fira Sans", sans-serif;
+        }
+
+        .font-family-select option[value="Work Sans"] {
+            font-family: "Work Sans", sans-serif;
+        }
+
+        .font-family-select option[value="Quicksand"] {
+            font-family: "Quicksand", sans-serif;
+        }
+
+        .font-family-select option[value="Comfortaa"] {
+            font-family: "Comfortaa", sans-serif;
+        }
+
+        /* Serif Google Fonts */
+        .font-family-select option[value="Playfair Display"] {
+            font-family: "Playfair Display", serif;
+        }
+
+        .font-family-select option[value="Merriweather"] {
+            font-family: "Merriweather", serif;
+        }
+
+        .font-family-select option[value="Crimson Text"] {
+            font-family: "Crimson Text", serif;
+        }
+
+        .font-family-select option[value="Libre Baskerville"] {
+            font-family: "Libre Baskerville", serif;
+        }
+
+        .font-family-select option[value="Lora"] {
+            font-family: "Lora", serif;
+        }
+
+        .font-family-select option[value="PT Serif"] {
+            font-family: "PT Serif", serif;
+        }
+
+        .font-family-select option[value="Cormorant Garamond"] {
+            font-family: "Cormorant Garamond", serif;
+        }
+
+        .font-family-select option[value="Vollkorn"] {
+            font-family: "Vollkorn", serif;
+        }
+
+        /* Display Google Fonts */
+        .font-family-select option[value="Oswald"] {
+            font-family: "Oswald", sans-serif;
+        }
+
+        .font-family-select option[value="Righteous"] {
+            font-family: "Righteous", sans-serif;
+        }
+
+        .font-family-select option[value="Bangers"] {
+            font-family: "Bangers", cursive;
+        }
+
+        .font-family-select option[value="Fredoka One"] {
+            font-family: "Fredoka One", cursive;
+        }
+
+        .font-family-select option[value="Bebas Neue"] {
+            font-family: "Bebas Neue", cursive;
+        }
+
+        .font-family-select option[value="Anton"] {
+            font-family: "Anton", sans-serif;
+        }
+
+        .font-family-select option[value="Fjalla One"] {
+            font-family: "Fjalla One", sans-serif;
+        }
+
+        .font-family-select option[value="Russo One"] {
+            font-family: "Russo One", sans-serif;
+        }
+
+        /* Script/Handwriting Google Fonts */
+        .font-family-select option[value="Dancing Script"] {
+            font-family: "Dancing Script", cursive;
+        }
+
+        .font-family-select option[value="Pacifico"] {
+            font-family: "Pacifico", cursive;
+        }
+
+        .font-family-select option[value="Lobster"] {
+            font-family: "Lobster", cursive;
+        }
+
+        .font-family-select option[value="Great Vibes"] {
+            font-family: "Great Vibes", cursive;
+        }
+
+        .font-family-select option[value="Satisfy"] {
+            font-family: "Satisfy", cursive;
+        }
+
+        .font-family-select option[value="Kaushan Script"] {
+            font-family: "Kaushan Script", cursive;
+        }
+
+        .font-family-select option[value="Caveat"] {
+            font-family: "Caveat", cursive;
+        }
+
+        .font-family-select option[value="Indie Flower"] {
+            font-family: "Indie Flower", cursive;
+        }
+
+        .font-family-select option[value="Amatic SC"] {
+            font-family: "Amatic SC", cursive;
+        }
+
+        .font-family-select option[value="Shadows Into Light"] {
+            font-family: "Shadows Into Light", cursive;
+        }
+
+        .font-family-select option[value="Permanent Marker"] {
+            font-family: "Permanent Marker", cursive;
+        }
+
+        /* Monospace Google Fonts */
+        .font-family-select option[value="Space Mono"] {
+            font-family: "Space Mono", monospace;
+        }
+
+        .font-family-select option[value="JetBrains Mono"] {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .font-family-select option[value="Fira Code"] {
+            font-family: "Fira Code", monospace;
+        }
+
+        .font-family-select option[value="Source Code Pro"] {
+            font-family: "Source Code Pro", monospace;
+        }
+
+        .font-family-select option[value="Roboto Mono"] {
+            font-family: "Roboto Mono", monospace;
+        }
+
+        .font-family-select option[value="Ubuntu Mono"] {
+            font-family: "Ubuntu Mono", monospace;
+        }
+
+        .font-family-select option[value="Inconsolata"] {
+            font-family: "Inconsolata", monospace;
+        }
+
+        /* Futuristic Google Fonts */
+        .font-family-select option[value="Orbitron"] {
+            font-family: "Orbitron", sans-serif;
+        }
+
+        .font-family-select option[value="Exo 2"] {
+            font-family: "Exo 2", sans-serif;
+        }
+
+        .font-family-select option[value="Audiowide"] {
+            font-family: "Audiowide", cursive;
+        }
+
+        .font-family-select option[value="Electrolize"] {
+            font-family: "Electrolize", sans-serif;
+        }
+
+        .font-family-select option[value="Syncopate"] {
+            font-family: "Syncopate", sans-serif;
+        }
+
+        .font-family-select optgroup {
+            font-weight: bold;
+            color: #666;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            padding: 4px 8px;
+        }
+
+        .text-area-container {
+            padding: 16px;
+        }
+
+        .text-area {
+            width: 100%;
+            height: 400px;
+            padding: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            resize: none;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            outline: none;
+            transition: border-color 0.2s;
+            overflow: scroll;
+            position: relative;
+            white-space: pre-wrap;
+        }
+
+        .text-area:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .status-bar {
+            background-color: #f3f4f6;
+            border-top: 1px solid #e5e7eb;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .toolbar-left,
+            .toolbar-right {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .file-navbar {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-menu {
+            display: none;
+            position: absolute;
+            background-color: #f0f0f0;
+            list-style-type: none;
+            margin: 0;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            width: 150px;
+        }
+
+        .file-menu li {
+            border-bottom: 1px solid #d9d8d4;
+        }
+
+        .file-navbar:hover .file-menu {
+            display: block;
+            width: 120px;
+
+
+        }
+
+        .file-navbar-2 {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .file-navbar-2:hover .file-menu {
+            display: block;
+            width: 100px;
+        }
+
+        .file-navbar-3:hover .file-menu {
+            display: block;
+            width: 140px;
+        }
+
+        .file-navbar-5 {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .file-navbar-5:hover .file-menu {
+            display: block;
+            width: 150px;
+        }
+
+        .file-navbar-5 {
+            z-index: 99;
+
+        }
+
+        .fomenu {
+            /* display: none; */
+            position: absolute;
+            background-color: #f0f0f0;
+            list-style-type: none;
+            padding: 10px;
+            margin: 0;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            width: 125px;
+        }
+
+        .fontmenu:hover .fomenu {
+            display: block;
+        }
+
+
+
+        .sub-menu {
+            display: none;
+            position: absolute;
+            background-color: #f0f0f0;
+            list-style-type: none;
+            padding: 10px;
+            margin: 0;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            width: 125px;
+
+        }
+
+        .file-navbar-6:hover .sub-menu {
+            display: block;
+            position: absolute;
+            margin-left: 80px;
+            margin-top: -20px;
+            width: 130px;
+        }
+
+        #submitBtn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+        }
+
+
+        /* Button */
+        .file-navbar-3 {
+            position: relative;
+            list-style: none;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            padding: 10px;
+            width: fit-content;
+        }
+
+        .file-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            list-style: none;
+            padding: 5px 0;
+            margin: 0;
+            top: 100%;
+            left: 0;
+            z-index: 10;
+        }
+
+        /* .file-navbar-3.show-menu .file-menu {
+            display: block;
+        } */
+
+        .file-menu li {
+            padding: 5px 15px;
+            white-space: nowrap;
+        }
+
+        .file-menu li:hover {
+            background-color: #eee;
+        }
+
+        .text-area {
+            width: 100%;
+            min-height: 200px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            font-family: sans-serif;
+            padding-left:20px;
+
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e3dfde;
+            margin: 10px 0;
+        }
+
+        .font-family-select-menu option {
+            padding: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* System Fonts */
+        .font-family-select-menu option[value="Arial"] {
+
+            font-family: Arial, sans-serif;
+        }
+
+        .font-family-select-menu option[value="Helvetica"] {
+
+            font-family: Helvetica, sans-serif;
+        }
+
+        .font-family-select-menu option[value="Times New Roman"] {
+            font-family: "Times New Roman", serif;
+        }
+
+        .font-family-select-menu option[value="Times"] {
+            font-family: Times, serif;
+        }
+
+        .font-family-select-menu option[value="Courier New"] {
+            font-family: "Courier New", monospace;
+        }
+
+        .font-family-select-menu option[value="Courier"] {
+
+            font-family: Courier, monospace;
+        }
+
+        .font-family-select-menu option[value="Verdana"] {
+            font-family: Verdana, sans-serif;
+        }
+
+        .font-family-select-menu option[value="Georgia"] {
+            font-family: Georgia, serif;
+        }
+
+        .font-family-select-menu option[value="Palatino"] {
+            font-family: Palatino, serif;
+        }
+
+        .font-family-select-menu option[value="Garamond"] {
+            font-family: Garamond, serif;
+        }
+
+        .font-family-select-menu option[value="Bookman"] {
+            font-family: Bookman, serif;
+        }
+
+        .font-family-select-menu option[value="Comic Sans MS"] {
+            font-family: "Comic Sans MS", cursive;
+        }
+
+        .font-family-select-menu option[value="Trebuchet MS"] {
+            font-family: "Trebuchet MS", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Arial Black"] {
+            font-family: "Arial Black", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Impact"] {
+
+            font-family: Impact, sans-serif;
+        }
+
+        /* Sans-Serif Google Fonts */
+        .font-family-select-menu option[value="Roboto"] {
+            font-family: "Roboto", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Open Sans"] {
+            font-family: "Open Sans", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Lato"] {
+            font-family: "Lato", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Montserrat"] {
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Source Sans Pro"] {
+            font-family: "Source Sans Pro", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Ubuntu"] {
+            font-family: "Ubuntu", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Nunito"] {
+            font-family: "Nunito", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Raleway"] {
+            font-family: "Raleway", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Poppins"] {
+            font-family: "Poppins", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Inter"] {
+            font-family: "Inter", sans-serif;
+        }
+
+        .font-family-select-menu option[value="PT Sans"] {
+            font-family: "PT Sans", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Fira Sans"] {
+            font-family: "Fira Sans", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Work Sans"] {
+            font-family: "Work Sans", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Quicksand"] {
+            font-family: "Quicksand", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Comfortaa"] {
+            font-family: "Comfortaa", sans-serif;
+        }
+
+        /* Serif Google Fonts */
+        .font-family-select-menu option[value="Playfair Display"] {
+            font-family: "Playfair Display", serif;
+        }
+
+        .font-family-select-menu option[value="Merriweather"] {
+            font-family: "Merriweather", serif;
+        }
+
+        .font-family-select-menu option[value="Crimson Text"] {
+            font-family: "Crimson Text", serif;
+        }
+
+        .font-family-select-menu option[value="Libre Baskerville"] {
+            font-family: "Libre Baskerville", serif;
+        }
+
+        .font-family-select-menu option[value="Lora"] {
+            font-family: "Lora", serif;
+        }
+
+        .font-family-select-menu option[value="PT Serif"] {
+            font-family: "PT Serif", serif;
+        }
+
+        .font-family-select-menu option[value="Cormorant Garamond"] {
+            font-family: "Cormorant Garamond", serif;
+        }
+
+        .font-family-select-menu option[value="Vollkorn"] {
+            font-family: "Vollkorn", serif;
+        }
+
+        /* Display Google Fonts */
+        .font-family-select-menu option[value="Oswald"] {
+            font-family: "Oswald", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Righteous"] {
+            font-family: "Righteous", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Bangers"] {
+            font-family: "Bangers", cursive;
+        }
+
+        .font-family-select-menu option[value="Fredoka One"] {
+            font-family: "Fredoka One", cursive;
+        }
+
+        .font-family-select-menu option[value="Bebas Neue"] {
+            font-family: "Bebas Neue", cursive;
+        }
+
+        .font-family-select-menu option[value="Anton"] {
+            font-family: "Anton", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Fjalla One"] {
+            font-family: "Fjalla One", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Russo One"] {
+            font-family: "Russo One", sans-serif;
+        }
+
+        /* Script/Handwriting Google Fonts */
+        .font-family-select-menu option[value="Dancing Script"] {
+            font-family: "Dancing Script", cursive;
+        }
+
+        .font-family-select-menu option[value="Pacifico"] {
+            font-family: "Pacifico", cursive;
+        }
+
+        .font-family-select-menu option[value="Lobster"] {
+            font-family: "Lobster", cursive;
+        }
+
+        .font-family-select-menu option[value="Great Vibes"] {
+            font-family: "Great Vibes", cursive;
+        }
+
+        .font-family-select-menu option[value="Satisfy"] {
+            font-family: "Satisfy", cursive;
+        }
+
+        .font-family-select-menu option[value="Kaushan Script"] {
+            font-family: "Kaushan Script", cursive;
+        }
+
+        .font-family-select-menu option[value="Caveat"] {
+            font-family: "Caveat", cursive;
+        }
+
+        .font-family-select-menu option[value="Indie Flower"] {
+            font-family: "Indie Flower", cursive;
+        }
+
+        .font-family-select-menu option[value="Amatic SC"] {
+            font-family: "Amatic SC", cursive;
+        }
+
+        .font-family-select-menu option[value="Shadows Into Light"] {
+            font-family: "Shadows Into Light", cursive;
+        }
+
+        .font-family-select-menu option[value="Permanent Marker"] {
+            font-family: "Permanent Marker", cursive;
+        }
+
+        /* Monospace Google Fonts */
+        .font-family-select-menu option[value="Space Mono"] {
+            font-family: "Space Mono", monospace;
+        }
+
+        .font-family-select-menu option[value="JetBrains Mono"] {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .font-family-select-menu option[value="Fira Code"] {
+            font-family: "Fira Code", monospace;
+        }
+
+        .font-family-select-menu option[value="Source Code Pro"] {
+            font-family: "Source Code Pro", monospace;
+        }
+
+        .font-family-select-menu option[value="Roboto Mono"] {
+            font-family: "Roboto Mono", monospace;
+        }
+
+        .font-family-select-menu option[value="Ubuntu Mono"] {
+            font-family: "Ubuntu Mono", monospace;
+        }
+
+        .font-family-select-menu option[value="Inconsolata"] {
+            font-family: "Inconsolata", monospace;
+        }
+
+        /* Futuristic Google Fonts */
+        .font-family-select-menu option[value="Orbitron"] {
+            font-family: "Orbitron", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Exo 2"] {
+            font-family: "Exo 2", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Audiowide"] {
+            font-family: "Audiowide", cursive;
+        }
+
+        .font-family-select-menu option[value="Electrolize"] {
+            font-family: "Electrolize", sans-serif;
+        }
+
+        .font-family-select-menu option[value="Syncopate"] {
+            font-family: "Syncopate", sans-serif;
+        }
+
+        .font-family-select-menu optgroup {
+            font-weight: bold;
+            color: #666;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            padding: 4px 8px;
+        }
+
+        .font-size-select-menu {
+            display: none;
+            width: 60px;
+            padding: 4px 8px;
+            border: none;
+            border-right: 1px solid #e5e7eb;
+            background-color: #f0f0f0;
+            font-size: 14px;
+            position: absolute;
+            margin-left: 100px;
+            margin-top: -20px;
+            list-style-type: none;
+        }
+
+        .font-size-select-menu li {
+            font-size: 14px;
+        }
+
+        .file-navbar-8:hover .font-size-select-menu {
+            display: block;
+            position: absolute;
+        }
+
+        #text-area-container {
+            margin-left: 220px;
+            padding: 10px;
+        }
+
+        .sidebar {
+            float: left;
+            width: 200px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+            height: 500px;
+            margin-top: -480px;
+            border-radius: 24px;
+
+        }
+
+        #fileList li {
+            margin-bottom: 5px;
+        }
+
+        #fileList li:hover {
+            text-decoration: underline;
+        }
+
+        /* File tab styles */
+        #fileTabs {
+            display: flex;
+            gap: 5px;
+            padding: 8px 10px;
+            background: #eee;
+            border-bottom: 1px solid #ccc;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tab.active {
+            background: white;
+            font-weight: bold;
+        }
+
+        .tab button {
+            border: none;
+            background: none;
+            color: red;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .text-area-container {
+            padding: 10px;
+        }
+
+        /* for text color and background color  */
+        .color-picker-palette {
+            position: relative;
+            display: inline-block;
+            /* margin: 10px; */
+        }
+
+        .color-picker-dropdown {
+            display: none;
+            /* margin-top: -1px; */
+            position: absolute;
+            /* top: 30px; */
+            left: 0;
+            z-index: 999;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 250px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .color-picker-palette:hover .color-picker-dropdown{
+            display: block;
+        }
+        /* .color-picker-dropdown.show {
+            display: block;
+        } */
+
+        .color-section {
+            margin-bottom: 10px;
+        }
+
+        .color-section-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .color-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .color-grid.large .gradient-option {
+            width: 50px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .color-option,
+        .gradient-option {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .recent-colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .color-input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .custom-color-input {
+            margin-top: 5px;
+        }
+
+        .opacity-slider {
+            width: 100%;
+        }
+
+        .color-preview {
+            height: 20px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+
+        /* #textArea {
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            min-height: 100px;
+        }  */
+        /* image uploading */
+        .image-wrapper {
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            user-select: none;
+        }
+
+        .image-wrapper img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            pointer-events: none;
+        }
+
+        .resizer {
+            width: 10px;
+            height: 10px;
+            background: #4a90e2;
+            position: absolute;
+            right: -5px;
+            bottom: -5px;
+            cursor: nwse-resize;
+            z-index: 10;
+            border-radius: 50%;
+        }
+/* 
+        #textArea>div>div {
+            width: 450px !important;
+            left: 83px !important;
+        }
+
+        #textArea>div>img {
+            left: 750px !important;
+            width: 250px !important;
+        } */
+
+        canvas {
+      display: block;
+      margin-bottom: 20px;
+    }
+    /* uploading list */
+        .list button.active {
+            background-color: #3b82f6;
+            color: white;
+        }

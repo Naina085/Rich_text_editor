@@ -1,0 +1,42 @@
+<!-- ms word document -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DOCX Viewer</title>
+</head>
+<body>
+  <button onclick="uploadDocx()">Upload DOCX</button>
+  <div id="textArea" contenteditable="true" style="border:1px solid #ccc; padding:10px; margin-top:10px;"></div>
+
+  <script>
+    async function uploadDocx() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.docx';
+      input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('docx', file);
+
+        try {
+          const res = await fetch('http://127.0.0.1:5000/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+
+          const textArea = document.getElementById('textArea');
+textArea.insertAdjacentHTML('beforeend', data.html_content);
+        } catch (err) {
+          alert('Error uploading file');
+          console.error(err);
+        }
+      };
+      input.click();
+    }
+  </script>
+</body>
+</html>

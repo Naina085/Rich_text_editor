@@ -1,0 +1,54 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload PPT Viewer</title>
+  <style>
+    #textArea {
+      border: 1px solid #ccc;
+      padding: 20px;
+      min-height: 300px;
+      background: #fff;
+    }
+    button {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="document.getElementById('fileInput').click()">Upload PPT</button>
+  <input type="file" id="fileInput" accept=".pptx" style="display:none" onchange="uploadPPT()">
+
+  <div id="textArea" contenteditable="true"></div>
+
+  <script>
+    function uploadPPT() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('ppt', file);
+
+      fetch('http://127.0.0.1:5000/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.content) {
+          document.getElementById('textArea').innerHTML = data.content;
+        } else {
+          alert('Failed to read PPT');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Error uploading PPT');
+      });
+    }
+  </script>
+
+</body>
+</html> -->
