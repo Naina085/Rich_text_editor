@@ -144,15 +144,15 @@
             <!-- Left Section -->
             <div class="toolbar-left">
                 <!-- Undo/Redo -->
-                <button class="toolbar-btn" id="undoBtn" onclick="handleUndo()" title="Undo">
+                <button class="toolbar-btn" id="undoBtn" onclick="handleUndo()" title="Undo" style="border-right: 1px solid #e5e7eb;">
                     <i class="bi bi-arrow-90deg-left"></i>
                 </button>
-                <button class="toolbar-btn" id="redoBtn" onclick="handleRedo()" title="Redo">
+                <button class="toolbar-btn" id="redoBtn" onclick="handleRedo()" title="Redo" style="border-right: 1px solid #e5e7eb;">
                     <i class="bi bi-arrow-90deg-right"></i>
                 </button>
 
                 <!-- Font Controls -->
-                <select class="font-family-select" id="fontFamily" onchange="handleFontFamilyChange()">
+                <select class="font-family-select" id="fontFamily" onchange="handleFontFamilyChange()" >
                     <optgroup label="System Fonts">
                         <option value="Arial">Arial</option>
                         <option value="Helvetica">Helvetica</option>
@@ -244,7 +244,7 @@
                     </optgroup>
                 </select>
 
-                <select class="font-size-select" id="fontSize" onchange="handleFontSizeChange()">
+                <select class="font-size-select" id="fontSize" onchange="handleFontSizeChange()" >
                     <option value="8">8</option>
                     <option value="9">9</option>
                     <option value="10">10</option>
@@ -288,15 +288,12 @@
                             style="font-size: 15px;"></i></button>
                 </div>
                 <div class="list"
-                    style="border-right: 1px solid #e5e7eb;height:36px;width:40px;text-align:center;padding-top:5px;display:flex;">
+                    style="height:36px;width:40px;text-align:center;padding-top:5px;display:flex;">
                     <button style="border: none;margin-right: 10px;margin-left: 10px;" id="ulBtn"
                         onclick="setTimeout(() => toggleList('ul'), 0)"><i class="bi bi-list-ul"
                             style="font-size: 15px;"></i></button>
                 </div>
 
-            </div>
-            <div class="submit-button">
-                <button onclick="submitText()" id="submitBtn">Upload</button>
             </div>
             <div id="successAlert" style="
             display: none;
@@ -356,8 +353,12 @@
             <!-- Status Bar -->
             <div class="status-bar">
                 <span id="charCount">Characters: 0</span>
-                <span id="wordCount">Words: 0</span>
+                <span id="wordCount" style="margin-left: -720px;">Words: 0</span>
+            <span class="submit-button">
+                <button onclick="submitText()" id="submitBtn">Submit</button>
+            </span>
             </div>
+        </div>
         </div>
     </div>
     <input type="file" id="fileInput" style="display: none;" />

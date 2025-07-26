@@ -101,9 +101,9 @@
             overflow: hidden;
         }
 
-        /* Navbar Styles */
+        /* Navbar Styles
         .navbar {
-            background: #f7f8fa;
+            background: #f3f4f6;
             border-bottom: 1px solid #e0e7ff;
             padding: 10px 24px;
             display: flex;
@@ -130,7 +130,38 @@
         .navbar li:hover {
             background: #e0e7ff;
             color: #312e81;
+        } */
+
+
+        /* Navbar Styles */
+        .navbar {
+            background: #f3f4f6;
+            border-bottom: 1px solid #e0e7ff;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            border-radius: 18px 18px 0 0;
         }
+
+        .navbar>ul {
+            list-style: none;
+            display: flex;
+            gap: 24px;
+        }
+
+        .navbar li {
+            padding: 4px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .navbar li:hover {
+            background-color: #42a7f5;
+        }
+
+
 
         /* Toolbar Styles */
         .toolbar {
@@ -172,6 +203,8 @@
             color: #312e81;
             box-shadow: 0 2px 8px rgba(76, 81, 255, 0.08);
         }
+
+        
 
         .font-family-select, .font-size-select {
             height: 36px;
@@ -678,28 +711,30 @@
         }
 
         .text-area-container {
-            padding: 24px 32px 16px 32px;
+            /* padding: 24px 32px 16px 32px; */
+            padding: 15px;
         }
 
         .text-area {
             width: 100%;
-            min-height: 320px;
-            border: 1.5px solid #e0e7ff;
-            border-radius: 10px;
-            padding: 20px 18px;
-            font-size: 16px;
-            font-family: 'Inter', Arial, sans-serif;
-            line-height: 1.7;
-            background: #f9fafb;
-            box-shadow: 0 2px 8px rgba(76, 81, 255, 0.04);
+            height: 400px;
+            padding: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            resize: none;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
             outline: none;
-            transition: border 0.2s, box-shadow 0.2s;
-            margin-top: 12px;
+            transition: border-color 0.2s;
+            overflow: scroll;
+            position: relative;
+            white-space: pre-wrap;
         }
+
         .text-area:focus {
-            border: 1.5px solid #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
-            background: #fff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .status-bar {
@@ -827,6 +862,7 @@
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             padding: 10px 28px;
+            margin-right:50px;
             border: none;
             border-radius: 6px;
             font-size: 16px;

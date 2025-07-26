@@ -204,11 +204,11 @@ const state = {
     text: { manuallyToggled: false },
     background: { manuallyToggled: false }
 };
-document.getElementById('textColorBtn').addEventListener('click', () => showColorPicker('text'));
-document.getElementById('textColorBtn').addEventListener('mouseenter', () => showColorPicker('text'));
+document.getElementById('textPickerContainer').addEventListener('click', () => showColorPicker('text'));
+document.getElementById('textPickerContainer').addEventListener('mouseenter', () => showColorPicker('text'));
 
-document.getElementById('backgroundColorBtn').addEventListener('click', () => showColorPicker('background'));
-document.getElementById('backgroundColorBtn').addEventListener('mouseenter', () => showColorPicker('background'));
+document.getElementById('backgroundPickerContainer').addEventListener('click', () => showColorPicker('background'));
+document.getElementById('backgroundPickerContainer').addEventListener('mouseenter', () => showColorPicker('background'));
 
 // Expose functions for inline event handlers
 window.selectColor = selectColor;
@@ -1190,6 +1190,7 @@ function createUntitledFile() {
         td.style.textAlign = 'center';
         td.style.outline = 'none';
         td.style.boxShadow = 'none';
+        td.style.width='100px';
         tr.appendChild(td);
       }
       table.appendChild(tr);
