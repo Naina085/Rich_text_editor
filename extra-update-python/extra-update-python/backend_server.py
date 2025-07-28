@@ -3,6 +3,7 @@ from docx import Document
 import os
 import base64
 from werkzeug.utils import secure_filename
+from pptx import Presentation
 
 # ✅ Define the app
 app = Flask(__name__)
@@ -53,6 +54,16 @@ def upload_docx():
 
     html_content = extract_docx_content(file_path)
     return jsonify({'html': html_content})
+def extract_pptx_content(file_path):
+    presentation = Presentation(file_path)
+    html_content = ""
+
+    for slide in presentation.slides:
+        for shape in slide.shapes:
+            if hasattr(shape, "text"):
+                html_content += f"<p>{shape.text}</p>"
+
+    return html_content
 
 # ✅ Run Flask app
 if __name__ == '__main__':

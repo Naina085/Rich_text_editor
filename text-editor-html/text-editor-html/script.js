@@ -1494,7 +1494,7 @@ function uploadPPT() {
     const formData = new FormData();
     formData.append('ppt', file);
 
-    fetch('http://127.0.0.1:5001/upload', {
+    fetch('http://127.0.0.1:5000/upload', {
         method: 'POST',
         body: formData
     })
@@ -1701,66 +1701,67 @@ function insertExcelAtSavedCursor(data) {
 
 
 //list 
-let currentListType = null;
-let currentListElement = null;
+    let currentListType = null;
+    let currentListElement = null;
 
-function toggleList(type) {
-    const textArea = document.getElementById("textArea");
-    textArea.focus(); // ✅ Force focus to the textArea
+    function toggleList(type) {
+      const textArea = document.getElementById("textArea");
+      textArea.focus();
 
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
 
-    const range = selection.getRangeAt(0);
+      const range = selection.getRangeAt(0);
 
-    if (currentListType === type) {
-        // ✅ Turn off the list
+      if (currentListType === type) {
         const p = document.createElement("p");
         p.innerHTML = "<br>";
         currentListElement.parentNode.insertBefore(p, currentListElement.nextSibling);
 
-        // Move cursor to the new paragraph
         const newRange = document.createRange();
         newRange.setStart(p, 0);
         newRange.setEnd(p, 0);
         selection.removeAllRanges();
         selection.addRange(newRange);
 
-        // Reset tracking
         currentListType = null;
         currentListElement = null;
 
-        // Remove active style
-        document.getElementById("olBtn").classList.remove("active");
-        document.getElementById("ulBtn").classList.remove("active");
+        document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("olBtn").style.color = "black";
+        document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("ulBtn").style.color = "black";
 
         return;
+      }
+
+      const list = document.createElement(type);
+      const li = document.createElement("li");
+      li.innerHTML = "<br>";
+      list.appendChild(li);
+      if (type === "ul") list.style.listStyleType = "circle";
+
+      range.deleteContents();
+      range.insertNode(list);
+
+      const newRange = document.createRange();
+      newRange.setStart(li, 0);
+      newRange.setEnd(li, 0);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+
+      currentListType = type;
+      currentListElement = list;
+
+      if (type === "ol") {
+        document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
+        document.getElementById("olBtn").style.color = "white";
+        document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("ulBtn").style.color = "black";
+      } else {
+        document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
+        document.getElementById("ulBtn").style.color = "white";
+        document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("olBtn").style.color = "black";
+      }
     }
-
-    // ✅ Start new list
-    const list = document.createElement(type);
-    const li = document.createElement("li");
-    li.innerHTML = "<br>";
-    list.appendChild(li);
-    if (type === "ul") list.style.listStyleType = "circle";
-
-    range.deleteContents();
-    range.insertNode(list);
-
-
-
-    // Move cursor inside list
-    const newRange = document.createRange();
-    newRange.setStart(li, 0);
-    newRange.setEnd(li, 0);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
-
-    // Track active list
-    currentListType = type;
-    currentListElement = list;
-
-    // Update button styles
-    document.getElementById("olBtn").classList.toggle("active", type === "ol");
-    document.getElementById("ulBtn").classList.toggle("active", type === "ul");
-}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Editor</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9fafb; margin: 0; padding: 20px;">
+
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    <div class="list">
+      <button id="olBtn"
+        onclick="setTimeout(() => toggleList('ol'), 0)"
+        style="background-color: #ffffff; border: 1px solid #d1d5db; border-radius: 4px; padding: 6px 10px; cursor: pointer; font-weight: bold;">
+        OL
+      </button>
+    </div>
+    <div class="list">
+      <button id="ulBtn"
+        onclick="setTimeout(() => toggleList('ul'), 0)"
+        style="background-color: #ffffff; border: 1px solid #d1d5db; border-radius: 4px; padding: 6px 10px; cursor: pointer; font-weight: bold;">
+        UL
+      </button>
+    </div>
+  </div>
+
+  <div id="textArea" contenteditable="true"
+    style="border: 1px solid #d1d5db; padding: 12px; min-height: 250px; background-color: white; border-radius: 6px; outline: none;">
+    Start typing here...
+  </div>
+
+  <script>
+    let currentListType = null;
+    let currentListElement = null;
+
+    function toggleList(type) {
+      const textArea = document.getElementById("textArea");
+      textArea.focus();
+
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
+
+      const range = selection.getRangeAt(0);
+
+      if (currentListType === type) {
+        const p = document.createElement("p");
+        p.innerHTML = "<br>";
+        currentListElement.parentNode.insertBefore(p, currentListElement.nextSibling);
+
+        const newRange = document.createRange();
+        newRange.setStart(p, 0);
+        newRange.setEnd(p, 0);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+
+        currentListType = null;
+        currentListElement = null;
+
+        document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("olBtn").style.color = "black";
+        document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("ulBtn").style.color = "black";
+
+        return;
+      }
+
+      const list = document.createElement(type);
+      const li = document.createElement("li");
+      li.innerHTML = "<br>";
+      list.appendChild(li);
+      if (type === "ul") list.style.listStyleType = "circle";
+
+      range.deleteContents();
+      range.insertNode(list);
+
+      const newRange = document.createRange();
+      newRange.setStart(li, 0);
+      newRange.setEnd(li, 0);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+
+      currentListType = type;
+      currentListElement = list;
+
+      if (type === "ol") {
+        document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
+        document.getElementById("olBtn").style.color = "white";
+        document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("ulBtn").style.color = "black";
+      } else {
+        document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
+        document.getElementById("ulBtn").style.color = "white";
+        document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+        document.getElementById("olBtn").style.color = "black";
+      }
+    }
+  </script>
+</body>
+</html>
