@@ -1459,10 +1459,10 @@
       margin-bottom: 20px;
     }
     /* uploading list */
-        /* .list button.active {
+        .list button.active {
             background-color: #3b82f6;
             color: white;
-        } */
+        }
 
         /* Responsive improvements */
         @media (max-width: 900px) {
