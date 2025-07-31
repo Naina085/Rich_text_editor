@@ -33,12 +33,16 @@ body::before {
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0px) rotate(0deg);
     }
+
     33% {
         transform: translateY(-20px) rotate(1deg);
     }
+
     66% {
         transform: translateY(10px) rotate(-1deg);
     }
@@ -81,7 +85,7 @@ body::before {
     -webkit-overflow-scrolling: touch;
 }
 
-.navbar > ul {
+.navbar>ul {
     list-style: none;
     display: flex;
     gap: 24px;
@@ -118,7 +122,8 @@ body::before {
     flex-wrap: wrap;
 }
 
-.toolbar-left, .toolbar-right {
+.toolbar-left,
+.toolbar-right {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -145,13 +150,15 @@ body::before {
     min-width: 44px;
 }
 
-.toolbar-btn:hover, .toolbar-btn.active {
+.toolbar-btn:hover,
+.toolbar-btn.active {
     background: #e0e7ff;
     color: #312e81;
     box-shadow: 0 2px 8px rgba(76, 81, 255, 0.08);
 }
 
-.font-family-select, .font-size-select {
+.font-family-select,
+.font-size-select {
     height: 36px;
     padding: 4px 12px;
     border: 1px solid #e0e7ff;
@@ -164,7 +171,8 @@ body::before {
     min-width: 80px;
 }
 
-.font-family-select:focus, .font-size-select:focus {
+.font-family-select:focus,
+.font-size-select:focus {
     border: 1.5px solid #6366f1;
 }
 
@@ -205,87 +213,287 @@ body::before {
 }
 
 /* System Fonts */
-.font-family-select option[value="Arial"] { font-family: Arial, sans-serif; }
-.font-family-select option[value="Helvetica"] { font-family: Helvetica, sans-serif; }
-.font-family-select option[value="Times New Roman"] { font-family: "Times New Roman", serif; }
-.font-family-select option[value="Times"] { font-family: Times, serif; }
-.font-family-select option[value="Courier New"] { font-family: "Courier New", monospace; }
-.font-family-select option[value="Courier"] { font-family: Courier, monospace; }
-.font-family-select option[value="Verdana"] { font-family: Verdana, sans-serif; }
-.font-family-select option[value="Georgia"] { font-family: Georgia, serif; }
-.font-family-select option[value="Palatino"] { font-family: Palatino, serif; }
-.font-family-select option[value="Garamond"] { font-family: Garamond, serif; }
-.font-family-select option[value="Bookman"] { font-family: Bookman, serif; }
-.font-family-select option[value="Comic Sans MS"] { font-family: "Comic Sans MS", cursive; }
-.font-family-select option[value="Trebuchet MS"] { font-family: "Trebuchet MS", sans-serif; }
-.font-family-select option[value="Arial Black"] { font-family: "Arial Black", sans-serif; }
-.font-family-select option[value="Impact"] { font-family: Impact, sans-serif; }
+.font-family-select option[value="Arial"] {
+    font-family: Arial, sans-serif;
+}
+
+.font-family-select option[value="Helvetica"] {
+    font-family: Helvetica, sans-serif;
+}
+
+.font-family-select option[value="Times New Roman"] {
+    font-family: "Times New Roman", serif;
+}
+
+.font-family-select option[value="Times"] {
+    font-family: Times, serif;
+}
+
+.font-family-select option[value="Courier New"] {
+    font-family: "Courier New", monospace;
+}
+
+.font-family-select option[value="Courier"] {
+    font-family: Courier, monospace;
+}
+
+.font-family-select option[value="Verdana"] {
+    font-family: Verdana, sans-serif;
+}
+
+.font-family-select option[value="Georgia"] {
+    font-family: Georgia, serif;
+}
+
+.font-family-select option[value="Palatino"] {
+    font-family: Palatino, serif;
+}
+
+.font-family-select option[value="Garamond"] {
+    font-family: Garamond, serif;
+}
+
+.font-family-select option[value="Bookman"] {
+    font-family: Bookman, serif;
+}
+
+.font-family-select option[value="Comic Sans MS"] {
+    font-family: "Comic Sans MS", cursive;
+}
+
+.font-family-select option[value="Trebuchet MS"] {
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+.font-family-select option[value="Arial Black"] {
+    font-family: "Arial Black", sans-serif;
+}
+
+.font-family-select option[value="Impact"] {
+    font-family: Impact, sans-serif;
+}
 
 /* Sans-Serif Google Fonts */
-.font-family-select option[value="Roboto"] { font-family: "Roboto", sans-serif; }
-.font-family-select option[value="Open Sans"] { font-family: "Open Sans", sans-serif; }
-.font-family-select option[value="Lato"] { font-family: "Lato", sans-serif; }
-.font-family-select option[value="Montserrat"] { font-family: "Montserrat", sans-serif; }
-.font-family-select option[value="Source Sans Pro"] { font-family: "Source Sans Pro", sans-serif; }
-.font-family-select option[value="Ubuntu"] { font-family: "Ubuntu", sans-serif; }
-.font-family-select option[value="Nunito"] { font-family: "Nunito", sans-serif; }
-.font-family-select option[value="Raleway"] { font-family: "Raleway", sans-serif; }
-.font-family-select option[value="Poppins"] { font-family: "Poppins", sans-serif; }
-.font-family-select option[value="Inter"] { font-family: "Inter", sans-serif; }
-.font-family-select option[value="PT Sans"] { font-family: "PT Sans", sans-serif; }
-.font-family-select option[value="Fira Sans"] { font-family: "Fira Sans", sans-serif; }
-.font-family-select option[value="Work Sans"] { font-family: "Work Sans", sans-serif; }
-.font-family-select option[value="Quicksand"] { font-family: "Quicksand", sans-serif; }
-.font-family-select option[value="Comfortaa"] { font-family: "Comfortaa", sans-serif; }
+.font-family-select option[value="Roboto"] {
+    font-family: "Roboto", sans-serif;
+}
+
+.font-family-select option[value="Open Sans"] {
+    font-family: "Open Sans", sans-serif;
+}
+
+.font-family-select option[value="Lato"] {
+    font-family: "Lato", sans-serif;
+}
+
+.font-family-select option[value="Montserrat"] {
+    font-family: "Montserrat", sans-serif;
+}
+
+.font-family-select option[value="Source Sans Pro"] {
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.font-family-select option[value="Ubuntu"] {
+    font-family: "Ubuntu", sans-serif;
+}
+
+.font-family-select option[value="Nunito"] {
+    font-family: "Nunito", sans-serif;
+}
+
+.font-family-select option[value="Raleway"] {
+    font-family: "Raleway", sans-serif;
+}
+
+.font-family-select option[value="Poppins"] {
+    font-family: "Poppins", sans-serif;
+}
+
+.font-family-select option[value="Inter"] {
+    font-family: "Inter", sans-serif;
+}
+
+.font-family-select option[value="PT Sans"] {
+    font-family: "PT Sans", sans-serif;
+}
+
+.font-family-select option[value="Fira Sans"] {
+    font-family: "Fira Sans", sans-serif;
+}
+
+.font-family-select option[value="Work Sans"] {
+    font-family: "Work Sans", sans-serif;
+}
+
+.font-family-select option[value="Quicksand"] {
+    font-family: "Quicksand", sans-serif;
+}
+
+.font-family-select option[value="Comfortaa"] {
+    font-family: "Comfortaa", sans-serif;
+}
 
 /* Serif Google Fonts */
-.font-family-select option[value="Playfair Display"] { font-family: "Playfair Display", serif; }
-.font-family-select option[value="Merriweather"] { font-family: "Merriweather", serif; }
-.font-family-select option[value="Crimson Text"] { font-family: "Crimson Text", serif; }
-.font-family-select option[value="Libre Baskerville"] { font-family: "Libre Baskerville", serif; }
-.font-family-select option[value="Lora"] { font-family: "Lora", serif; }
-.font-family-select option[value="PT Serif"] { font-family: "PT Serif", serif; }
-.font-family-select option[value="Cormorant Garamond"] { font-family: "Cormorant Garamond", serif; }
-.font-family-select option[value="Vollkorn"] { font-family: "Vollkorn", serif; }
+.font-family-select option[value="Playfair Display"] {
+    font-family: "Playfair Display", serif;
+}
+
+.font-family-select option[value="Merriweather"] {
+    font-family: "Merriweather", serif;
+}
+
+.font-family-select option[value="Crimson Text"] {
+    font-family: "Crimson Text", serif;
+}
+
+.font-family-select option[value="Libre Baskerville"] {
+    font-family: "Libre Baskerville", serif;
+}
+
+.font-family-select option[value="Lora"] {
+    font-family: "Lora", serif;
+}
+
+.font-family-select option[value="PT Serif"] {
+    font-family: "PT Serif", serif;
+}
+
+.font-family-select option[value="Cormorant Garamond"] {
+    font-family: "Cormorant Garamond", serif;
+}
+
+.font-family-select option[value="Vollkorn"] {
+    font-family: "Vollkorn", serif;
+}
 
 /* Display Google Fonts */
-.font-family-select option[value="Oswald"] { font-family: "Oswald", sans-serif; }
-.font-family-select option[value="Righteous"] { font-family: "Righteous", sans-serif; }
-.font-family-select option[value="Bangers"] { font-family: "Bangers", cursive; }
-.font-family-select option[value="Fredoka One"] { font-family: "Fredoka One", cursive; }
-.font-family-select option[value="Bebas Neue"] { font-family: "Bebas Neue", cursive; }
-.font-family-select option[value="Anton"] { font-family: "Anton", sans-serif; }
-.font-family-select option[value="Fjalla One"] { font-family: "Fjalla One", sans-serif; }
-.font-family-select option[value="Russo One"] { font-family: "Russo One", sans-serif; }
+.font-family-select option[value="Oswald"] {
+    font-family: "Oswald", sans-serif;
+}
+
+.font-family-select option[value="Righteous"] {
+    font-family: "Righteous", sans-serif;
+}
+
+.font-family-select option[value="Bangers"] {
+    font-family: "Bangers", cursive;
+}
+
+.font-family-select option[value="Fredoka One"] {
+    font-family: "Fredoka One", cursive;
+}
+
+.font-family-select option[value="Bebas Neue"] {
+    font-family: "Bebas Neue", cursive;
+}
+
+.font-family-select option[value="Anton"] {
+    font-family: "Anton", sans-serif;
+}
+
+.font-family-select option[value="Fjalla One"] {
+    font-family: "Fjalla One", sans-serif;
+}
+
+.font-family-select option[value="Russo One"] {
+    font-family: "Russo One", sans-serif;
+}
 
 /* Script/Handwriting Google Fonts */
-.font-family-select option[value="Dancing Script"] { font-family: "Dancing Script", cursive; }
-.font-family-select option[value="Pacifico"] { font-family: "Pacifico", cursive; }
-.font-family-select option[value="Lobster"] { font-family: "Lobster", cursive; }
-.font-family-select option[value="Great Vibes"] { font-family: "Great Vibes", cursive; }
-.font-family-select option[value="Satisfy"] { font-family: "Satisfy", cursive; }
-.font-family-select option[value="Kaushan Script"] { font-family: "Kaushan Script", cursive; }
-.font-family-select option[value="Caveat"] { font-family: "Caveat", cursive; }
-.font-family-select option[value="Indie Flower"] { font-family: "Indie Flower", cursive; }
-.font-family-select option[value="Amatic SC"] { font-family: "Amatic SC", cursive; }
-.font-family-select option[value="Shadows Into Light"] { font-family: "Shadows Into Light", cursive; }
-.font-family-select option[value="Permanent Marker"] { font-family: "Permanent Marker", cursive; }
+.font-family-select option[value="Dancing Script"] {
+    font-family: "Dancing Script", cursive;
+}
+
+.font-family-select option[value="Pacifico"] {
+    font-family: "Pacifico", cursive;
+}
+
+.font-family-select option[value="Lobster"] {
+    font-family: "Lobster", cursive;
+}
+
+.font-family-select option[value="Great Vibes"] {
+    font-family: "Great Vibes", cursive;
+}
+
+.font-family-select option[value="Satisfy"] {
+    font-family: "Satisfy", cursive;
+}
+
+.font-family-select option[value="Kaushan Script"] {
+    font-family: "Kaushan Script", cursive;
+}
+
+.font-family-select option[value="Caveat"] {
+    font-family: "Caveat", cursive;
+}
+
+.font-family-select option[value="Indie Flower"] {
+    font-family: "Indie Flower", cursive;
+}
+
+.font-family-select option[value="Amatic SC"] {
+    font-family: "Amatic SC", cursive;
+}
+
+.font-family-select option[value="Shadows Into Light"] {
+    font-family: "Shadows Into Light", cursive;
+}
+
+.font-family-select option[value="Permanent Marker"] {
+    font-family: "Permanent Marker", cursive;
+}
 
 /* Monospace Google Fonts */
-.font-family-select option[value="Space Mono"] { font-family: "Space Mono", monospace; }
-.font-family-select option[value="JetBrains Mono"] { font-family: "JetBrains Mono", monospace; }
-.font-family-select option[value="Fira Code"] { font-family: "Fira Code", monospace; }
-.font-family-select option[value="Source Code Pro"] { font-family: "Source Code Pro", monospace; }
-.font-family-select option[value="Roboto Mono"] { font-family: "Roboto Mono", monospace; }
-.font-family-select option[value="Ubuntu Mono"] { font-family: "Ubuntu Mono", monospace; }
-.font-family-select option[value="Inconsolata"] { font-family: "Inconsolata", monospace; }
+.font-family-select option[value="Space Mono"] {
+    font-family: "Space Mono", monospace;
+}
+
+.font-family-select option[value="JetBrains Mono"] {
+    font-family: "JetBrains Mono", monospace;
+}
+
+.font-family-select option[value="Fira Code"] {
+    font-family: "Fira Code", monospace;
+}
+
+.font-family-select option[value="Source Code Pro"] {
+    font-family: "Source Code Pro", monospace;
+}
+
+.font-family-select option[value="Roboto Mono"] {
+    font-family: "Roboto Mono", monospace;
+}
+
+.font-family-select option[value="Ubuntu Mono"] {
+    font-family: "Ubuntu Mono", monospace;
+}
+
+.font-family-select option[value="Inconsolata"] {
+    font-family: "Inconsolata", monospace;
+}
 
 /* Futuristic Google Fonts */
-.font-family-select option[value="Orbitron"] { font-family: "Orbitron", sans-serif; }
-.font-family-select option[value="Exo 2"] { font-family: "Exo 2", sans-serif; }
-.font-family-select option[value="Audiowide"] { font-family: "Audiowide", cursive; }
-.font-family-select option[value="Electrolize"] { font-family: "Electrolize", sans-serif; }
-.font-family-select option[value="Syncopate"] { font-family: "Syncopate", sans-serif; }
+.font-family-select option[value="Orbitron"] {
+    font-family: "Orbitron", sans-serif;
+}
+
+.font-family-select option[value="Exo 2"] {
+    font-family: "Exo 2", sans-serif;
+}
+
+.font-family-select option[value="Audiowide"] {
+    font-family: "Audiowide", cursive;
+}
+
+.font-family-select option[value="Electrolize"] {
+    font-family: "Electrolize", sans-serif;
+}
+
+.font-family-select option[value="Syncopate"] {
+    font-family: "Syncopate", sans-serif;
+}
 
 .font-family-select optgroup {
     font-weight: bold;
@@ -349,7 +557,8 @@ body::before {
     border: 1px solid #ccc;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     width: 150px;
-    z-index: 1000;
+    top: 0;
+    z-index: 999;
     border-radius: 6px;
 }
 
@@ -469,8 +678,14 @@ hr {
 }
 
 /* All font family menu options with same styling as above */
-.font-family-select-menu option[value="Arial"] { font-family: Arial, sans-serif; }
-.font-family-select-menu option[value="Helvetica"] { font-family: Helvetica, sans-serif; }
+.font-family-select-menu option[value="Arial"] {
+    font-family: Arial, sans-serif;
+}
+
+.font-family-select-menu option[value="Helvetica"] {
+    font-family: Helvetica, sans-serif;
+}
+
 /* ... (keeping all your existing font options) ... */
 
 .font-family-select-menu optgroup {
@@ -752,34 +967,34 @@ canvas {
     body {
         padding: 3rem;
     }
-    
+
     .editor-container {
         max-width: 1400px;
     }
-    
+
     .text-area {
         height: 500px;
         font-size: 16px;
     }
-    
+
     .toolbar {
         padding: 20px 32px;
         gap: 20px;
     }
-    
+
     .navbar {
         padding: 12px 32px;
     }
-    
-    .navbar > ul {
+
+    .navbar>ul {
         gap: 32px;
     }
-    
+
     .status-bar {
         padding: 12px 32px;
         font-size: 16px;
     }
-    
+
     #fileTabs {
         padding: 12px 32px 0 32px;
     }
@@ -788,20 +1003,38 @@ canvas {
 /* Laptop (1024px - 1439px) */
 @media (min-width: 1024px) and (max-width: 1439px) {
     .editor-container {
-        max-width: 1100px;
-        margin: 24px auto;
+        max-width: 100%;
+        max-height: 600px;
+        margin: 0px 16px;
+        border-radius: 9px;
     }
-    
-    .text-area {
-        height: 400px;
-    }
-    
+
     .navbar {
-        padding: 10px 24px;
+        padding: 2px 24px;
     }
-    
+
+    .navbar li {
+        padding: 2px 12px;
+    }
+
+    .file-menu {
+        position: absolute;
+        margin-top: 30px;
+        width: 150px;
+        z-index: 99;
+    }
+
+
+    #filetab {
+        padding: 1px 24px 0 24px;
+    }
+
+    .text-area {
+        height: 300px;
+    }
+
     .toolbar {
-        padding: 16px 24px;
+        padding: 1px 24px;
     }
 }
 
@@ -810,36 +1043,36 @@ canvas {
     body {
         padding: 1rem;
     }
-    
+
     .editor-container {
         max-width: 100%;
         margin: 16px auto;
         border-radius: 12px;
     }
-    
+
     .navbar {
         padding: 8px 16px;
         border-radius: 12px 12px 0 0;
         gap: 12px;
     }
-    
-    .navbar > ul {
+
+    .navbar>ul {
         gap: 16px;
     }
-    
+
     .navbar li {
         padding: 6px 10px;
         font-size: 13px;
         min-height: 40px;
     }
-    
+
     .toolbar {
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
         padding: 12px 16px;
     }
-    
+
     .toolbar-left,
     .toolbar-right {
         width: 100%;
@@ -847,65 +1080,66 @@ canvas {
         flex-wrap: wrap;
         gap: 6px;
     }
-    
+
     .font-family-select {
         min-width: 120px;
         flex: 1;
         margin-right: 4px;
     }
-    
+
     .font-size-select {
         min-width: 60px;
         margin-right: 4px;
     }
-    
+
     .toolbar-btn {
         width: 40px;
         height: 40px;
         min-width: 40px;
         min-height: 40px;
     }
-    
+
     .text-area {
         height: 350px;
         font-size: 15px;
     }
-    
+
     .text-area-container {
         padding: 12px;
     }
-    
+
     .color-picker-dropdown {
         width: 240px;
         right: 0;
         left: auto;
     }
-    
+
     #fileTabs {
         padding: 8px 16px 0 16px;
         gap: 6px;
     }
-    
+
     .tab {
         font-size: 13px;
         padding: 6px 12px;
     }
-    
+
     .status-bar {
-        padding: 10px 16px;
+        padding: 10px 20px;
         font-size: 14px;
+        margin-left: 60px;
     }
-    
+
     #submitBtn {
         margin-right: 0;
         padding: 8px 20px;
     }
-    
+
     .sidebar {
         width: 180px;
         margin-top: -450px;
     }
-    
+
     #text-area-container {
         margin-left: 200px;
     }
@@ -916,56 +1150,56 @@ canvas {
     body {
         padding: 0.5rem;
     }
-    
+
     .editor-container {
         max-width: 100%;
         margin: 8px auto;
         border-radius: 8px;
     }
-    
+
     .navbar {
         padding: 6px 12px;
         border-radius: 8px 8px 0 0;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
-    
-    .navbar > ul {
+
+    .navbar>ul {
         gap: 12px;
         min-width: max-content;
     }
-    
+
     .navbar li {
         padding: 8px 12px;
         font-size: 12px;
         min-height: 44px;
         white-space: nowrap;
     }
-    
+
     #fileTabs {
         padding: 6px 12px 0 12px;
         gap: 4px;
     }
-    
+
     .tab {
         font-size: 12px;
         padding: 6px 10px;
         min-height: 36px;
     }
-    
+
     .tab button {
         font-size: 14px;
         min-width: 18px;
         min-height: 18px;
     }
-    
+
     .toolbar {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
         padding: 10px 12px;
     }
-    
+
     .toolbar-left,
     .toolbar-right {
         width: 100%;
@@ -974,7 +1208,7 @@ canvas {
         flex-wrap: wrap;
         gap: 4px;
     }
-    
+
     .toolbar-btn {
         width: 42px;
         height: 42px;
@@ -982,7 +1216,7 @@ canvas {
         min-height: 44px;
         font-size: 18px;
     }
-    
+
     .font-family-select,
     .font-size-select {
         height: 44px;
@@ -992,16 +1226,16 @@ canvas {
         flex: 1;
         min-width: 0;
     }
-    
+
     .font-family-select {
         min-width: 100px;
     }
-    
+
     .font-size-select {
         min-width: 50px;
         max-width: 80px;
     }
-    
+
     .color-picker-dropdown {
         width: 280px;
         right: 0;
@@ -1014,34 +1248,34 @@ canvas {
         max-height: 70vh;
         overflow-y: auto;
     }
-    
+
     .color-grid {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         gap: 6px;
     }
-    
+
     .color-grid.large {
         grid-template-columns: repeat(3, 1fr);
     }
-    
+
     .color-option,
     .gradient-option {
         width: 28px;
         height: 28px;
     }
-    
+
     .text-area-container {
         padding: 10px;
     }
-    
+
     .text-area {
         height: 280px;
         font-size: 16px;
         padding: 12px;
         line-height: 1.4;
     }
-    
+
     .status-bar {
         padding: 10px 12px;
         flex-direction: column;
@@ -1049,12 +1283,12 @@ canvas {
         gap: 10px;
         border-radius: 0 0 8px 8px;
     }
-    
-    .status-bar > div {
+
+    .status-bar>div {
         text-align: center;
         font-size: 13px;
     }
-    
+
     #submitBtn {
         width: 100%;
         padding: 12px;
@@ -1062,7 +1296,7 @@ canvas {
         min-height: 48px;
         margin-right: 0;
     }
-    
+
     .file-menu {
         position: fixed;
         top: 50%;
@@ -1073,14 +1307,14 @@ canvas {
         border-radius: 8px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-    
+
     .file-menu li {
         padding: 14px;
         font-size: 15px;
         min-height: 44px;
         text-align: center;
     }
-    
+
     #tableGrid {
         position: fixed;
         top: 50%;
@@ -1090,23 +1324,23 @@ canvas {
         max-height: 70vh;
         overflow: auto;
     }
-    
+
     .grid-cell {
         width: 22px;
         height: 22px;
     }
-    
+
     .resizer {
         width: 14px;
         height: 14px;
         right: -7px;
         bottom: -7px;
     }
-    
+
     .sidebar {
         display: none;
     }
-    
+
     #text-area-container {
         margin-left: 0;
     }
@@ -1117,56 +1351,56 @@ canvas {
     body {
         padding: 0.25rem;
     }
-    
+
     .editor-container {
         max-width: 100%;
         margin: 4px auto;
         border-radius: 6px;
     }
-    
+
     .navbar {
         padding: 4px 8px;
         border-radius: 6px 6px 0 0;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
-    
-    .navbar > ul {
+
+    .navbar>ul {
         gap: 8px;
         min-width: max-content;
     }
-    
+
     .navbar li {
         padding: 6px 8px;
         font-size: 11px;
         min-height: 44px;
         white-space: nowrap;
     }
-    
+
     #fileTabs {
         padding: 4px 8px 0 8px;
         gap: 2px;
     }
-    
+
     .tab {
         font-size: 11px;
         padding: 4px 8px;
         min-height: 32px;
     }
-    
+
     .tab button {
         font-size: 12px;
         min-width: 16px;
         min-height: 16px;
     }
-    
+
     .toolbar {
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
         padding: 8px;
     }
-    
+
     .toolbar-left,
     .toolbar-right {
         width: 100%;
@@ -1175,7 +1409,7 @@ canvas {
         flex-wrap: wrap;
         gap: 2px;
     }
-    
+
     .toolbar-btn {
         width: 38px;
         height: 38px;
@@ -1183,7 +1417,7 @@ canvas {
         min-height: 44px;
         font-size: 16px;
     }
-    
+
     .font-family-select,
     .font-size-select {
         height: 44px;
@@ -1193,16 +1427,16 @@ canvas {
         flex: 1;
         min-width: 0;
     }
-    
+
     .font-family-select {
         min-width: 80px;
     }
-    
+
     .font-size-select {
         min-width: 40px;
         max-width: 60px;
     }
-    
+
     .color-picker-dropdown {
         width: 260px;
         max-width: calc(100vw - 10px);
@@ -1213,34 +1447,34 @@ canvas {
         max-height: 70vh;
         overflow-y: auto;
     }
-    
+
     .color-grid {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 4px;
     }
-    
+
     .color-grid.large {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .color-option,
     .gradient-option {
         width: 24px;
         height: 24px;
     }
-    
+
     .text-area-container {
         padding: 8px;
     }
-    
+
     .text-area {
         height: 220px;
         font-size: 16px;
         padding: 10px;
         line-height: 1.3;
     }
-    
+
     .status-bar {
         padding: 8px;
         flex-direction: column;
@@ -1248,12 +1482,12 @@ canvas {
         gap: 8px;
         border-radius: 0 0 6px 6px;
     }
-    
-    .status-bar > div {
+
+    .status-bar>div {
         text-align: center;
         font-size: 12px;
     }
-    
+
     #submitBtn {
         width: 100%;
         padding: 10px;
@@ -1261,7 +1495,7 @@ canvas {
         min-height: 44px;
         margin-right: 0;
     }
-    
+
     .file-menu {
         position: fixed;
         top: 50%;
@@ -1272,14 +1506,14 @@ canvas {
         border-radius: 6px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-    
+
     .file-menu li {
         padding: 12px;
         font-size: 14px;
         min-height: 44px;
         text-align: center;
     }
-    
+
     #tableGrid {
         position: fixed;
         top: 50%;
@@ -1289,23 +1523,23 @@ canvas {
         max-height: 60vh;
         overflow: auto;
     }
-    
+
     .grid-cell {
         width: 20px;
         height: 20px;
     }
-    
+
     .resizer {
         width: 12px;
         height: 12px;
         right: -6px;
         bottom: -6px;
     }
-    
+
     .sidebar {
         display: none;
     }
-    
+
     #text-area-container {
         margin-left: 0;
     }
@@ -1316,27 +1550,29 @@ canvas {
     .text-area {
         height: 180px;
     }
-    
+
     .toolbar {
         padding: 6px;
     }
-    
+
     .toolbar-left,
     .toolbar-right {
         padding: 4px;
     }
-    
+
     .navbar {
         padding: 4px 8px;
     }
-    
+
     .status-bar {
         padding: 6px 8px;
     }
 }
 
 /* High DPI displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
     .toolbar-btn,
     .color-option,
     .gradient-option {
@@ -1346,6 +1582,7 @@ canvas {
 
 /* Touch device optimizations */
 @media (pointer: coarse) {
+
     .toolbar-btn,
     .navbar li,
     .tab,
@@ -1354,11 +1591,11 @@ canvas {
         min-height: 44px;
         min-width: 44px;
     }
-    
+
     .file-menu li {
         min-height: 48px;
     }
-    
+
     .grid-cell {
         min-width: 24px;
         min-height: 24px;
@@ -1383,7 +1620,7 @@ canvas {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-    
+
     body::before {
         animation: none;
     }
@@ -1395,20 +1632,20 @@ canvas {
         background: none;
         padding: 0;
     }
-    
+
     .editor-container {
         box-shadow: none;
         border: 1px solid #000;
         max-width: 100%;
     }
-    
+
     .navbar,
     .toolbar,
     .status-bar,
     #fileTabs {
         display: none;
     }
-    
+
     .text-area {
         border: none;
         height: auto;
@@ -1416,7 +1653,7 @@ canvas {
         font-size: 12pt;
         line-height: 1.5;
     }
-    
+
     .text-area-container {
         padding: 0;
     }
