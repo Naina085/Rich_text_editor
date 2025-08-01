@@ -120,6 +120,7 @@ body::before {
     width: 100%;
     gap: 16px;
     flex-wrap: wrap;
+    position: relative;
 }
 
 .toolbar-left,
@@ -210,6 +211,11 @@ body::before {
     padding: 8px;
     font-size: 14px;
     line-height: 1.4;
+}
+
+/* tablet responsive */
+.more-wrapper {
+    position: relative;
 }
 
 /* System Fonts */
@@ -1011,6 +1017,7 @@ canvas {
 
     .navbar {
         padding: 2px 24px;
+        overflow: visible;
     }
 
     .navbar li {
@@ -1024,6 +1031,20 @@ canvas {
         z-index: 99;
     }
 
+    .file-navbar-5 li:hover button {
+        background-color: #42a7f5;
+        transition: background-color 0.2s;
+    }
+
+    .file-navbar-3 li :hover button {
+        background-color: #42a7f5;
+        transition: background-color 0.2s;
+    }
+
+    .file-menu li:hover button {
+        background-color: #42a7f5;
+        transition: background-color 0.2s;
+    }
 
     #filetab {
         padding: 1px 24px 0 24px;
@@ -1035,6 +1056,10 @@ canvas {
 
     .toolbar {
         padding: 1px 24px;
+    }
+
+    #tableGrid {
+        left: 50px;
     }
 }
 
@@ -1065,6 +1090,28 @@ canvas {
         font-size: 13px;
         min-height: 40px;
     }
+
+    .more-option {
+        position: relative;
+        top: 100%;
+        /* show below toolbar */
+        left: 140px;
+        /* tweak this based on where More button is */
+        display: none;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 5px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        z-index: 999;
+        width: max-content;
+    }
+
+
+    .toolbar.show-more .more-option {
+        display: block !important;
+    }
+
+
 
     .toolbar {
         flex-direction: column;

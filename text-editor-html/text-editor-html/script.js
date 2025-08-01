@@ -283,85 +283,85 @@ saveToHistory();
 
 //select the whole content
 function selectAllText() {
-      const textArea = document.getElementById("textArea");
-      const range = document.createRange();
-      range.selectNodeContents(textArea);
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
+    const textArea = document.getElementById("textArea");
+    const range = document.createRange();
+    range.selectNodeContents(textArea);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
 
 //cut the selected text
 async function cutText() {
-  const selection = window.getSelection();
-  let selectedText = selection.toString();
-  const textArea = document.getElementById("textArea");
+    const selection = window.getSelection();
+    let selectedText = selection.toString();
+    const textArea = document.getElementById("textArea");
 
-  // If nothing is selected, cut all text
-  if (!selectedText || selectedText.trim().length === 0) {
-    selectedText = textArea.innerText || textArea.textContent;
+    // If nothing is selected, cut all text
     if (!selectedText || selectedText.trim().length === 0) {
-      alert('Editor is empty.');
-      return;
+        selectedText = textArea.innerText || textArea.textContent;
+        if (!selectedText || selectedText.trim().length === 0) {
+            alert('Editor is empty.');
+            return;
+        }
+        // Select all text in the editor
+        const range = document.createRange();
+        range.selectNodeContents(textArea);
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
-    // Select all text in the editor
-    const range = document.createRange();
-    range.selectNodeContents(textArea);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
 
-  // Now, cut the selected text
-  if (selection.rangeCount > 0 && textArea.contains(selection.anchorNode)) {
-    try {
-      await navigator.clipboard.writeText(selection.toString());
-      selection.deleteFromDocument();
-      alert('Cut to clipboard!');
-    } catch (err) {
-      textArea.focus();
-      document.execCommand('cut');
-      alert('Cut using fallback method. If not working, check browser permissions.');
+    // Now, cut the selected text
+    if (selection.rangeCount > 0 && textArea.contains(selection.anchorNode)) {
+        try {
+            await navigator.clipboard.writeText(selection.toString());
+            selection.deleteFromDocument();
+            alert('Cut to clipboard!');
+        } catch (err) {
+            textArea.focus();
+            document.execCommand('cut');
+            alert('Cut using fallback method. If not working, check browser permissions.');
+        }
+    } else {
+        alert('Please select text inside the editor.');
     }
-  } else {
-    alert('Please select text inside the editor.');
-  }
 }
 
 //paste clipboard text at cursor position
 async function pasteText() {
-  const textArea = document.getElementById("textArea");
-  textArea.focus();
-  try {
-    const text = await navigator.clipboard.readText();
-    document.execCommand("insertText", false, text);
-  } catch (err) {
-    // Fallback: use execCommand('paste')
-    document.execCommand('paste');
-    alert('Pasted using fallback method. If not working, check browser permissions.');
-  }
+    const textArea = document.getElementById("textArea");
+    textArea.focus();
+    try {
+        const text = await navigator.clipboard.readText();
+        document.execCommand("insertText", false, text);
+    } catch (err) {
+        // Fallback: use execCommand('paste')
+        document.execCommand('paste');
+        alert('Pasted using fallback method. If not working, check browser permissions.');
+    }
 }
 
 //copy the selected text
-    function copySelectedText() {
-      const selection = window.getSelection();
-      let selectedText = selection.toString();
+function copySelectedText() {
+    const selection = window.getSelection();
+    let selectedText = selection.toString();
 
-      // If nothing is selected, copy all text from editor
-      if (!selectedText || selectedText.trim().length === 0) {
+    // If nothing is selected, copy all text from editor
+    if (!selectedText || selectedText.trim().length === 0) {
         const textArea = document.getElementById("textArea");
         selectedText = textArea.innerText || textArea.textContent;
         if (!selectedText || selectedText.trim().length === 0) {
-          alert('Editor is empty.');
-          return;
+            alert('Editor is empty.');
+            return;
         }
-      }
-
-      navigator.clipboard.writeText(selectedText).then(() => {
-        alert('Copied to clipboard!');
-      }).catch(err => {
-        alert('Failed to copy: ' + err);
-      });
     }
+
+    navigator.clipboard.writeText(selectedText).then(() => {
+        alert('Copied to clipboard!');
+    }).catch(err => {
+        alert('Failed to copy: ' + err);
+    });
+}
 // Font family change
 // function handleFontFamilyChange() {
 //     const fontFamily = document.getElementById('fontFamily').value;
@@ -1109,44 +1109,44 @@ function createUntitledFile() {
 }
 
 //when the user clicks on table button
-  const tableBtn = document.getElementById('tableBtn');
-  const tableGrid = document.getElementById('tableGrid');
+const tableBtn = document.getElementById('tableBtn');
+const tableGrid = document.getElementById('tableGrid');
 
-  const maxRows = 10;
-  const maxCols = 10;
+const maxRows = 10;
+const maxCols = 10;
 
-  // Create 10x10 grid
-  for (let i = 0; i < maxRows; i++) {
+// Create 10x10 grid
+for (let i = 0; i < maxRows; i++) {
     for (let j = 0; j < maxCols; j++) {
-      const cell = document.createElement('div');
-      cell.className = 'grid-cell';
-      cell.dataset.row = i + 1;
-      cell.dataset.col = j + 1;
-      cell.style.width = '20px';
-      cell.style.height = '20px';
-      cell.style.border = '1px solid #ccc';
-      cell.style.display = 'inline-block';
-      cell.style.boxSizing = 'border-box';
-      tableGrid.appendChild(cell);
+        const cell = document.createElement('div');
+        cell.className = 'grid-cell';
+        cell.dataset.row = i + 1;
+        cell.dataset.col = j + 1;
+        cell.style.width = '20px';
+        cell.style.height = '20px';
+        cell.style.border = '1px solid #ccc';
+        cell.style.display = 'inline-block';
+        cell.style.boxSizing = 'border-box';
+        tableGrid.appendChild(cell);
     }
     tableGrid.appendChild(document.createElement('br'));
-  }
+}
 
-  let selectedRows = 0;
-  let selectedCols = 0;
+let selectedRows = 0;
+let selectedCols = 0;
 
-  // Show/hide grid
-  tableBtn.addEventListener('mouseenter', () => {
+// Show/hide grid
+tableBtn.addEventListener('click', () => {
     tableGrid.style.display = 'block';
-  });
+});
 
-  document.addEventListener('click', (e) => {
+document.addEventListener('click', (e) => {
     if (!tableGrid.contains(e.target) && e.target !== tableBtn) {
-      tableGrid.style.display = 'none';
+        tableGrid.style.display = 'none';
     }
-  });
+});
 
-  tableGrid.addEventListener('mouseover', (e) => {
+tableGrid.addEventListener('click', (e) => {
     if (!e.target.classList.contains('grid-cell')) return;
 
     selectedRows = parseInt(e.target.dataset.row);
@@ -1154,17 +1154,17 @@ function createUntitledFile() {
 
     const cells = document.querySelectorAll('.grid-cell');
     cells.forEach(cell => {
-      const row = parseInt(cell.dataset.row);
-      const col = parseInt(cell.dataset.col);
-      if (row <= selectedRows && col <= selectedCols) {
-        cell.style.backgroundColor = '#42a7f5';
-      } else {
-        cell.style.backgroundColor = '';
-      }
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        if (row <= selectedRows && col <= selectedCols) {
+            cell.style.backgroundColor = '#42a7f5';
+        } else {
+            cell.style.backgroundColor = '';
+        }
     });
-  });
+});
 
-  tableGrid.addEventListener('click', () => {
+tableGrid.addEventListener('click', () => {
     const wrapper = document.createElement('div');
     wrapper.className = 'resizable-wrapper';
     wrapper.contentEditable = false;
@@ -1180,26 +1180,26 @@ function createUntitledFile() {
     table.style.height = '100%';
 
     for (let i = 0; i < selectedRows; i++) {
-      const tr = document.createElement('tr');
-      for (let j = 0; j < selectedCols; j++) {
-        const td = document.createElement('td');
-        td.contentEditable = "true";
-        td.innerHTML = '&nbsp;';
-        td.style.border = '1px solid #333';
-        td.style.padding = '5px';
-        td.style.textAlign = 'center';
-        td.style.outline = 'none';
-        td.style.boxShadow = 'none';
-        td.style.width='100px';
-        tr.appendChild(td);
-      }
-      table.appendChild(tr);
+        const tr = document.createElement('tr');
+        for (let j = 0; j < selectedCols; j++) {
+            const td = document.createElement('td');
+            td.contentEditable = "true";
+            td.innerHTML = '&nbsp;';
+            td.style.border = '1px solid #333';
+            td.style.padding = '5px';
+            td.style.textAlign = 'center';
+            td.style.outline = 'none';
+            td.style.boxShadow = 'none';
+            td.style.width = '100px';
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
     }
 
     wrapper.appendChild(table);
     textArea.appendChild(wrapper);
     tableGrid.style.display = 'none';
-  });
+});
 
 
 
@@ -1295,6 +1295,7 @@ textArea.addEventListener('keydown', function (e) {
         selection.addRange(range);
     }
 });
+
 function insertSpacing() {
     const textArea = document.getElementById('textArea');
     textArea.focus();
@@ -1506,10 +1507,10 @@ function uploadPPT() {
                 alert('Failed to read PPT');
             }
         })
-        // .catch(err => {
-        //     console.error(err);
-        //     alert('Error uploading PPT');
-        // });
+    // .catch(err => {
+    //     console.error(err);
+    //     alert('Error uploading PPT');
+    // });
 }
 //adding pdf button
 async function openPDF() {
@@ -1701,19 +1702,19 @@ function insertExcelAtSavedCursor(data) {
 
 
 //list 
-    let currentListType = null;
-    let currentListElement = null;
+let currentListType = null;
+let currentListElement = null;
 
-    function toggleList(type) {
-      const textArea = document.getElementById("textArea");
-      textArea.focus();
+function toggleList(type) {
+    const textArea = document.getElementById("textArea");
+    textArea.focus();
 
-      const selection = window.getSelection();
-      if (!selection.rangeCount) return;
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
 
-      const range = selection.getRangeAt(0);
+    const range = selection.getRangeAt(0);
 
-      if (currentListType === type) {
+    if (currentListType === type) {
         const p = document.createElement("p");
         p.innerHTML = "<br>";
         currentListElement.parentNode.insertBefore(p, currentListElement.nextSibling);
@@ -1733,35 +1734,52 @@ function insertExcelAtSavedCursor(data) {
         document.getElementById("ulBtn").style.color = "black";
 
         return;
-      }
+    }
 
-      const list = document.createElement(type);
-      const li = document.createElement("li");
-      li.innerHTML = "<br>";
-      list.appendChild(li);
-      if (type === "ul") list.style.listStyleType = "circle";
+    const list = document.createElement(type);
+    const li = document.createElement("li");
+    li.innerHTML = "<br>";
+    list.appendChild(li);
+    if (type === "ul") list.style.listStyleType = "circle";
 
-      range.deleteContents();
-      range.insertNode(list);
+    range.deleteContents();
+    range.insertNode(list);
 
-      const newRange = document.createRange();
-      newRange.setStart(li, 0);
-      newRange.setEnd(li, 0);
-      selection.removeAllRanges();
-      selection.addRange(newRange);
+    const newRange = document.createRange();
+    newRange.setStart(li, 0);
+    newRange.setEnd(li, 0);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
 
-      currentListType = type;
-      currentListElement = list;
+    currentListType = type;
+    currentListElement = list;
 
-      if (type === "ol") {
+    if (type === "ol") {
         document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
         document.getElementById("olBtn").style.color = "white";
         document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
         document.getElementById("ulBtn").style.color = "black";
-      } else {
+    } else {
         document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
         document.getElementById("ulBtn").style.color = "white";
         document.getElementById("olBtn").style.backgroundColor = "#ffffff";
         document.getElementById("olBtn").style.color = "black";
-      }
     }
+}
+// tablet responsive
+const moreBtn = document.querySelector('.more-btn');
+const toolbars = document.querySelectorAll('.more-option');
+
+moreBtn.addEventListener('click', () => {
+    toolbars.forEach(toolbar => {
+        const currentDisplay = getComputedStyle(toolbar).display;
+
+        if (currentDisplay === "none") {
+            toolbar.style.display = "block";
+        } else {
+            toolbar.style.display = "none";
+        }
+    });
+});
+
+
