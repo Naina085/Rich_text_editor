@@ -13,6 +13,7 @@ let editorState = {
     isUnderline: false,
     textAlign: 'left'
 };
+let fileHandle = null;
 
 // Color Palettes
 const standardColors = ['#000000', '#434343', '#666666', '#999999', '#b7b7b7', '#cccccc', '#d9d9d9', '#efefef',
@@ -551,40 +552,86 @@ function showfont() {
     }
 }
 
-//for upload
+// for upload
 // function submitText() {
-//     // const text = document.getElementById("textArea").value;
-//     // console.log(text);
-//     const text = document.getElementById("textArea").innerHTML;
-//     console.log(text);
+//     const textArea = document.getElementById("textArea");
 //     const alertBox = document.getElementById("successAlert");
-//     alertBox.style.display = "block"
 
-//     // Step 3: Auto-hide after 3 seconds
+//     const topLevelElements = Array.from(textArea.children); // 👈 Sirf top-level children
+//     let idCounter = 1;
+
+//     topLevelElements.forEach(el => {
+//         assignIdsRecursively(el); // ✅ andar ke elements ko bhi unique ID dena
+//         console.log(el.outerHTML); // ✅ Pure outer HTML ek baar print hoga
+//     });
+
+//     // Check if plain text is empty
+//     const text = textArea.innerHTML.trim().replace(/<[^>]*>/g, '').trim();
+
+//     if (text === "") {
+//         alertBox.innerText = "Please write the text first";
+//         alertBox.style.display = "block";
+//         alertBox.style.backgroundColor = "#fc3e28";
+//     } else {
+//         alertBox.innerText = "Successfully submitted!";
+//         alertBox.style.display = "block";
+//         alertBox.style.backgroundColor = "#4ade80";
+//     }
+
 //     setTimeout(() => {
-//         alertBox.style.display = "none"
+//         alertBox.style.display = "none";
 //     }, 3000);
-// }
 
+//     // 🔁 Recursively assign IDs to every child element
+//     function assignIdsRecursively(element) {
+//         if (!element.id) {
+//             element.id = "elem-" + idCounter++;
+//         }
+//         Array.from(element.children).forEach(child => assignIdsRecursively(child));
+//     }
+// }
 function submitText() {
     const textArea = document.getElementById("textArea");
-    const text = textArea.innerHTML.trim().replace(/<[^>]*>/g, '').trim(); // Remove HTML tags and trim spaces
     const alertBox = document.getElementById("successAlert");
+
+    const topLevelElements = Array.from(textArea.children);
+    let idCounter = 1;
+
+    topLevelElements.forEach(el => {
+        assignIdsRecursively(el);
+        console.log(el.outerHTML);
+    });
+
+    const text = textArea.innerHTML.trim().replace(/<[^>]*>/g, '').trim();
 
     if (text === "") {
         alertBox.innerText = "Please write the text first";
         alertBox.style.display = "block";
-        alertBox.style.backgroundColor = "#fc3e28"; // Optional: red background for error
+        alertBox.style.backgroundColor = "#fc3e28";
+    } else if (!isSaved) {
+        alertBox.innerText = "Please save the file first";
+        alertBox.style.display = "block";
+        alertBox.style.backgroundColor = "#f2c855";
     } else {
         alertBox.innerText = "Successfully submitted!";
         alertBox.style.display = "block";
-        alertBox.style.backgroundColor = "#4ade80"; // Optional: green background for success
+        alertBox.style.backgroundColor = "#4ade80";
     }
 
     setTimeout(() => {
         alertBox.style.display = "none";
     }, 3000);
+
+    function assignIdsRecursively(element) {
+        if (!element.id) {
+            element.id = "elem-" + idCounter++;
+        }
+        Array.from(element.children).forEach(child => assignIdsRecursively(child));
+    }
 }
+
+
+
 
 //for font in menu 
 // function textsize() {
@@ -896,6 +943,122 @@ document.getElementById("textArea").addEventListener("input", () => {
 
 // Auto-create first file on load
 createNewFile();
+
+//when the user click on save 
+let isSaved = false; // ✅ Declare globally
+
+async function saveAsTextFile() {
+    const content = document.getElementById("textArea").innerText;
+
+    try {
+        // If current file already has a handle, save directly
+        if (currentFile && fileHandles[currentFile]) {
+            const writable = await fileHandles[currentFile].createWritable();
+            await writable.write(content);
+            await writable.close();
+
+            files[currentFile] = content;
+            isSaved = true;
+
+            alert('File updated successfully!');
+            return;
+        }
+
+        // Show Save As dialog (first time)
+        const fileHandle = await window.showSaveFilePicker({
+            suggestedName: currentFile || "untitled.txt",
+            types: [{
+                description: 'Text Files',
+                accept: { 'text/plain': ['.txt'] }
+            }]
+        });
+
+        const writable = await fileHandle.createWritable();
+        await writable.write(content);
+        await writable.close();
+
+        const fileName = fileHandle.name;
+
+        // Store file data
+        files[fileName] = content;
+        fileHandles[fileName] = fileHandle;
+
+        // Rename tab if it's "Untitled-X"
+        if (currentFile && currentFile.startsWith("Untitled-")) {
+            const oldIndex = openedFiles.indexOf(currentFile);
+            if (oldIndex !== -1) openedFiles[oldIndex] = fileName;
+            delete files[currentFile];
+        }
+
+        currentFile = fileName;
+        document.getElementById("currentFileName").innerText = fileName;
+        updateFileTabs();
+
+        isSaved = true;
+
+        alert('File saved successfully!');
+    } catch (err) {
+        console.error('Save cancelled or failed', err);
+        alert("Save cancelled or failed.");
+    }
+}
+
+//event listener for CTRL+S
+document.addEventListener("keydown", function (e) {
+    // Ctrl+S or Cmd+S
+    if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault(); // Prevent browser's default Save As behavior
+        saveAsTextFile();   // Call your save function
+    }
+});
+
+
+//when the user click on save as
+async function saveAs() {
+    try {
+        const content = document.getElementById("textArea").innerText;
+
+        const newHandle = await window.showSaveFilePicker({
+            suggestedName: currentFileHandle?.name || "untitled.txt",
+            types: [{
+                description: "Text Files",
+                accept: { "text/plain": [".txt"] }
+            }]
+        });
+
+        const writable = await newHandle.createWritable();
+        await writable.write(content);
+        await writable.close();
+
+        alert("File saved successfully.");
+    } catch (err) {
+        if (err.name !== 'AbortError') {
+            alert("Save As failed: " + err.message);
+        }
+    }
+}
+
+textArea.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') {
+        e.preventDefault(); // Prevent default tab behavior
+
+        // Create 4 spaces or a tab character
+        const tabSpaces = '\u00a0\u00a0\u00a0\u00a0'; // Non-breaking spaces
+
+        // Insert spaces at caret position
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        const tabNode = document.createTextNode(tabSpaces);
+        range.insertNode(tabNode);
+
+        // Move cursor after inserted spaces
+        range.setStartAfter(tabNode);
+        range.setEndAfter(tabNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+});
+
 //for subscript and superscript
 function applyFormat(tag) {
     const editor = document.getElementById("textArea");
@@ -937,46 +1100,7 @@ function applyFormat(tag) {
     selection.removeAllRanges();
     selection.addRange(newRange);
 }
-//saving the file in pc 
-async function saveAsTextFile() {
-    const content = document.getElementById("textArea").innerText;
 
-    try {
-        const fileHandle = await window.showSaveFilePicker({
-            suggestedName: currentFile || "untitled.txt",
-            types: [{
-                description: 'Text Files',
-                accept: { 'text/plain': ['.txt'] }
-            }]
-        });
-
-        const writable = await fileHandle.createWritable();
-        await writable.write(content);
-        await writable.close();
-
-        const fileName = fileHandle.name;
-
-        // Update name and references
-        files[fileName] = content;
-        fileHandles[fileName] = fileHandle;
-
-        // Remove old name if "Untitled-X"
-        if (currentFile && currentFile.startsWith("Untitled-")) {
-            const oldIndex = openedFiles.indexOf(currentFile);
-            if (oldIndex !== -1) openedFiles[oldIndex] = fileName;
-            delete files[currentFile];
-        }
-
-        currentFile = fileName;
-        document.getElementById("currentFileName").innerText = fileName;
-        updateFileTabs();
-
-        alert('File saved successfully!');
-    } catch (err) {
-        console.error('Save cancelled or failed', err);
-        alert("Save cancelled or failed.");
-    }
-}
 //wrap in the <>
 function wrapWithAngleBrackets() {
     const selection = window.getSelection();
@@ -989,16 +1113,16 @@ function wrapWithAngleBrackets() {
     const wrappedText = `<${selectedText}>`;
 
     const textNode = document.createTextNode(wrappedText);
-    range.deleteContents(); // remove selected text
-    range.insertNode(textNode); // insert new text with <>
+    range.deleteContents(); 
+    range.insertNode(textNode); 
 
-    // Optional: move cursor after inserted text
     selection.removeAllRanges();
     const newRange = document.createRange();
     newRange.setStartAfter(textNode);
     newRange.collapse(true);
     selection.addRange(newRange);
 }
+
 //heading in the menu
 function headingElement(tag) {
     const editor = document.getElementById("textArea");
@@ -1031,7 +1155,7 @@ function headingElement(tag) {
     selection.removeAllRanges();
     selection.addRange(newRange);
 }
-
+//for opening any file
 // async function openFile() {
 //   try {
 //     const [fileHandle] = await window.showOpenFilePicker({
@@ -1236,95 +1360,6 @@ tableGrid.addEventListener('click', () => {
 
 
 
-
-
-//when the user click on the save as 
-let currentFileHandle = null;
-
-// async function openFile() {
-//   try {
-//         const [fileHandle] = await window.showOpenFilePicker({
-//             types: [{
-//                 description: 'Text Files',
-//                 accept: { 'text/plain': ['.txt'] }
-//             }]
-//         });
-
-//         const file = await fileHandle.getFile();
-//         const content = await file.text();
-//         const fileName = file.name;
-
-//         // Save current file if any
-//         if (currentFile !== null) {
-//             files[currentFile] = document.getElementById("textArea").innerHTML;
-//         }
-
-//         // Set up the new file
-//         files[fileName] = content;
-//         fileHandles[fileName] = fileHandle;
-//         currentFile = fileName;
-
-//         if (!openedFiles.includes(fileName)) {
-//             openedFiles.push(fileName);
-//         }
-
-//         document.getElementById("currentFileName").innerText = fileName;
-//         document.getElementById("textArea").innerHTML = content;
-//         updateFileTabs();
-// if (err.name !== 'AbortError') {
-//   console.error('Failed:', err);
-//   alert("Save failed: " + err.message);
-// }
-
-//     } catch (err) {
-//         console.error("File open cancelled or failed", err);
-
-//     }}
-
-async function saveAs() {
-    try {
-        const content = document.getElementById("textArea").innerText;
-
-        const newHandle = await window.showSaveFilePicker({
-            suggestedName: currentFileHandle?.name || "untitled.txt",
-            types: [{
-                description: "Text Files",
-                accept: { "text/plain": [".txt"] }
-            }]
-        });
-
-        const writable = await newHandle.createWritable();
-        await writable.write(content);
-        await writable.close();
-
-        alert("File saved successfully.");
-    } catch (err) {
-        if (err.name !== 'AbortError') {
-            alert("Save As failed: " + err.message);
-        }
-    }
-}
-
-textArea.addEventListener('keydown', function (e) {
-    if (e.key === 'Tab') {
-        e.preventDefault(); // Prevent default tab behavior
-
-        // Create 4 spaces or a tab character
-        const tabSpaces = '\u00a0\u00a0\u00a0\u00a0'; // Non-breaking spaces
-
-        // Insert spaces at caret position
-        const selection = window.getSelection();
-        const range = selection.getRangeAt(0);
-        const tabNode = document.createTextNode(tabSpaces);
-        range.insertNode(tabNode);
-
-        // Move cursor after inserted spaces
-        range.setStartAfter(tabNode);
-        range.setEndAfter(tabNode);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-});
 
 function insertSpacing() {
     const textArea = document.getElementById('textArea');
@@ -1854,26 +1889,37 @@ function toggleList(type) {
   }
 
   // If a different list exists, replace it
-  if (existingList && existingList.nodeName.toLowerCase() !== type) {
-    const newList = document.createElement(type);
-    if (type === "ul") newList.style.listStyleType = "circle";
+// If a different list exists, convert only the current <li>
+if (existingList && existingList.nodeName.toLowerCase() !== type) {
+  const newList = document.createElement(type);
+  if (type === "ul") newList.style.listStyleType = "circle";
 
-    // Move all <li> children from the old list to the new list
-    while (existingList.firstChild) {
-      newList.appendChild(existingList.firstChild);
-    }
-    existingList.parentNode.replaceChild(newList, existingList);
+  existingList.insertBefore(newList, li);
+  existingList.removeChild(li);
+  newList.appendChild(li);
 
-    currentListType = type;
-    currentListElement = newList;
-
-    const newRange = document.createRange();
-    newRange.setStart(newList.firstChild, 0);
-    newRange.setEnd(newList.firstChild, 0);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
-
+  // Reinsert the new list after the original list if it has other items
+  if (existingList.nextSibling) {
+    existingList.parentNode.insertBefore(newList, existingList.nextSibling);
   } else {
+    existingList.parentNode.appendChild(newList);
+  }
+
+  // If original list becomes empty, remove it
+  if (!existingList.hasChildNodes()) {
+    existingList.remove();
+  }
+
+  currentListType = type;
+  currentListElement = newList;
+
+  const newRange = document.createRange();
+  newRange.setStart(li, 0);
+  newRange.setEnd(li, 0);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
+}
+  else {
     // If no existing list, insert new one
     const list = document.createElement(type);
     const li = document.createElement("li");
@@ -1894,18 +1940,6 @@ function toggleList(type) {
     currentListElement = list;
   }
 
-  // Update button styles
-  if (type === "ol") {
-    document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
-    document.getElementById("olBtn").style.color = "white";
-    document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-    document.getElementById("ulBtn").style.color = "black";
-  } else {
-    document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
-    document.getElementById("ulBtn").style.color = "white";
-    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-    document.getElementById("olBtn").style.color = "black";
-  }
 }
 document.getElementById("textArea").addEventListener("keydown", function (e) {
     const selection = window.getSelection();
@@ -1944,14 +1978,8 @@ document.getElementById("textArea").addEventListener("keydown", function (e) {
                 newRange.setEnd(p, 0);
                 selection.removeAllRanges();
                 selection.addRange(newRange);
-
-                currentListType = null;
-                currentListElement = null;
-                document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-                document.getElementById("olBtn").style.color = "black";
-                document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-                document.getElementById("ulBtn").style.color = "black";
-            } else {
+            }
+             else {
                 const prev = li.previousElementSibling;
                 list.removeChild(li);
                 if (prev) {
@@ -2016,6 +2044,61 @@ document.getElementById("textArea").addEventListener("keydown", function (e) {
         selection.addRange(range);
     }
 });
+    const infoBtn = document.getElementById("listInfoBtn");
+    const tooltip = document.getElementById("listTooltip");
+    const instructions = document.getElementById("listInstructions");
+
+    // Hover tooltip
+    document.getElementById("olBtn").addEventListener("mouseenter", () => {
+      tooltip.style.display = "block";
+    });
+    document.getElementById("olBtn").addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+    });
+    document.getElementById("ulBtn").addEventListener("mouseenter", () => {
+      tooltip.style.display = "block";
+    });
+    document.getElementById("ulBtn").addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+    });
+    document.addEventListener("selectionchange", () => {
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+  let node = range.startContainer;
+
+  // Traverse up to check if inside <li>
+  while (node && node.nodeName !== "LI") {
+    node = node.parentNode;
+  }
+
+  // If inside <li>, set button highlight based on list type
+  if (node) {
+    const parentList = node.parentNode;
+    const listType = parentList.nodeName.toLowerCase();
+
+    if (listType === "ul") {
+      document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
+      document.getElementById("ulBtn").style.color = "white";
+      document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+      document.getElementById("olBtn").style.color = "black";
+    } else if (listType === "ol") {
+      document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
+      document.getElementById("olBtn").style.color = "white";
+      document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+      document.getElementById("ulBtn").style.color = "black";
+    }
+  } else {
+    // Not inside any <li> → reset button styles
+    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("olBtn").style.color = "black";
+    document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("ulBtn").style.color = "black";
+  }
+});
+
+
 
 
 

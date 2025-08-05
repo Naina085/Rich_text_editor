@@ -32,7 +32,7 @@
         <div class="navbar">
             <ul>
 
-                <li onclick="MenuClick()" class="file-navbar">File
+                <li class="file-navbar">File
                     <ul class="file-menu">
                         <li onclick="createNewFile()">New file <i class="bi bi-file"></i></li>
                         <li id="openBtn" onclick="openFile()">Open <i class="bi bi-folder2-open"></i></li>
@@ -311,7 +311,7 @@
                 <div class="ollist"
                     style="border-right: 1px solid #e5e7eb;height:36px;width:40px;text-align:center;display:block;padding-right: 6px;">
                     <button class="more-option"
-                        style="border-right: 1px solid #e5e7eb;border: none;border-right: 1px solid #e5e7eb;height:36px;width:40px;background-color: white;text-align:center;border-radius: 6px;border: none;"
+                        style="position: relative;left: -4px;border-right: 1px solid #e5e7eb;border: none;border-right: 1px solid #e5e7eb;height:36px;width:40px;background-color: white;text-align:center;border-radius: 6px;border: none;"
                         id="olBtn" onclick="setTimeout(() => toggleList('ol'), 0)"><i class="bi bi-list-ol"
                             style="font-size: 15px;"></i></button>
                     <!-- Tooltip on hover -->
@@ -323,10 +323,10 @@
                 </div>
 
 
-                <div class="ullist" style="height:36px;width:40px;text-align:center;display:flex;padding-right: 6px;">
+                <div class="ullist" style="height:36px;width:40px;text-align:center;display:flex;padding-right: 6px;border-right: 1px solid #e5e7eb">
 
                     <button class="more-option"
-                        style="border: none;height:36px;width:40px;text-align:center;border-radius: 6px;border:none;background-color: white;"
+                        style="position: relative;left: -4px;;border: none;height:36px;width:40px;text-align:center;border-radius: 6px;border:none;background-color: white;"
                         id="ulBtn" onclick="setTimeout(() => toggleList('ul'), 0)"><i class="bi bi-list-ul"
                             style="font-size: 15px;"></i></button>
                     <!-- Tooltip on hover -->
@@ -340,7 +340,7 @@
                 <div class="info-container" style="position: relative; display: inline-block;">
                     <!-- ℹ️ Info Button -->
                     <button id="listInfoBtn"
-                        style="border: none; height: 36px; width: 40px; text-align: center; border-radius: 6px; background-color: #f3f4f6;">ℹ️</button>
+                        style="border: none;background-color: white !important; height: 36px; width: 30px; text-align: center; border-radius: 20px; background-color: #f3f4f6;">ℹ️</button>
 
                     <div style="display: block; position: relative;">
                         <!-- Instruction box on click -->
@@ -422,7 +422,7 @@
             <!-- Status Bar -->
             <div class="status-bar">
                 <span id="charCount">Characters: 0</span>
-                <span id="wordCount" style="margin-left: -720px;">Words: 0</span>
+                <span id="wordCount" style="    margin-left: -670px;">Words: 0</span>
                 <span class="submit-button">
                     <button onclick="submitText()" id="submitBtn">Submit</button>
                 </span>

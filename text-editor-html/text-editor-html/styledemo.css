@@ -129,8 +129,6 @@ body::before {
     align-items: center;
     gap: 8px;
     background: #fff;
-    border: 1px solid #e0e7ff;
-    border-radius: 8px;
     padding: 4px 8px;
     /* flex-wrap: wrap; */
 }
@@ -139,22 +137,21 @@ body::before {
     width: 36px;
     height: 36px;
     border: none;
+    border-right: 1px solid #e0e7ff !important;
+    border-radius: 6px;
     background: transparent;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
-    border-radius: 6px;
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    min-height: 44px;
-    min-width: 44px;
+
 }
 
-.toolbar-btn:hover,
 .toolbar-btn.active {
-    background: #e0e7ff;
-    color: #312e81;
+    background: rgb(59, 130, 246);
+    color:white;
     box-shadow: 0 2px 8px rgba(76, 81, 255, 0.08);
 }
 
@@ -177,7 +174,7 @@ body::before {
     border: 1.5px solid #6366f1;
 }
 
-.toolbar-right .toolbar-btn {
+/* .toolbar-right .toolbar-btn {
     width: 36px;
     height: 36px;
     border: none;
@@ -203,8 +200,7 @@ body::before {
 
 .toolbar-right .toolbar-btn.active {
     background-color: #3b82f6;
-    color: white;
-}
+    color: white; } */
 
 /* Font-specific styling for dropdown options */
 .font-family-select option {
@@ -833,6 +829,7 @@ hr {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     border-radius: 6px;
     top: calc(100% + 5px);
+    top: 18px;
 }
 
 .color-picker-palette:hover .color-picker-dropdown {
@@ -1654,7 +1651,6 @@ canvas {
 }
 
 /* Focus styles for keyboard navigation */
-.toolbar-btn:focus,
 .navbar li:focus,
 .tab:focus,
 .font-family-select:focus,
@@ -1779,4 +1775,9 @@ canvas {
 
 .info-container:hover #listInstructions {
     display: block;
+}
+.text-area ol,
+.text-area ul {
+  margin: 0;
+  padding-left: 1.2em; /* Optional: Controls bullet/number spacing */
 }
