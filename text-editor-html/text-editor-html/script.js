@@ -456,23 +456,33 @@ function handleFontSizeChange() {
 
 // Toggle text formatting
 function toggleFormat(format) {
+    let buttonId = '';
     switch (format) {
         case 'bold':
             editorState.isBold = !editorState.isBold;
+            buttonId = 'boldBtn';
             break;
         case 'italic':
             editorState.isItalic = !editorState.isItalic;
+            buttonId = 'italicBtn';
             break;
         case 'underline':
             editorState.isUnderline = !editorState.isUnderline;
+            buttonId = 'underlineBtn';
             break;
     }
 
-    // Apply formatting using execCommand
+    // Toggle visual active state
+    const button = document.getElementById(buttonId);
+    button.classList.toggle('active');
+
+    // Apply formatting
     document.execCommand(format, false, null);
 
+    // Optional: update other UI elements if needed
     updateButtonStates();
 }
+
 
 
 function toggleFormat(format) {
@@ -542,17 +552,37 @@ function showfont() {
 }
 
 //for upload
-function submitText() {
-    // const text = document.getElementById("textArea").value;
-    // console.log(text);
-    const text = document.getElementById("textArea").innerHTML;
-    console.log(text);
-    const alertBox = document.getElementById("successAlert");
-    alertBox.style.display = "block"
+// function submitText() {
+//     // const text = document.getElementById("textArea").value;
+//     // console.log(text);
+//     const text = document.getElementById("textArea").innerHTML;
+//     console.log(text);
+//     const alertBox = document.getElementById("successAlert");
+//     alertBox.style.display = "block"
 
-    // Step 3: Auto-hide after 3 seconds
+//     // Step 3: Auto-hide after 3 seconds
+//     setTimeout(() => {
+//         alertBox.style.display = "none"
+//     }, 3000);
+// }
+
+function submitText() {
+    const textArea = document.getElementById("textArea");
+    const text = textArea.innerHTML.trim().replace(/<[^>]*>/g, '').trim(); // Remove HTML tags and trim spaces
+    const alertBox = document.getElementById("successAlert");
+
+    if (text === "") {
+        alertBox.innerText = "Please write the text first";
+        alertBox.style.display = "block";
+        alertBox.style.backgroundColor = "#fc3e28"; // Optional: red background for error
+    } else {
+        alertBox.innerText = "Successfully submitted!";
+        alertBox.style.display = "block";
+        alertBox.style.backgroundColor = "#4ade80"; // Optional: green background for success
+    }
+
     setTimeout(() => {
-        alertBox.style.display = "none"
+        alertBox.style.display = "none";
     }, 3000);
 }
 
@@ -1702,40 +1732,149 @@ function insertExcelAtSavedCursor(data) {
 
 
 //list 
+// let currentListType = null;
+// let currentListElement = null;
+
+// function toggleList(type) {
+//     const textArea = document.getElementById("textArea");
+//     textArea.focus();
+
+//     const selection = window.getSelection();
+//     if (!selection.rangeCount) return;
+
+//     const range = selection.getRangeAt(0);
+
+//     if (currentListType === type) {
+//         const p = document.createElement("p");
+//         p.innerHTML = "<br>";
+//         currentListElement.parentNode.insertBefore(p, currentListElement.nextSibling);
+
+//         const newRange = document.createRange();
+//         newRange.setStart(p, 0);
+//         newRange.setEnd(p, 0);
+//         selection.removeAllRanges();
+//         selection.addRange(newRange);
+
+//         currentListType = null;
+//         currentListElement = null;
+
+//         document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+//         document.getElementById("olBtn").style.color = "black";
+//         document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+//         document.getElementById("ulBtn").style.color = "black";
+
+//         return;
+//     }
+
+//     const list = document.createElement(type);
+//     const li = document.createElement("li");
+//     li.innerHTML = "<br>";
+//     list.appendChild(li);
+//     if (type === "ul") list.style.listStyleType = "circle";
+
+//     range.deleteContents();
+//     range.insertNode(list);
+
+//     const newRange = document.createRange();
+//     newRange.setStart(li, 0);
+//     newRange.setEnd(li, 0);
+//     selection.removeAllRanges();
+//     selection.addRange(newRange);
+
+//     currentListType = type;
+//     currentListElement = list;
+
+//     if (type === "ol") {
+//         document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
+//         document.getElementById("olBtn").style.color = "white";
+//         document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+//         document.getElementById("ulBtn").style.color = "black";
+//     } else {
+//         document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
+//         document.getElementById("ulBtn").style.color = "white";
+//         document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+//         document.getElementById("olBtn").style.color = "black";
+//     }
+// }
 let currentListType = null;
 let currentListElement = null;
 
 function toggleList(type) {
-    const textArea = document.getElementById("textArea");
-    textArea.focus();
+  document.getElementById("listTooltip").style.display = "none";
 
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
+  const textArea = document.getElementById("textArea");
+  textArea.focus();
 
-    const range = selection.getRangeAt(0);
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
 
-    if (currentListType === type) {
-        const p = document.createElement("p");
-        p.innerHTML = "<br>";
-        currentListElement.parentNode.insertBefore(p, currentListElement.nextSibling);
+  const range = selection.getRangeAt(0);
+  const container = range.startContainer;
 
-        const newRange = document.createRange();
-        newRange.setStart(p, 0);
-        newRange.setEnd(p, 0);
-        selection.removeAllRanges();
-        selection.addRange(newRange);
+  // Check if inside a list already
+  let li = container;
+  while (li && li.nodeName !== "LI") {
+    li = li.parentNode;
+  }
 
-        currentListType = null;
-        currentListElement = null;
+  let existingList = null;
+  if (li) {
+    existingList = li.parentNode;
+  }
 
-        document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-        document.getElementById("olBtn").style.color = "black";
-        document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-        document.getElementById("ulBtn").style.color = "black";
+  // If the list is already the same type, toggle off
+  if (existingList && existingList.nodeName.toLowerCase() === type) {
+    const spacer = document.createElement("div");
+    spacer.innerHTML = "<br>";
+    spacer.setAttribute("contenteditable", "false");
+    spacer.style.height = "1px";
+    spacer.style.userSelect = "none";
 
-        return;
+    existingList.parentNode.insertBefore(spacer, existingList.nextSibling);
+
+    const p = document.createElement("p");
+    p.innerHTML = "<br>";
+    spacer.parentNode.insertBefore(p, spacer.nextSibling);
+
+    const newRange = document.createRange();
+    newRange.setStart(p, 0);
+    newRange.setEnd(p, 0);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+
+    currentListType = null;
+    currentListElement = null;
+
+    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("olBtn").style.color = "black";
+    document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("ulBtn").style.color = "black";
+
+    return;
+  }
+
+  // If a different list exists, replace it
+  if (existingList && existingList.nodeName.toLowerCase() !== type) {
+    const newList = document.createElement(type);
+    if (type === "ul") newList.style.listStyleType = "circle";
+
+    // Move all <li> children from the old list to the new list
+    while (existingList.firstChild) {
+      newList.appendChild(existingList.firstChild);
     }
+    existingList.parentNode.replaceChild(newList, existingList);
 
+    currentListType = type;
+    currentListElement = newList;
+
+    const newRange = document.createRange();
+    newRange.setStart(newList.firstChild, 0);
+    newRange.setEnd(newList.firstChild, 0);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+
+  } else {
+    // If no existing list, insert new one
     const list = document.createElement(type);
     const li = document.createElement("li");
     li.innerHTML = "<br>";
@@ -1753,33 +1892,152 @@ function toggleList(type) {
 
     currentListType = type;
     currentListElement = list;
+  }
 
-    if (type === "ol") {
-        document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
-        document.getElementById("olBtn").style.color = "white";
-        document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-        document.getElementById("ulBtn").style.color = "black";
-    } else {
-        document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
-        document.getElementById("ulBtn").style.color = "white";
-        document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-        document.getElementById("olBtn").style.color = "black";
-    }
+  // Update button styles
+  if (type === "ol") {
+    document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
+    document.getElementById("olBtn").style.color = "white";
+    document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("ulBtn").style.color = "black";
+  } else {
+    document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
+    document.getElementById("ulBtn").style.color = "white";
+    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("olBtn").style.color = "black";
+  }
 }
-// tablet responsive
-const moreBtn = document.querySelector('.more-btn');
-const toolbars = document.querySelectorAll('.more-option');
+document.getElementById("textArea").addEventListener("keydown", function (e) {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
 
-moreBtn.addEventListener('click', () => {
-    toolbars.forEach(toolbar => {
-        const currentDisplay = getComputedStyle(toolbar).display;
+    const range = selection.getRangeAt(0);
+    const container = range.startContainer;
 
-        if (currentDisplay === "none") {
-            toolbar.style.display = "block";
-        } else {
-            toolbar.style.display = "none";
+    // Find nearest li element
+    let li = container;
+    while (li && li.nodeName !== "LI") {
+        li = li.parentNode;
+    }
+
+    // --- CASE 1: Inside a list item ---
+    if (li) {
+        const list = li.parentNode;
+        const grandParent = list.parentNode;
+
+        // Handle Backspace in empty <li>
+        if (
+            e.key === "Backspace" &&
+            li.textContent.trim() === "" &&
+            range.startOffset === 0
+        ) {
+            e.preventDefault();
+
+            if (list.children.length === 1) {
+                const p = document.createElement("p");
+                p.innerHTML = "<br>";
+                grandParent.insertBefore(p, list.nextSibling);
+                list.remove();
+
+                const newRange = document.createRange();
+                newRange.setStart(p, 0);
+                newRange.setEnd(p, 0);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+
+                currentListType = null;
+                currentListElement = null;
+                document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+                document.getElementById("olBtn").style.color = "black";
+                document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+                document.getElementById("ulBtn").style.color = "black";
+            } else {
+                const prev = li.previousElementSibling;
+                list.removeChild(li);
+                if (prev) {
+                    const newRange = document.createRange();
+                    newRange.selectNodeContents(prev);
+                    newRange.collapse(false);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+            }
         }
-    });
+
+        // Handle Tab / Shift+Tab for nesting and outdenting
+        if (e.key === "Tab") {
+            e.preventDefault();
+
+            const previousLi = li.previousElementSibling;
+            if (e.shiftKey) {
+                // Shift+Tab → Outdent
+                if (list.parentNode.nodeName === "LI") {
+                    const parentLi = list.parentNode;
+                    const parentList = parentLi.parentNode;
+
+                    parentList.insertBefore(li, parentLi.nextSibling);
+
+                    const newRange = document.createRange();
+                    newRange.setStart(li, 0);
+                    newRange.setEnd(li, 0);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+            } else {
+                // Tab → Indent
+                if (previousLi) {
+                    let subList = previousLi.querySelector("ol, ul");
+                    if (!subList) {
+                        subList = document.createElement(list.nodeName);
+                        subList.setAttribute("style", "margin-left: 20px;");
+                        previousLi.appendChild(subList);
+                    }
+                    subList.appendChild(li);
+
+                    const newRange = document.createRange();
+                    newRange.setStart(li, 0);
+                    newRange.setEnd(li, 0);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+            }
+        }
+
+        // --- CASE 2: Not inside a list ---
+    } else if (e.key === "Tab") {
+        e.preventDefault();
+        const tabNode = document.createTextNode("\u00A0\u00A0\u00A0\u00A0"); // 4 non-breaking spaces
+        range.insertNode(tabNode);
+
+        // Move caret after inserted spaces
+        range.setStartAfter(tabNode);
+        range.setEndAfter(tabNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
 });
+
+
+
+
+
+
+
+
+// tablet responsive
+// const moreBtn = document.querySelector('.more-btn');
+// const toolbars = document.querySelectorAll('.more-option');
+
+// moreBtn.addEventListener('click', () => {
+//     toolbars.forEach(toolbar => {
+//         const currentDisplay = getComputedStyle(toolbar).display;
+
+//         if (currentDisplay === "none") {
+//             toolbar.style.display = "block";
+//         } else {
+//             toolbar.style.display = "none";
+//         }
+//     });
+// });
 
 

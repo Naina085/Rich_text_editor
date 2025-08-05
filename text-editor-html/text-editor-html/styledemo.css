@@ -132,7 +132,7 @@ body::before {
     border: 1px solid #e0e7ff;
     border-radius: 8px;
     padding: 4px 8px;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
 }
 
 .toolbar-btn {
@@ -1061,6 +1061,10 @@ canvas {
     #tableGrid {
         left: 50px;
     }
+
+    .more-btn {
+        display: none;
+    }
 }
 
 /* Tablet (768px - 1023px) */
@@ -1704,4 +1708,75 @@ canvas {
     .text-area-container {
         padding: 0;
     }
+}
+
+/* list button */
+/* #listTooltip {
+    width: fit-content;
+}
+
+#listInstructions {
+    background: rgb(220, 222, 220);
+    opacity: 0.7;
+    color: rgb(17, 17, 17);
+    padding: 8px 10px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 6px;
+    font-size: 13px;
+    width: 240px;
+    display: none;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 6px;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    z-index: 10;
+}
+
+.info-container:hover #listInstructions {
+    display: block;
+}
+
+
+.unorder-list:hover #listInstructions {
+    display: block; 
+ } */
+#listTooltip {
+    min-width: 276px !important;
+    height: auto;
+    position: relative;
+    top: 0px;
+    left: -69px;
+    background:#ededed;
+    color:black;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: none;
+    z-index: 99;
+    opacity: 0.6;
+    border: black;
+    border-radius: 6px;
+}
+
+#listInstructions {
+    background: rgb(220, 222, 220);
+    opacity: 0.7;
+    color: rgb(17, 17, 17);
+    padding: 8px 10px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 6px;
+    font-size: 13px;
+    width: 240px;
+    display: none;
+    margin-top: -27px;
+    margin-left: -105px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 6px;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    z-index: 10;
+}
+
+.info-container:hover #listInstructions {
+    display: block;
 }

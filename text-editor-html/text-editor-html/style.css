@@ -412,6 +412,14 @@
             color: white;
         }
 
+        /* active waala */
+        .toolbar-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+}
+
+
         /* Font-specific styling for dropdown options */
         .font-family-select option {
             padding: 8px;
@@ -1499,3 +1507,32 @@
                 padding: 6px 2vw 0 2vw;
             }
         }
+/* list button */
+    #listTooltip {
+      width: fit-content;
+    }
+
+    #listInstructions {
+      background: rgb(220, 222, 220);
+      opacity: 0.7;
+      color: rgb(17, 17, 17);
+      padding: 8px 10px;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 6px;
+      font-size: 13px;
+      width: 240px;
+      display: none;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 6px;
+      position: absolute;
+  top: 30px;
+  left: 0;
+  z-index: 10;
+    }
+
+    .info-container:hover #listInstructions {
+  display: block;
+}
+
+
+
+        

@@ -150,7 +150,7 @@
         <!-- Toolbar -->
         <div class="toolbar">
             <!-- Left Section -->
-            <div class="toolbar-left">
+            <div class="toolbar-left font-toolbar">
                 <!-- Undo/Redo -->
                 <button class="toolbar-btn" id="undoBtn" onclick="handleUndo()" title="Undo"
                     style="border-right: 1px solid #e5e7eb;">
@@ -277,20 +277,22 @@
                 <!-- Color Controls -->
                 <div class="color-picker-palette" id="textPickerContainer"
                     style="border-right: 1px solid #e5e7eb;height:36px;width:40px;text-align:center;padding-top:5px;">
-                    <button id="textColorBtn" style="border: none;"> <i class="bi bi-fonts" id="textColorIcon"
-                            style="color: #000000;"></i></button>
+                    <button id="textColorBtn" style="border: none;background-color: white;"> <i class="bi bi-fonts"
+                            id="textColorIcon" style="color: #000000;"></i></button>
                     <div class="color-picker-dropdown" id="textColorPicker" style="margin-top: 10px;"></div>
                 </div>
 
                 <div class="color-picker-palette" id="backgroundPickerContainer"
                     style="border-right: 1px solid #e5e7eb;height:36px;width:40px;text-align:center;padding-top:5px;">
-                    <button id="backgroundColorBtn" style="border: none;"><i class="bi bi-paint-bucket"></i></button>
+                    <button id="backgroundColorBtn" style="border: none;background-color: white;"><i
+                            class="bi bi-paint-bucket"></i></button>
                     <div class="color-picker-dropdown" id="backgroundColorPicker" style="margin-top: 10px;"></div>
                 </div>
                 <!-- tablet reponsive -->
                 <div class="more-option"
                     style="border-right: 1px solid #e5e7eb;height:36px;width:40px;text-align:center;padding-top:5px;">
-                    <button onclick="insertSpacing()" style="border: none;margin-right: 10px;margin-left: 10px;"><i
+                    <button onclick="insertSpacing()"
+                        style="border: none;margin-right: 10px;margin-left: 10px;background-color: white;"><i
                             class="bi bi-indent" style="font-size: 15px;"></i></button>
                 </div>
                 <!-- <div class="ollist"
@@ -306,17 +308,53 @@
                             style="font-size: 15px;"></i></button>
                 </div> -->
                 <!-- extra -->
-                <button class="more-option"
-                    style="border-right: 1px solid #e5e7eb;border: none;padding-left: 10px;border-right: 1px solid #e5e7eb;height:36px;width:40px;text-align:center;padding-top:9px; border-radius: 6px;"
-                    id="olBtn" onclick="setTimeout(() => toggleList('ol'), 0)"><i class="bi bi-list-ol"
-                        style="font-size: 15px;"></i></button>
+                <div class="ollist"
+                    style="border-right: 1px solid #e5e7eb;height:36px;width:40px;text-align:center;display:block;padding-right: 6px;">
+                    <button class="more-option"
+                        style="border-right: 1px solid #e5e7eb;border: none;border-right: 1px solid #e5e7eb;height:36px;width:40px;background-color: white;text-align:center;border-radius: 6px;border: none;"
+                        id="olBtn" onclick="setTimeout(() => toggleList('ol'), 0)"><i class="bi bi-list-ol"
+                            style="font-size: 15px;"></i></button>
+                    <!-- Tooltip on hover -->
+                    <div id="listTooltip">
+                        How to use nested list(Hover the Info Button)
+                    </div>
 
 
+                </div>
 
-                <button class="more-option"
-                    style="border: none;padding-left: 10px;height:36px;width:40px;text-align:center;padding-top:9px; border-radius: 6px;"
-                    id="ulBtn" onclick="setTimeout(() => toggleList('ul'), 0)"><i class="bi bi-list-ul"
-                        style="font-size: 15px;"></i></button>
+
+                <div class="ullist" style="height:36px;width:40px;text-align:center;display:flex;padding-right: 6px;">
+
+                    <button class="more-option"
+                        style="border: none;height:36px;width:40px;text-align:center;border-radius: 6px;border:none;background-color: white;"
+                        id="ulBtn" onclick="setTimeout(() => toggleList('ul'), 0)"><i class="bi bi-list-ul"
+                            style="font-size: 15px;"></i></button>
+                    <!-- Tooltip on hover -->
+                    <!-- <div id="listTooltip"
+                    style="top: -28px; left: 0; background: #111; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: none;">
+                    How to use nested list(Hover the Info Button)2
+                </div> -->
+
+                </div>
+                <!-- ℹ️ Info Button -->
+                <div class="info-container" style="position: relative; display: inline-block;">
+                    <!-- ℹ️ Info Button -->
+                    <button id="listInfoBtn"
+                        style="border: none; height: 36px; width: 40px; text-align: center; border-radius: 6px; background-color: #f3f4f6;">ℹ️</button>
+
+                    <div style="display: block; position: relative;">
+                        <!-- Instruction box on click -->
+                        <div id="listInstructions">
+                            <strong>📝 Nested List Guide</strong><br><br>
+                            • <kbd>Tab</kbd> → Indent / Nest list<br>
+                            • <kbd>Shift</kbd> + <kbd>Tab</kbd> → Outdent<br>
+                            • <kbd>Backspace</kbd> → Remove empty item
+                        </div>
+                    </div>
+
+                </div>
+
+
 
 
 
@@ -340,27 +378,27 @@
 
             <div class="toolbar-right">
                 <!-- Text Formatting -->
-                <button class="more-option" class="toolbar-btn" id="boldBtn" onclick="toggleFormat('bold')"
+                <button class="toolbar-btn more-option" id="boldBtn" onclick="toggleFormat('bold')"
                     title="Bold"><strong>B</strong></button>
-                <button class="more-option" class="toolbar-btn" id="italicBtn" onclick="toggleFormat('italic')"
+                <button class="toolbar-btn more-option" id="italicBtn" onclick="toggleFormat('italic')"
                     title="Italic"><em>I</em></button>
-                <button class="more-option" class="toolbar-btn" id="underlineBtn" onclick="toggleFormat('underline')"
+                <button class="toolbar-btn more-option" id="underlineBtn" onclick="toggleFormat('underline')"
                     title="Underline"><u>U</u></button>
 
                 <!-- Text Alignment -->
-                <button class="more-option" class="toolbar-btn active" id="alignLeftBtn" onclick="setAlignment('left')"
+                <button class="more-option toolbar-btn active" id="alignLeftBtn" onclick="setAlignment('left')"
                     title="Align Left">
                     <i class="bi bi-text-left"></i>
                 </button>
-                <button class="more-option" class="toolbar-btn" id="alignCenterBtn" onclick="setAlignment('center')"
+                <button class="more-option toolbar-btn" id="alignCenterBtn" onclick="setAlignment('center')"
                     title="Align Center">
                     <i class="bi bi-text-center"></i>
                 </button>
-                <button class="more-option" class="toolbar-btn" id="alignRightBtn" onclick="setAlignment('right')"
+                <button class="more-option toolbar-btn" id="alignRightBtn" onclick="setAlignment('right')"
                     title="Align Right">
                     <i class="bi bi-text-right"></i>
                 </button>
-                <button class="more-option" class="toolbar-btn" id="alignJustifyBtn" onclick="setAlignment('justify')"
+                <button class="more-option toolbar-btn" id="alignJustifyBtn" onclick="setAlignment('justify')"
                     title="Justify">
                     <i class="bi bi-justify"></i>
                 </button>
