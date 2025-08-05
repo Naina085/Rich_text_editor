@@ -83,6 +83,7 @@ body::before {
     border-radius: 18px 18px 0 0;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    overflow: visible;
 }
 
 .navbar>ul {
@@ -1350,7 +1351,7 @@ canvas {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 80%;
+        width: auto;
         max-width: 280px;
         border-radius: 8px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -1549,7 +1550,7 @@ canvas {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 90%;
+        width: auto;
         max-width: 260px;
         border-radius: 6px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -1780,4 +1781,54 @@ canvas {
 .text-area ul {
   margin: 0;
   padding-left: 1.2em; /* Optional: Controls bullet/number spacing */
+}
+
+@media screen and (min-width: 1330px) {
+    .navbar ul li ul
+    {
+        margin-top: 30px;
+    }
+}
+
+/* responsive */
+.mobileView , .Hide-show
+{
+    display: none;
+}
+.mobileView
+{
+    display: none;
+}
+.more-btn {
+    background-color: #0e3477;
+    color: black;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .more-btn:hover {
+    background-color: #09244f;
+  }
+
+  #moreToolbarContent button {
+    margin: 4px;
+    padding: 6px;
+    border-radius: 6px;
+  }
+
+@media screen and (max-width: 600px) {
+.hideInMobile
+{
+    display: none !important;
+}
+.right-more-option
+{
+    display: none;
+}
+.Hide-show
+{
+    display: block;
+}
 }

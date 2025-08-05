@@ -302,9 +302,8 @@
                 </div>
                 <div class="Hide-show"
                     style="border-right: 1px solid #e5e7eb; height:36px;width:40px;text-align:center;padding-top:5px;">
-                    <button id="moreToggleBtn" class="more-btn" style="border: none;background-color: white;"
-                        onclick="toggleMoreOptions()">▼</button>
-
+                    <button id="moreToggleBtn" class="more-btn" style="border: none;background-color: white;" onclick="toggleMoreOptions()">▼</button>
+                    
                 </div>
                 <!-- tablet reponsive -->
                 <div class="more-option hideInMobile"
@@ -395,64 +394,63 @@
             <div class="toolbar-right" style="display: flex; align-items: center; flex-wrap: wrap; position: relative;">
 
                 <!-- MORE / LESS BUTTON -->
+                
+                    <!-- Mobile Spacing -->
+                    <div class="mobileView more-option"  style="margin: 5px;">
+                        <button onclick="insertSpacing()" class="toolbar-btn" style="border: none; background-color: white;"><i
+                                class="bi bi-indent" style="font-size: 15px;"></i></button>
+                    </div>
 
-                <!-- Mobile Spacing -->
-                <div class="mobileView more-option right-more-option" style="margin: 5px;">
-                    <button onclick="insertSpacing()" class="toolbar-btn"
-                        style="border: none; background-color: white;"><i class="bi bi-indent"
-                            style="font-size: 15px;"></i></button>
-                </div>
+                    <!-- Ordered List -->
+                    <div class="ollist more-option mobileView" style="margin: 5px;">
+                        <button id="olBtn" class="toolbar-btn" onclick="setTimeout(() => toggleList('ol'), 0)"
+                            style="border: none; background-color: white;"><i class="bi bi-list-ol"
+                                style="font-size: 15px;"></i></button>
+                    </div>
 
-                <!-- Ordered List -->
-                <div class="ollist more-option mobileView right-more-option" style="margin: 5px;">
-                    <button id="olBtn" class="toolbar-btn" onclick="setTimeout(() => toggleList('ol'), 0)"
-                        style="border: none; background-color: white;"><i class="bi bi-list-ol"
-                            style="font-size: 15px;"></i></button>
-                </div>
+                    <!-- Unordered List -->
+                    <div class="ullist more-option mobileView" style="margin: 5px;">
+                        <button id="ulBtn" class="toolbar-btn" onclick="setTimeout(() => toggleList('ul'), 0)"
+                            style="border: none; background-color: white;"><i class="bi bi-list-ul"
+                                style="font-size: 15px;"></i></button>
+                    </div>
 
-                <!-- Unordered List -->
-                <div class="ullist more-option mobileView right-more-option" style="margin: 5px;">
-                    <button id="ulBtn" class="toolbar-btn" onclick="setTimeout(() => toggleList('ul'), 0)"
-                        style="border: none; background-color: white;"><i class="bi bi-list-ul"
-                            style="font-size: 15px;"></i></button>
-                </div>
-
-                <!-- Info Button -->
-                <div class="info-container more-option mobileView right-more-option" style="margin: 5px;">
-                    <button id="listInfoBtn" class="toolbar-btn"
-                        style="border: none; background-color: #f3f4f6; height: 36px; width: 30px; text-align: center; border-radius: 20px;">ℹ️</button>
-                </div>
+                    <!-- Info Button -->
+                    <div class="info-container more-option mobileView" style="margin: 5px;">
+                        <button id="listInfoBtn" class="toolbar-btn"
+                            style="border: none; background-color: #f3f4f6; height: 36px; width: 30px; text-align: center; border-radius: 20px;">ℹ️</button>
+                    </div>
                 <!-- Example Formatting Options -->
-                <button class="toolbar-btn more-option right-more-option" id="boldBtn" onclick="toggleFormat('bold')" title="Bold">
+                <button class="toolbar-btn more-option" id="boldBtn" onclick="toggleFormat('bold')" title="Bold">
                     <strong>B</strong>
                 </button>
-                <button class="toolbar-btn more-option right-more-option" id="italicBtn" onclick="toggleFormat('italic')" title="Italic">
+                <button class="toolbar-btn more-option" id="italicBtn" onclick="toggleFormat('italic')" title="Italic">
                     <em>I</em>
                 </button>
-                <button class="toolbar-btn more-option right-more-option" id="underlineBtn" onclick="toggleFormat('underline')"
+                <button class="toolbar-btn more-option" id="underlineBtn" onclick="toggleFormat('underline')"
                     title="Underline">
                     <u>U</u>
                 </button>
-                <button class="toolbar-btn more-option right-more-option" id="alignLeftBtn" onclick="setAlignment('left')"
+                <button class="toolbar-btn more-option" id="alignLeftBtn" onclick="setAlignment('left')"
                     title="Align Left">
                     <i class="bi bi-text-left"></i>
                 </button>
-                <button class="toolbar-btn more-option right-more-option" id="alignCenterBtn" onclick="setAlignment('center')"
+                <button class="toolbar-btn more-option" id="alignCenterBtn" onclick="setAlignment('center')"
                     title="Align Center">
                     <i class="bi bi-text-center"></i>
                 </button>
-                <button class="toolbar-btn more-option right-more-option" id="alignRightBtn" onclick="setAlignment('right')"
+                <button class="toolbar-btn more-option" id="alignRightBtn" onclick="setAlignment('right')"
                     title="Align Right">
                     <i class="bi bi-text-right"></i>
                 </button>
-                <button class="toolbar-btn more-option right-more-option" id="alignJustifyBtn" onclick="setAlignment('justify')"
+                <button class="toolbar-btn more-option" id="alignJustifyBtn" onclick="setAlignment('justify')"
                     title="Justify">
                     <i class="bi bi-justify"></i>
                 </button>
 
                 <!-- Add your other .more-option buttons here -->
             </div>
-
+           
         </div>
 
         <!-- Text Area -->
@@ -561,24 +559,24 @@
                 blurOverlay.style.display = 'none';
             });
         });
-        function toggleMoreOptions() {
-            const moreOptions = document.querySelectorAll('.right-more-option');
-            const toggleBtn = document.getElementById('moreToggleBtn');
-            const isHidden = moreOptions[0]?.style.display === 'none' || !moreOptions[0]?.style.display;
+  function toggleMoreOptions() {
+    const moreOptions = document.querySelectorAll('.more-option');
+    const toggleBtn = document.getElementById('moreToggleBtn');
+    const isHidden = moreOptions[0]?.style.display === 'none' || !moreOptions[0]?.style.display;
 
-            moreOptions.forEach(el => {
-                el.style.display = isHidden ? 'inline-flex' : 'none';
-            });
+    moreOptions.forEach(el => {
+      el.style.display = isHidden ? 'inline-flex' : 'none';
+    });
 
-            toggleBtn.innerText = isHidden ? ' ▲ ' : ' ▼ ';
-        }
+    toggleBtn.innerText = isHidden ? ' ▲ ' : ' ▼ ';
+  }
 
-        // By default, hide all .right-more-option buttons initially
-        // window.addEventListener('DOMContentLoaded', () => {
-        //     const moreOptions = document.querySelectorAll('.right-more-option');
-        //     moreOptions.forEach(el => el.style.display = 'none');
-        // });
-    </script>
+  // By default, hide all .more-option buttons initially
+  window.addEventListener('DOMContentLoaded', () => {
+    const moreOptions = document.querySelectorAll('.more-option');
+    moreOptions.forEach(el => el.style.display = 'none');
+  });
+</script>
 
 
 
