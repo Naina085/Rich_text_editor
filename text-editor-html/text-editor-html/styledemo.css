@@ -596,14 +596,14 @@ body::before {
 
 .file-navbar-5 {
     position: relative;
-    cursor: pointer;
+    /* width:100px; */
     /* z-index: 99; */
 }
 
-.file-navbar-5:hover .file-menu {
+/* .file-navbar-5:hover .file-menu {
     display: block;
     width: 150px;
-}
+} */
 
 .fomenu {
     position: absolute;

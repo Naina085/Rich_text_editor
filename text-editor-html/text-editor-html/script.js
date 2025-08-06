@@ -533,21 +533,26 @@ function toggleFormat(format) {
 //         menu.style.display = "block";
 //     }
 // }
-function MenuClick5() {
-    const menu = document.getElementsByClassName('file-menu')[3];
-    if (menu.style.display == "block") {
-        menu.style.display = "none";
-    }
-    else {
-        menu.style.display = "block";
-    }
-}
-// document.getElementsByClassName("file-navbar-5"),addEventListener("mouseenter",() =>{
-//     document.getElementById("formatbutton").style.display="block";
-// })
-// document.getElementsByClassName("file-navbar-5"),addEventListener("mouseleave",() =>{
-//     document.getElementById("formatbutton").style.display="none";
-// })
+
+// function MenuClick5() {
+//     const menu = document.getElementsByClassName('file-menu')[3];
+//     if (menu.style.display == "block") {
+//         menu.style.display = "none";
+//     }
+//     else {
+//         menu.style.display = "block";
+//     }
+// }
+const naina = document.getElementsByClassName('file-menu')[3];
+document.getElementsByClassName("file-navbar-5")[0].addEventListener("mouseenter", () =>{
+    naina.style.display ="block";
+});
+document.getElementsByClassName("file-navbar-5")[0].addEventListener("mouseleave", () =>{
+    naina.style.display ="none";
+});
+
+
+
 
 function showfont() {
     const show = document.getElementsByClassName('fomenu')[0];
