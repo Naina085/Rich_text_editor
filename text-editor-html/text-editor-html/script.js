@@ -560,43 +560,6 @@ function showfont() {
 }
 
 // for upload
-// function submitText() {
-//     const textArea = document.getElementById("textArea");
-//     const alertBox = document.getElementById("successAlert");
-
-//     const topLevelElements = Array.from(textArea.children); // 👈 Sirf top-level children
-//     let idCounter = 1;
-
-//     topLevelElements.forEach(el => {
-//         assignIdsRecursively(el); // ✅ andar ke elements ko bhi unique ID dena
-//         console.log(el.outerHTML); // ✅ Pure outer HTML ek baar print hoga
-//     });
-
-//     // Check if plain text is empty
-//     const text = textArea.innerHTML.trim().replace(/<[^>]*>/g, '').trim();
-
-//     if (text === "") {
-//         alertBox.innerText = "Please write the text first";
-//         alertBox.style.display = "block";
-//         alertBox.style.backgroundColor = "#fc3e28";
-//     } else {
-//         alertBox.innerText = "Successfully submitted!";
-//         alertBox.style.display = "block";
-//         alertBox.style.backgroundColor = "#4ade80";
-//     }
-
-//     setTimeout(() => {
-//         alertBox.style.display = "none";
-//     }, 3000);
-
-//     // 🔁 Recursively assign IDs to every child element
-//     function assignIdsRecursively(element) {
-//         if (!element.id) {
-//             element.id = "elem-" + idCounter++;
-//         }
-//         Array.from(element.children).forEach(child => assignIdsRecursively(child));
-//     }
-// }
 function submitText() {
     const textArea = document.getElementById("textArea");
     const alertBox = document.getElementById("successAlert");
@@ -813,7 +776,7 @@ let files = {};
 let currentFile = null;
 let fileCounter = 1;
 let openedFiles = [];
-let fileContents = {};
+// let fileContents = {};
 
 function createNewFile() {
     // Save current file if any
@@ -911,14 +874,14 @@ function updateFileTabs() {
             const index = openedFiles.indexOf(fileName);
             if (index !== -1) {
                 openedFiles.splice(index, 1);
-                delete fileContents[fileName];
+                delete files[fileName];
             }
 
             // If the closed file was active, switch to last file or clear
             if (currentFile === fileName) {
                 currentFile = openedFiles[openedFiles.length - 1] || null;
                 if (currentFile) {
-                    const newContent = fileContents[currentFile];
+                    const newContent = files[currentFile];
                     document.getElementById("currentFileName").textContent = currentFile;
                     document.getElementById("textArea").innerHTML = marked.parse(newContent);
                 } else {
@@ -1201,13 +1164,13 @@ function headingElement(tag) {
 //   }
 // }
 if (currentFile) {
-    fileContents[currentFile] = document.getElementById("textArea").innerHTML;
+    files[currentFile] = document.getElementById("textArea").innerHTML;
 }
 async function openFile(fileNameToOpen = null) {
     try {
         // ✅ Save current editor content before switching
         if (currentFile) {
-            fileContents[currentFile] = document.getElementById("textArea").innerHTML;
+            files[currentFile] = document.getElementById("textArea").innerHTML;
         }
 
         let fileName;
@@ -1216,7 +1179,7 @@ async function openFile(fileNameToOpen = null) {
         if (fileNameToOpen) {
             // ✅ Switch to existing file/tab
             fileName = fileNameToOpen;
-            content = fileContents[fileName] || "";
+            content = files[fileName] || "";
         } else {
             // ✅ Import new file
             const [fileHandle] = await window.showOpenFilePicker({
@@ -1242,7 +1205,7 @@ async function openFile(fileNameToOpen = null) {
 
             // ✅ Store content
             openedFiles.push(fileName);
-            fileContents[fileName] = content;
+            files[fileName] = content;
         }
 
         // ✅ Set current and render
@@ -1261,11 +1224,11 @@ function createUntitledFile() {
     const fileName = "Untitled";
     if (!openedFiles.includes(fileName)) {
         openedFiles.push(fileName);
-        fileContents[fileName] = "Start writing here..."; // or "" if preferred
+        files[fileName] = "Start writing here..."; // or "" if preferred
     }
     currentFile = fileName;
     document.getElementById("currentFileName").textContent = fileName;
-    document.getElementById("textArea").innerHTML = marked.parse(fileContents[fileName]);
+    document.getElementById("textArea").innerHTML = marked.parse(files[fileName]);
     updateFileTabs();
 }
 
