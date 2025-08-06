@@ -1380,59 +1380,57 @@ tableGrid.addEventListener('mouseover', (e) => {
 });
 
 // Click to insert table (only once)
-tableGrid.addEventListener('click', (e) => {
-    if (!e.target.classList.contains('grid-cell')) return;
+// tableGrid.addEventListener('click', (e) => {
+//     if (!e.target.classList.contains('grid-cell')) return;
 
-    const row = parseInt(e.target.dataset.row);
-    const col = parseInt(e.target.dataset.col);
+//     const row = parseInt(e.target.dataset.row);
+//     const col = parseInt(e.target.dataset.col);
 
-    insertTable(row, col);         // ✅ Insert correct-sized table
-    tableGrid.style.display = 'none'; // ✅ Hide the grid
-});
+//     insertTable(row, col);         // ✅ Insert correct-sized table
+//     tableGrid.style.display = 'none'; // ✅ Hide the grid
+// });
 
-// ✅ Separate function for inserting the table
-function insertTable(rows, cols) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'resizable-wrapper';
-    wrapper.contentEditable = false;
-    Object.assign(wrapper.style, {
-        display: 'inline-block',
-        resize: 'both',
-        overflow: 'auto',
-        padding: '2px',
-        margin: '10px 0'
-    });
+// // ✅ Separate function for inserting the table
+// function insertTable(rows, cols) {
+//     const wrapper = document.createElement('div');
+//     wrapper.className = 'resizable-wrapper';
+//     wrapper.contentEditable = false;
+//     Object.assign(wrapper.style, {
+//         display: 'inline-block',
+//         resize: 'both',
+//         overflow: 'auto',
+//         padding: '2px',
+//         margin: '10px 0'
+//     });
 
-    const table = document.createElement('table');
-    table.style.borderCollapse = 'collapse';
-    table.style.width = '100%';
-    table.style.height = '100%';
+//     const table = document.createElement('table');
+//     table.style.borderCollapse = 'collapse';
+//     table.style.width = '100%';
+//     table.style.height = '100%';
 
-    for (let i = 0; i < rows; i++) {
-        const tr = document.createElement('tr');
-        for (let j = 0; j < cols; j++) {
-            const td = document.createElement('td');
-            td.contentEditable = "true";
-            td.innerHTML = '&nbsp;';
-            Object.assign(td.style, {
-                border: '1px solid #333',
-                padding: '5px',
-                textAlign: 'center',
-                outline: 'none',
-                boxShadow: 'none',
-                width: '100px'
-            });
-            tr.appendChild(td);
-        }
-        table.appendChild(tr);
-    }
+//     for (let i = 0; i < rows; i++) {
+//         const tr = document.createElement('tr');
+//         for (let j = 0; j < cols; j++) {
+//             const td = document.createElement('td');
+//             td.contentEditable = "true";
+//             td.innerHTML = '&nbsp;';
+//             Object.assign(td.style, {
+//                 border: '1px solid #333',
+//                 padding: '5px',
+//                 textAlign: 'center',
+//                 outline: 'none',
+//                 boxShadow: 'none',
+//                 width: '100px'
+//             });
+//             tr.appendChild(td);
+//         }
+//         table.appendChild(tr);
+//     }
 
-    wrapper.appendChild(table);
-    textArea.appendChild(wrapper);
-    tableGrid.style.display = 'none';
-}
-
-
+//     wrapper.appendChild(table);
+//     textArea.appendChild(wrapper);
+//     tableGrid.style.display = 'none';
+// }
 
 
 
@@ -1441,32 +1439,128 @@ function insertTable(rows, cols) {
 
 
 
-function insertSpacing() {
-    const textArea = document.getElementById('textArea');
-    textArea.focus();
 
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
 
-    const range = selection.getRangeAt(0);
+// function insertSpacing() {
+//     const textArea = document.getElementById('textArea');
+//     textArea.focus();
 
-    // Create a span element with 100px width spacer
-    const spacer = document.createElement('span');
-    spacer.style.display = 'inline-block';
-    spacer.style.width = '100px';
-    spacer.innerHTML = '&nbsp;'; // Needed to keep the span from collapsing
+//     const selection = window.getSelection();
+//     if (!selection.rangeCount) return;
 
-    range.insertNode(spacer);
+//     const range = selection.getRangeAt(0);
 
-    // Move cursor after the inserted span
-    range.setStartAfter(spacer);
-    range.setEndAfter(spacer);
-    selection.removeAllRanges();
-    selection.addRange(range);
-}
+//     // Create a span element with 100px width spacer
+//     const spacer = document.createElement('span');
+//     spacer.style.display = 'inline-block';
+//     spacer.style.width = '100px';
+//     spacer.innerHTML = '&nbsp;'; // Needed to keep the span from collapsing
 
-// image uploading 
+//     range.insertNode(spacer);
+
+//     // Move cursor after the inserted span
+//     range.setStartAfter(spacer);
+//     range.setEndAfter(spacer);
+//     selection.removeAllRanges();
+//     selection.addRange(range);
+// }
+
+// // image uploading 
+// const fileInput = document.getElementById("fileInput");
+// textArea.addEventListener("mouseup", saveCursor);
+// textArea.addEventListener("keyup", saveCursor);
+// textArea.addEventListener("focus", saveCursor);
+
+// function saveCursor() {
+//     const selection = window.getSelection();
+//     if (selection.rangeCount > 0) {
+//         savedRange = selection.getRangeAt(0);
+//     }
+// }
+
+// fileInput.addEventListener("change", function () {
+//     const file = this.files[0];
+//     if (!file || !file.type.startsWith("image/")) return;
+
+//     const reader = new FileReader();
+//     reader.onload = function (e) {
+//         const wrapper = document.createElement("span");
+//         wrapper.className = "image-wrapper";
+//         wrapper.setAttribute("contenteditable", "false");
+
+//         const img = document.createElement("img");
+//         img.src = e.target.result;
+//         img.style.width = "200px"; // Default width
+
+//         const resizer = document.createElement("div");
+//         resizer.className = "resizer";
+
+//         wrapper.appendChild(img);
+//         wrapper.appendChild(resizer);
+//         makeResizable(img, resizer);
+
+//         insertImageAtCursor(wrapper);
+//     };
+
+//     reader.readAsDataURL(file);
+
+//     // ✅ Reset input so selecting the same file again will trigger 'change'
+//     fileInput.value = "";
+// });
+
+
+// function insertImageAtCursor(imageWrapper) {
+//     if (!savedRange) {
+//         textArea.appendChild(imageWrapper);
+//         return;
+//     }
+
+//     const range = savedRange.cloneRange();
+//     range.deleteContents();
+
+//     range.insertNode(imageWrapper);
+
+//     // Insert space to move cursor after image
+//     const space = document.createTextNode("\u00A0");
+//     imageWrapper.parentNode.insertBefore(space, imageWrapper.nextSibling);
+
+//     const newRange = document.createRange();
+//     newRange.setStartAfter(space);
+//     newRange.collapse(true);
+
+//     const sel = window.getSelection();
+//     sel.removeAllRanges();
+//     sel.addRange(newRange);
+//     textArea.focus();
+
+//     saveCursor(); // update for next image
+// }
+
+
+// function makeResizable(img, handle) {
+//     handle.addEventListener("mousedown", function (e) {
+//         e.preventDefault();
+//         e.stopPropagation();
+
+//         const startX = e.clientX;
+//         const startWidth = parseInt(window.getComputedStyle(img).width, 10);
+
+//         function onMouseMove(e) {
+//             const newWidth = startWidth + e.clientX - startX;
+//             img.style.width = newWidth + "px";
+//         }
+
+//         function onMouseUp() {
+//             document.removeEventListener("mousemove", onMouseMove);
+//             document.removeEventListener("mouseup", onMouseUp);
+//         }
+
+//         document.addEventListener("mousemove", onMouseMove);
+//         document.addEventListener("mouseup", onMouseUp);
+//     });
+// }
 const fileInput = document.getElementById("fileInput");
+
 textArea.addEventListener("mouseup", saveCursor);
 textArea.addEventListener("keyup", saveCursor);
 textArea.addEventListener("focus", saveCursor);
@@ -1474,7 +1568,11 @@ textArea.addEventListener("focus", saveCursor);
 function saveCursor() {
     const selection = window.getSelection();
     if (selection.rangeCount > 0) {
-        savedRange = selection.getRangeAt(0);
+        const range = selection.getRangeAt(0);
+        // ✅ Only save if inside textArea
+        if (textArea.contains(range.startContainer)) {
+            savedRange = range;
+        }
     }
 }
 
@@ -1508,10 +1606,12 @@ fileInput.addEventListener("change", function () {
     fileInput.value = "";
 });
 
-
 function insertImageAtCursor(imageWrapper) {
-    if (!savedRange) {
+    // ✅ If savedRange is null OR not inside textArea, append to end
+    if (!savedRange || !textArea.contains(savedRange.startContainer)) {
         textArea.appendChild(imageWrapper);
+        textArea.appendChild(document.createTextNode("\u00A0"));
+        saveCursor();
         return;
     }
 
@@ -1520,7 +1620,7 @@ function insertImageAtCursor(imageWrapper) {
 
     range.insertNode(imageWrapper);
 
-    // Insert space to move cursor after image
+    // Insert space after image
     const space = document.createTextNode("\u00A0");
     imageWrapper.parentNode.insertBefore(space, imageWrapper.nextSibling);
 
@@ -1535,7 +1635,6 @@ function insertImageAtCursor(imageWrapper) {
 
     saveCursor(); // update for next image
 }
-
 
 function makeResizable(img, handle) {
     handle.addEventListener("mousedown", function (e) {
@@ -1559,6 +1658,9 @@ function makeResizable(img, handle) {
         document.addEventListener("mouseup", onMouseUp);
     });
 }
+
+
+
 // uploading pptx\
 
 //  function insertHTMLAtCursor(html) {
