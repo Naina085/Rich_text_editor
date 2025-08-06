@@ -65,6 +65,7 @@ function saveCurrentSelection() {
     }
 }
 
+
 // Initialize editor
 function initEditor() {
     updateTextAreaStyle();
@@ -384,7 +385,7 @@ async function pasteText() {
         const text = await navigator.clipboard.readText();
         // Use insertText at the restored selection
         if (selection.rangeCount > 0 && textArea.contains(selection.anchorNode)) {
-        document.execCommand("insertText", false, text);
+            document.execCommand("insertText", false, text);
         } else {
             // fallback: append at end
             textArea.innerText += text;
@@ -1630,27 +1631,14 @@ function saveCursor() {
     }
 }
 
-// Add alignment classes for image wrappers
-function getImageAlignmentClass(alignment) {
-    if (alignment === 'left') return 'img-left';
-    if (alignment === 'right') return 'img-right';
-    if (alignment === 'center') return 'img-center';
-    return '';
-}
-
 fileInput.addEventListener("change", function () {
     const file = this.files[0];
     if (!file || !file.type.startsWith("image/")) return;
 
-    // Prompt for alignment
-    let alignment = prompt('Image alignment? (left, right, center)', 'left');
-    alignment = alignment ? alignment.toLowerCase() : 'left';
-    if (!["left", "right", "center"].includes(alignment)) alignment = 'left';
-
     const reader = new FileReader();
     reader.onload = function (e) {
         const wrapper = document.createElement("span");
-        wrapper.className = "image-wrapper " + getImageAlignmentClass(alignment);
+        wrapper.className = "image-wrapper";
         wrapper.setAttribute("contenteditable", "false");
 
         const img = document.createElement("img");
@@ -1668,22 +1656,31 @@ fileInput.addEventListener("change", function () {
     };
 
     reader.readAsDataURL(file);
+
+    // ✅ Reset input so selecting the same file again will trigger 'change'
     fileInput.value = "";
 });
 
 function insertImageAtCursor(imageWrapper) {
+    // ✅ If savedRange is null OR not inside textArea, append to end
     if (!savedRange || !textArea.contains(savedRange.startContainer)) {
         textArea.appendChild(imageWrapper);
+        textArea.appendChild(document.createTextNode("\u00A0"));
         saveCursor();
         return;
     }
 
     const range = savedRange.cloneRange();
     range.deleteContents();
+
     range.insertNode(imageWrapper);
 
+    // Insert space after image
+    const space = document.createTextNode("\u00A0");
+    imageWrapper.parentNode.insertBefore(space, imageWrapper.nextSibling);
+
     const newRange = document.createRange();
-    newRange.setStartAfter(imageWrapper);
+    newRange.setStartAfter(space);
     newRange.collapse(true);
 
     const sel = window.getSelection();
@@ -2363,37 +2360,5 @@ function insertExcelAtSavedCursor(data) {
 //         }
 //     });
 // });
-
-// Image alignment toolbar logic
-let selectedImageWrapper = null;
-const toolbar = document.getElementById('imageAlignToolbar');
-const textArea = document.getElementById('textArea');
-
-document.addEventListener('click', function(e) {
-    // If click on image inside image-wrapper
-    if (e.target.tagName === 'IMG' && e.target.parentElement.classList.contains('image-wrapper')) {
-        selectedImageWrapper = e.target.parentElement;
-        showImageAlignToolbar(e.target);
-        e.stopPropagation();
-    } else if (!toolbar.contains(e.target)) {
-        toolbar.style.display = 'none';
-        selectedImageWrapper = null;
-    }
-});
-
-function showImageAlignToolbar(img) {
-    const rect = img.getBoundingClientRect();
-    toolbar.style.top = (window.scrollY + rect.top - toolbar.offsetHeight - 8) + 'px';
-    toolbar.style.left = (window.scrollX + rect.left) + 'px';
-    toolbar.style.display = 'block';
-}
-
-function setImageAlignment(alignment) {
-    if (!selectedImageWrapper) return;
-    selectedImageWrapper.classList.remove('img-left', 'img-right', 'img-center');
-    selectedImageWrapper.classList.add(getImageAlignmentClass(alignment));
-    toolbar.style.display = 'none';
-    selectedImageWrapper = null;
-}
 
 
