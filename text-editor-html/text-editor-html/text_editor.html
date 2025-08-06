@@ -40,11 +40,12 @@
         z-index: 99;
         display: none;
       "></div>
+
         <!-- Navbar -->
         <div class="navbar">
             <ul>
 
-                <li class="file-navbar">File
+                <li class="file-navbar MainMenu">File
                     <ul class="file-menu">
                         <li onclick="createNewFile()">New file <i class="bi bi-file"></i></li>
                         <li id="openBtn" onclick="openFile()">Open <i class="bi bi-folder2-open"></i></li>
@@ -53,7 +54,7 @@
                     </ul>
                 </li>
 
-                <li class="file-navbar-2">Edit
+                <li class="file-navbar-2 MainMenu">Edit
                     <ul class="file-menu">
                         <li onclick="selectAllText()"><i class="bi bi-ui-checks"></i>Select all</li>
                         <li id="undoBtn" onclick="handleUndo()"><i class="bi bi-arrow-90deg-left">Undo</i></li>
@@ -63,7 +64,7 @@
                         <li onclick="pasteText()"><i class="bi bi-clipboard2"></i>Paste</li>
                     </ul>
                 </li>
-                <li class="file-navbar-3">
+                <li class="file-navbar-3 MainMenu">
                     Insert
                     <ul class="file-menu">
                         <li><button onclick="insertHorizontalLine()" style="border: none;width:100%;"
@@ -87,9 +88,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="file-navbar-4">View</li>
+                <li class="file-navbar-4 MainMenu">View</li>
                 <li onclick="MenuClick5()" class="file-navbar-5">Format
-                    <ul class="file-menu">
+                    <ul class="file-menu" id="formatbutton">
                         <li id="boldBtn" onclick="toggleFormat('bold')" title="Bold">Bold <strong>B</strong></li>
                         <li id="italicBtn" onclick="toggleFormat('italic')" title="Italic">Italic <i>I</i></li>
                         <li id="underlineBtn" onclick="toggleFormat('underline')" title="Underline">Underline

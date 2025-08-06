@@ -533,15 +533,22 @@ function toggleFormat(format) {
 //         menu.style.display = "block";
 //     }
 // }
-// function MenuClick5() {
-//     const menu = document.getElementsByClassName('file-menu')[3];
-//     if (menu.style.display == "block") {
-//         menu.style.display = "none";
-//     }
-//     else {
-//         menu.style.display = "block";
-//     }
-// }
+function MenuClick5() {
+    const menu = document.getElementsByClassName('file-menu')[3];
+    if (menu.style.display == "block") {
+        menu.style.display = "none";
+    }
+    else {
+        menu.style.display = "block";
+    }
+}
+// document.getElementsByClassName("file-navbar-5"),addEventListener("mouseenter",() =>{
+//     document.getElementById("formatbutton").style.display="block";
+// })
+// document.getElementsByClassName("file-navbar-5"),addEventListener("mouseleave",() =>{
+//     document.getElementById("formatbutton").style.display="none";
+// })
+
 function showfont() {
     const show = document.getElementsByClassName('fomenu')[0];
     if (show.style.display == "none") {
@@ -1263,6 +1270,92 @@ function createUntitledFile() {
 }
 
 //when the user clicks on table button
+// const tableBtn = document.getElementById('tableBtn');
+// const tableGrid = document.getElementById('tableGrid');
+
+// const maxRows = 10;
+// const maxCols = 10;
+
+// // Create 10x10 grid
+// for (let i = 0; i < maxRows; i++) {
+//     for (let j = 0; j < maxCols; j++) {
+//         const cell = document.createElement('div');
+//         cell.className = 'grid-cell';
+//         cell.dataset.row = i + 1;
+//         cell.dataset.col = j + 1;
+//         cell.style.width = '20px';
+//         cell.style.height = '20px';
+//         cell.style.border = '1px solid #ccc';
+//         cell.style.display = 'inline-block';
+//         cell.style.boxSizing = 'border-box';
+//         tableGrid.appendChild(cell);
+//     }
+//     tableGrid.appendChild(document.createElement('br'));
+// }
+
+// let selectedRows = 0;
+// let selectedCols = 0;
+
+// // Show/hide grid
+// tableBtn.addEventListener('click', () => {
+//     tableGrid.style.display = 'block';
+// });
+
+// document.addEventListener('click', (e) => {
+//     if (!tableGrid.contains(e.target) && e.target !== tableBtn) {
+//         tableGrid.style.display = 'none';
+//     }
+// });
+
+// tableGrid.addEventListener('mouseover', (e) => {
+//     if (!e.target.classList.contains('grid-cell')) return;
+
+//     selectedRows = parseInt(e.target.dataset.row);
+//     selectedCols = parseInt(e.target.dataset.col);
+
+//     const cells = document.querySelectorAll('.grid-cell');
+//     cells.forEach(cell => {
+//         const row = parseInt(cell.dataset.row);
+//         const col = parseInt(cell.dataset.col);
+//         cell.style.backgroundColor = (row <= selectedRows && col <= selectedCols) ? '#42a7f5' : '';
+//     });
+// });
+// tableGrid.addEventListener('click', () => {
+//     const wrapper = document.createElement('div');
+//     wrapper.className = 'resizable-wrapper';
+//     wrapper.contentEditable = false;
+//     wrapper.style.display = 'inline-block';
+//     wrapper.style.resize = 'both';
+//     wrapper.style.overflow = 'auto';
+//     wrapper.style.padding = '2px';
+//     wrapper.style.margin = '10px 0';
+
+//     const table = document.createElement('table');
+//     table.style.borderCollapse = 'collapse';
+//     table.style.width = '100%';
+//     table.style.height = '100%';
+
+//     for (let i = 0; i < selectedRows; i++) {
+//         const tr = document.createElement('tr');
+//         for (let j = 0; j < selectedCols; j++) {
+//             const td = document.createElement('td');
+//             td.contentEditable = "true";
+//             td.innerHTML = '&nbsp;';
+//             td.style.border = '1px solid #333';
+//             td.style.padding = '5px';
+//             td.style.textAlign = 'center';
+//             td.style.outline = 'none';
+//             td.style.boxShadow = 'none';
+//             td.style.width = '100px';
+//             tr.appendChild(td);
+//         }
+//         table.appendChild(tr);
+//     }
+
+//     wrapper.appendChild(table);
+//     textArea.appendChild(wrapper);
+//     tableGrid.style.display = 'none';
+// });
 const tableBtn = document.getElementById('tableBtn');
 const tableGrid = document.getElementById('tableGrid');
 
@@ -1276,11 +1369,13 @@ for (let i = 0; i < maxRows; i++) {
         cell.className = 'grid-cell';
         cell.dataset.row = i + 1;
         cell.dataset.col = j + 1;
-        cell.style.width = '20px';
-        cell.style.height = '20px';
-        cell.style.border = '1px solid #ccc';
-        cell.style.display = 'inline-block';
-        cell.style.boxSizing = 'border-box';
+        Object.assign(cell.style, {
+            width: '20px',
+            height: '20px',
+            border: '1px solid #ccc',
+            display: 'inline-block',
+            boxSizing: 'border-box'
+        });
         tableGrid.appendChild(cell);
     }
     tableGrid.appendChild(document.createElement('br'));
@@ -1289,18 +1384,20 @@ for (let i = 0; i < maxRows; i++) {
 let selectedRows = 0;
 let selectedCols = 0;
 
-// Show/hide grid
+// Show grid
 tableBtn.addEventListener('click', () => {
     tableGrid.style.display = 'block';
 });
 
+// Hide grid when clicking outside
 document.addEventListener('click', (e) => {
     if (!tableGrid.contains(e.target) && e.target !== tableBtn) {
         tableGrid.style.display = 'none';
     }
 });
 
-tableGrid.addEventListener('click', (e) => {
+// Hover to highlight
+tableGrid.addEventListener('mouseover', (e) => {
     if (!e.target.classList.contains('grid-cell')) return;
 
     selectedRows = parseInt(e.target.dataset.row);
@@ -1310,41 +1407,53 @@ tableGrid.addEventListener('click', (e) => {
     cells.forEach(cell => {
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
-        if (row <= selectedRows && col <= selectedCols) {
-            cell.style.backgroundColor = '#42a7f5';
-        } else {
-            cell.style.backgroundColor = '';
-        }
+        cell.style.backgroundColor = (row <= selectedRows && col <= selectedCols) ? '#42a7f5' : '';
     });
 });
 
-tableGrid.addEventListener('click', () => {
+// Click to insert table (only once)
+tableGrid.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('grid-cell')) return;
+
+    const row = parseInt(e.target.dataset.row);
+    const col = parseInt(e.target.dataset.col);
+
+    insertTable(row, col);         // ✅ Insert correct-sized table
+    tableGrid.style.display = 'none'; // ✅ Hide the grid
+});
+
+// ✅ Separate function for inserting the table
+function insertTable(rows, cols) {
     const wrapper = document.createElement('div');
     wrapper.className = 'resizable-wrapper';
     wrapper.contentEditable = false;
-    wrapper.style.display = 'inline-block';
-    wrapper.style.resize = 'both';
-    wrapper.style.overflow = 'auto';
-    wrapper.style.padding = '2px';
-    wrapper.style.margin = '10px 0';
+    Object.assign(wrapper.style, {
+        display: 'inline-block',
+        resize: 'both',
+        overflow: 'auto',
+        padding: '2px',
+        margin: '10px 0'
+    });
 
     const table = document.createElement('table');
     table.style.borderCollapse = 'collapse';
     table.style.width = '100%';
     table.style.height = '100%';
 
-    for (let i = 0; i < selectedRows; i++) {
+    for (let i = 0; i < rows; i++) {
         const tr = document.createElement('tr');
-        for (let j = 0; j < selectedCols; j++) {
+        for (let j = 0; j < cols; j++) {
             const td = document.createElement('td');
             td.contentEditable = "true";
             td.innerHTML = '&nbsp;';
-            td.style.border = '1px solid #333';
-            td.style.padding = '5px';
-            td.style.textAlign = 'center';
-            td.style.outline = 'none';
-            td.style.boxShadow = 'none';
-            td.style.width = '100px';
+            Object.assign(td.style, {
+                border: '1px solid #333',
+                padding: '5px',
+                textAlign: 'center',
+                outline: 'none',
+                boxShadow: 'none',
+                width: '100px'
+            });
             tr.appendChild(td);
         }
         table.appendChild(tr);
@@ -1353,7 +1462,10 @@ tableGrid.addEventListener('click', () => {
     wrapper.appendChild(table);
     textArea.appendChild(wrapper);
     tableGrid.style.display = 'none';
-});
+}
+
+
+
 
 
 
@@ -1384,6 +1496,7 @@ function insertSpacing() {
     selection.removeAllRanges();
     selection.addRange(range);
 }
+
 // image uploading 
 const fileInput = document.getElementById("fileInput");
 textArea.addEventListener("mouseup", saveCursor);
@@ -1831,272 +1944,272 @@ function insertExcelAtSavedCursor(data) {
 //         document.getElementById("olBtn").style.color = "black";
 //     }
 // }
-let currentListType = null;
-let currentListElement = null;
+// let currentListType = null;
+// let currentListElement = null;
 
-function toggleList(type) {
-  document.getElementById("listTooltip").style.display = "none";
+// function toggleList(type) {
+//   document.getElementById("listTooltip").style.display = "none";
 
-  const textArea = document.getElementById("textArea");
-  textArea.focus();
+//   const textArea = document.getElementById("textArea");
+//   textArea.focus();
 
-  const selection = window.getSelection();
-  if (!selection.rangeCount) return;
+//   const selection = window.getSelection();
+//   if (!selection.rangeCount) return;
 
-  const range = selection.getRangeAt(0);
-  const container = range.startContainer;
+//   const range = selection.getRangeAt(0);
+//   const container = range.startContainer;
 
-  // Check if inside a list already
-  let li = container;
-  while (li && li.nodeName !== "LI") {
-    li = li.parentNode;
-  }
+//   // Check if inside a list already
+//   let li = container;
+//   while (li && li.nodeName !== "LI") {
+//     li = li.parentNode;
+//   }
 
-  let existingList = null;
-  if (li) {
-    existingList = li.parentNode;
-  }
+//   let existingList = null;
+//   if (li) {
+//     existingList = li.parentNode;
+//   }
 
-  // If the list is already the same type, toggle off
-  if (existingList && existingList.nodeName.toLowerCase() === type) {
-    const spacer = document.createElement("div");
-    spacer.innerHTML = "<br>";
-    spacer.setAttribute("contenteditable", "false");
-    spacer.style.height = "1px";
-    spacer.style.userSelect = "none";
+//   // If the list is already the same type, toggle off
+//   if (existingList && existingList.nodeName.toLowerCase() === type) {
+//     const spacer = document.createElement("div");
+//     spacer.innerHTML = "<br>";
+//     spacer.setAttribute("contenteditable", "false");
+//     spacer.style.height = "1px";
+//     spacer.style.userSelect = "none";
 
-    existingList.parentNode.insertBefore(spacer, existingList.nextSibling);
+//     existingList.parentNode.insertBefore(spacer, existingList.nextSibling);
 
-    const p = document.createElement("p");
-    p.innerHTML = "<br>";
-    spacer.parentNode.insertBefore(p, spacer.nextSibling);
+//     const p = document.createElement("p");
+//     p.innerHTML = "<br>";
+//     spacer.parentNode.insertBefore(p, spacer.nextSibling);
 
-    const newRange = document.createRange();
-    newRange.setStart(p, 0);
-    newRange.setEnd(p, 0);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
+//     const newRange = document.createRange();
+//     newRange.setStart(p, 0);
+//     newRange.setEnd(p, 0);
+//     selection.removeAllRanges();
+//     selection.addRange(newRange);
 
-    currentListType = null;
-    currentListElement = null;
+//     currentListType = null;
+//     currentListElement = null;
 
-    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-    document.getElementById("olBtn").style.color = "black";
-    document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-    document.getElementById("ulBtn").style.color = "black";
+//     document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+//     document.getElementById("olBtn").style.color = "black";
+//     document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+//     document.getElementById("ulBtn").style.color = "black";
 
-    return;
-  }
+//     return;
+//   }
 
-  // If a different list exists, replace it
-// If a different list exists, convert only the current <li>
-if (existingList && existingList.nodeName.toLowerCase() !== type) {
-  const newList = document.createElement(type);
-  if (type === "ul") newList.style.listStyleType = "circle";
+//   // If a different list exists, replace it
+// // If a different list exists, convert only the current <li>
+// if (existingList && existingList.nodeName.toLowerCase() !== type) {
+//   const newList = document.createElement(type);
+//   if (type === "ul") newList.style.listStyleType = "circle";
 
-  existingList.insertBefore(newList, li);
-  existingList.removeChild(li);
-  newList.appendChild(li);
+//   existingList.insertBefore(newList, li);
+//   existingList.removeChild(li);
+//   newList.appendChild(li);
 
-  // Reinsert the new list after the original list if it has other items
-  if (existingList.nextSibling) {
-    existingList.parentNode.insertBefore(newList, existingList.nextSibling);
-  } else {
-    existingList.parentNode.appendChild(newList);
-  }
+//   // Reinsert the new list after the original list if it has other items
+//   if (existingList.nextSibling) {
+//     existingList.parentNode.insertBefore(newList, existingList.nextSibling);
+//   } else {
+//     existingList.parentNode.appendChild(newList);
+//   }
 
-  // If original list becomes empty, remove it
-  if (!existingList.hasChildNodes()) {
-    existingList.remove();
-  }
+//   // If original list becomes empty, remove it
+//   if (!existingList.hasChildNodes()) {
+//     existingList.remove();
+//   }
 
-  currentListType = type;
-  currentListElement = newList;
+//   currentListType = type;
+//   currentListElement = newList;
 
-  const newRange = document.createRange();
-  newRange.setStart(li, 0);
-  newRange.setEnd(li, 0);
-  selection.removeAllRanges();
-  selection.addRange(newRange);
-}
-  else {
-    // If no existing list, insert new one
-    const list = document.createElement(type);
-    const li = document.createElement("li");
-    li.innerHTML = "<br>";
-    list.appendChild(li);
-    if (type === "ul") list.style.listStyleType = "circle";
+//   const newRange = document.createRange();
+//   newRange.setStart(li, 0);
+//   newRange.setEnd(li, 0);
+//   selection.removeAllRanges();
+//   selection.addRange(newRange);
+// }
+//   else {
+//     // If no existing list, insert new one
+//     const list = document.createElement(type);
+//     const li = document.createElement("li");
+//     li.innerHTML = "<br>";
+//     list.appendChild(li);
+//     if (type === "ul") list.style.listStyleType = "circle";
 
-    range.deleteContents();
-    range.insertNode(list);
+//     range.deleteContents();
+//     range.insertNode(list);
 
-    const newRange = document.createRange();
-    newRange.setStart(li, 0);
-    newRange.setEnd(li, 0);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
+//     const newRange = document.createRange();
+//     newRange.setStart(li, 0);
+//     newRange.setEnd(li, 0);
+//     selection.removeAllRanges();
+//     selection.addRange(newRange);
 
-    currentListType = type;
-    currentListElement = list;
-  }
+//     currentListType = type;
+//     currentListElement = list;
+//   }
 
-}
-document.getElementById("textArea").addEventListener("keydown", function (e) {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
+// }
+// document.getElementById("textArea").addEventListener("keydown", function (e) {
+//     const selection = window.getSelection();
+//     if (!selection.rangeCount) return;
 
-    const range = selection.getRangeAt(0);
-    const container = range.startContainer;
+//     const range = selection.getRangeAt(0);
+//     const container = range.startContainer;
 
-    // Find nearest li element
-    let li = container;
-    while (li && li.nodeName !== "LI") {
-        li = li.parentNode;
-    }
+//     // Find nearest li element
+//     let li = container;
+//     while (li && li.nodeName !== "LI") {
+//         li = li.parentNode;
+//     }
 
-    // --- CASE 1: Inside a list item ---
-    if (li) {
-        const list = li.parentNode;
-        const grandParent = list.parentNode;
+//     // --- CASE 1: Inside a list item ---
+//     if (li) {
+//         const list = li.parentNode;
+//         const grandParent = list.parentNode;
 
-        // Handle Backspace in empty <li>
-        if (
-            e.key === "Backspace" &&
-            li.textContent.trim() === "" &&
-            range.startOffset === 0
-        ) {
-            e.preventDefault();
+//         // Handle Backspace in empty <li>
+//         if (
+//             e.key === "Backspace" &&
+//             li.textContent.trim() === "" &&
+//             range.startOffset === 0
+//         ) {
+//             e.preventDefault();
 
-            if (list.children.length === 1) {
-                const p = document.createElement("p");
-                p.innerHTML = "<br>";
-                grandParent.insertBefore(p, list.nextSibling);
-                list.remove();
+//             if (list.children.length === 1) {
+//                 const p = document.createElement("p");
+//                 p.innerHTML = "<br>";
+//                 grandParent.insertBefore(p, list.nextSibling);
+//                 list.remove();
 
-                const newRange = document.createRange();
-                newRange.setStart(p, 0);
-                newRange.setEnd(p, 0);
-                selection.removeAllRanges();
-                selection.addRange(newRange);
-            }
-             else {
-                const prev = li.previousElementSibling;
-                list.removeChild(li);
-                if (prev) {
-                    const newRange = document.createRange();
-                    newRange.selectNodeContents(prev);
-                    newRange.collapse(false);
-                    selection.removeAllRanges();
-                    selection.addRange(newRange);
-                }
-            }
-        }
+//                 const newRange = document.createRange();
+//                 newRange.setStart(p, 0);
+//                 newRange.setEnd(p, 0);
+//                 selection.removeAllRanges();
+//                 selection.addRange(newRange);
+//             }
+//              else {
+//                 const prev = li.previousElementSibling;
+//                 list.removeChild(li);
+//                 if (prev) {
+//                     const newRange = document.createRange();
+//                     newRange.selectNodeContents(prev);
+//                     newRange.collapse(false);
+//                     selection.removeAllRanges();
+//                     selection.addRange(newRange);
+//                 }
+//             }
+//         }
 
-        // Handle Tab / Shift+Tab for nesting and outdenting
-        if (e.key === "Tab") {
-            e.preventDefault();
+//         // Handle Tab / Shift+Tab for nesting and outdenting
+//         if (e.key === "Tab") {
+//             e.preventDefault();
 
-            const previousLi = li.previousElementSibling;
-            if (e.shiftKey) {
-                // Shift+Tab → Outdent
-                if (list.parentNode.nodeName === "LI") {
-                    const parentLi = list.parentNode;
-                    const parentList = parentLi.parentNode;
+//             const previousLi = li.previousElementSibling;
+//             if (e.shiftKey) {
+//                 // Shift+Tab → Outdent
+//                 if (list.parentNode.nodeName === "LI") {
+//                     const parentLi = list.parentNode;
+//                     const parentList = parentLi.parentNode;
 
-                    parentList.insertBefore(li, parentLi.nextSibling);
+//                     parentList.insertBefore(li, parentLi.nextSibling);
 
-                    const newRange = document.createRange();
-                    newRange.setStart(li, 0);
-                    newRange.setEnd(li, 0);
-                    selection.removeAllRanges();
-                    selection.addRange(newRange);
-                }
-            } else {
-                // Tab → Indent
-                if (previousLi) {
-                    let subList = previousLi.querySelector("ol, ul");
-                    if (!subList) {
-                        subList = document.createElement(list.nodeName);
-                        subList.setAttribute("style", "margin-left: 20px;");
-                        previousLi.appendChild(subList);
-                    }
-                    subList.appendChild(li);
+//                     const newRange = document.createRange();
+//                     newRange.setStart(li, 0);
+//                     newRange.setEnd(li, 0);
+//                     selection.removeAllRanges();
+//                     selection.addRange(newRange);
+//                 }
+//             } else {
+//                 // Tab → Indent
+//                 if (previousLi) {
+//                     let subList = previousLi.querySelector("ol, ul");
+//                     if (!subList) {
+//                         subList = document.createElement(list.nodeName);
+//                         subList.setAttribute("style", "margin-left: 20px;");
+//                         previousLi.appendChild(subList);
+//                     }
+//                     subList.appendChild(li);
 
-                    const newRange = document.createRange();
-                    newRange.setStart(li, 0);
-                    newRange.setEnd(li, 0);
-                    selection.removeAllRanges();
-                    selection.addRange(newRange);
-                }
-            }
-        }
+//                     const newRange = document.createRange();
+//                     newRange.setStart(li, 0);
+//                     newRange.setEnd(li, 0);
+//                     selection.removeAllRanges();
+//                     selection.addRange(newRange);
+//                 }
+//             }
+//         }
 
-        // --- CASE 2: Not inside a list ---
-    } else if (e.key === "Tab") {
-        e.preventDefault();
-        const tabNode = document.createTextNode("\u00A0\u00A0\u00A0\u00A0"); // 4 non-breaking spaces
-        range.insertNode(tabNode);
+//         // --- CASE 2: Not inside a list ---
+//     } else if (e.key === "Tab") {
+//         e.preventDefault();
+//         const tabNode = document.createTextNode("\u00A0\u00A0\u00A0\u00A0"); // 4 non-breaking spaces
+//         range.insertNode(tabNode);
 
-        // Move caret after inserted spaces
-        range.setStartAfter(tabNode);
-        range.setEndAfter(tabNode);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-});
-    const infoBtn = document.getElementById("listInfoBtn");
-    const tooltip = document.getElementById("listTooltip");
-    const instructions = document.getElementById("listInstructions");
+//         // Move caret after inserted spaces
+//         range.setStartAfter(tabNode);
+//         range.setEndAfter(tabNode);
+//         selection.removeAllRanges();
+//         selection.addRange(range);
+//     }
+// });
+//     const infoBtn = document.getElementById("listInfoBtn");
+//     const tooltip = document.getElementById("listTooltip");
+//     const instructions = document.getElementById("listInstructions");
 
-    // Hover tooltip
-    document.getElementById("olBtn").addEventListener("mouseenter", () => {
-      tooltip.style.display = "block";
-    });
-    document.getElementById("olBtn").addEventListener("mouseleave", () => {
-      tooltip.style.display = "none";
-    });
-    document.getElementById("ulBtn").addEventListener("mouseenter", () => {
-      tooltip.style.display = "block";
-    });
-    document.getElementById("ulBtn").addEventListener("mouseleave", () => {
-      tooltip.style.display = "none";
-    });
-    document.addEventListener("selectionchange", () => {
-  const selection = window.getSelection();
-  if (!selection.rangeCount) return;
+//     // Hover tooltip
+//     document.getElementById("olBtn").addEventListener("mouseenter", () => {
+//       tooltip.style.display = "block";
+//     });
+//     document.getElementById("olBtn").addEventListener("mouseleave", () => {
+//       tooltip.style.display = "none";
+//     });
+//     document.getElementById("ulBtn").addEventListener("mouseenter", () => {
+//       tooltip.style.display = "block";
+//     });
+//     document.getElementById("ulBtn").addEventListener("mouseleave", () => {
+//       tooltip.style.display = "none";
+//     });
+//     document.addEventListener("selectionchange", () => {
+//   const selection = window.getSelection();
+//   if (!selection.rangeCount) return;
 
-  const range = selection.getRangeAt(0);
-  let node = range.startContainer;
+//   const range = selection.getRangeAt(0);
+//   let node = range.startContainer;
 
-  // Traverse up to check if inside <li>
-  while (node && node.nodeName !== "LI") {
-    node = node.parentNode;
-  }
+//   // Traverse up to check if inside <li>
+//   while (node && node.nodeName !== "LI") {
+//     node = node.parentNode;
+//   }
 
-  // If inside <li>, set button highlight based on list type
-  if (node) {
-    const parentList = node.parentNode;
-    const listType = parentList.nodeName.toLowerCase();
+//   // If inside <li>, set button highlight based on list type
+//   if (node) {
+//     const parentList = node.parentNode;
+//     const listType = parentList.nodeName.toLowerCase();
 
-    if (listType === "ul") {
-      document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
-      document.getElementById("ulBtn").style.color = "white";
-      document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-      document.getElementById("olBtn").style.color = "black";
-    } else if (listType === "ol") {
-      document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
-      document.getElementById("olBtn").style.color = "white";
-      document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-      document.getElementById("ulBtn").style.color = "black";
-    }
-  } else {
-    // Not inside any <li> → reset button styles
-    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-    document.getElementById("olBtn").style.color = "black";
-    document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-    document.getElementById("ulBtn").style.color = "black";
-  }
-});
+//     if (listType === "ul") {
+//       document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
+//       document.getElementById("ulBtn").style.color = "white";
+//       document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+//       document.getElementById("olBtn").style.color = "black";
+//     } else if (listType === "ol") {
+//       document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
+//       document.getElementById("olBtn").style.color = "white";
+//       document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+//       document.getElementById("ulBtn").style.color = "black";
+//     }
+//   } else {
+//     // Not inside any <li> → reset button styles
+//     document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+//     document.getElementById("olBtn").style.color = "black";
+//     document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
+//     document.getElementById("ulBtn").style.color = "black";
+//   }
+// });
 
 
 

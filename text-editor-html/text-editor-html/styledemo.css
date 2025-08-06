@@ -525,6 +525,7 @@ body::before {
     overflow: scroll;
     position: relative;
     white-space: pre-wrap;
+    z-index:1;
 }
 
 .text-area:focus {
@@ -596,7 +597,7 @@ body::before {
 .file-navbar-5 {
     position: relative;
     cursor: pointer;
-    z-index: 99;
+    /* z-index: 99; */
 }
 
 .file-navbar-5:hover .file-menu {
@@ -959,6 +960,10 @@ canvas {
     border: 1px solid #ccc;
     display: inline-block;
     box-sizing: border-box;
+    cursor: pointer;
+}
+.grid-cell:hover {
+    background-color: #42a7f5;
     cursor: pointer;
 }
 
@@ -1831,4 +1836,11 @@ canvas {
 {
     display: block;
 }
+}
+
+
+/* current work */
+.MainMenu:hover .file-menu
+{
+    display: block !important;
 }
