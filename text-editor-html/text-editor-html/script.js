@@ -41,6 +41,31 @@ let recentBackgroundColors = JSON.parse(localStorage.getItem('recentBackgroundCo
 let activePicker = null;
 let backgroundOpacity = 1; // Default opacity for background
 let savedRange = null; // To save the selection range
+let savedSelectionRange = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Attach mousedown to Edit menu and all its submenu items
+    const editMenu = document.querySelector('.file-navbar-2');
+    if (editMenu) {
+        editMenu.addEventListener('mousedown', saveCurrentSelection, true);
+        // Also add to all submenu items (li)
+        const menuItems = editMenu.querySelectorAll('li');
+        menuItems.forEach(item => {
+            item.addEventListener('mousedown', saveCurrentSelection, true);
+        });
+    }
+});
+
+function saveCurrentSelection() {
+    const sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+        savedSelectionRange = sel.getRangeAt(0).cloneRange();
+    } else {
+        savedSelectionRange = null;
+    }
+}
+
+
 // Initialize editor
 function initEditor() {
     updateTextAreaStyle();
@@ -295,13 +320,33 @@ function selectAllText() {
 //cut the selected text
 async function cutText() {
     const selection = window.getSelection();
-    let selectedText = selection.toString();
     const textArea = document.getElementById("textArea");
 
-    // If nothing is selected, cut all text
-    if (!selectedText || selectedText.trim().length === 0) {
-        selectedText = textArea.innerText || textArea.textContent;
-        if (!selectedText || selectedText.trim().length === 0) {
+    // If selection lost, try to restore
+    if ((selection.rangeCount === 0 || !textArea.contains(selection.anchorNode)) && savedSelectionRange) {
+        selection.removeAllRanges();
+        selection.addRange(savedSelectionRange);
+    }
+
+    // If there is a selection inside the editor and it's not collapsed, cut only the selected text
+    if (selection.rangeCount > 0 && textArea.contains(selection.anchorNode) && !selection.isCollapsed) {
+        try {
+            await navigator.clipboard.writeText(selection.toString());
+            selection.deleteFromDocument();
+            
+        } catch (err) {
+            textArea.focus();
+            document.execCommand('cut');
+            alert('Cut using fallback method. If not working, check browser permissions.');
+        }
+        savedSelectionRange = null;
+        return;
+    }
+
+    // If nothing is selected, only cut all text if editor is focused
+    if (document.activeElement === textArea) {
+        let allText = textArea.innerText || textArea.textContent;
+        if (!allText || allText.trim().length === 0) {
             alert('Editor is empty.');
             return;
         }
@@ -310,36 +355,46 @@ async function cutText() {
         range.selectNodeContents(textArea);
         selection.removeAllRanges();
         selection.addRange(range);
-    }
-
-    // Now, cut the selected text
-    if (selection.rangeCount > 0 && textArea.contains(selection.anchorNode)) {
         try {
             await navigator.clipboard.writeText(selection.toString());
             selection.deleteFromDocument();
-            alert('Cut to clipboard!');
+            alert('All content cut to clipboard!');
         } catch (err) {
             textArea.focus();
             document.execCommand('cut');
             alert('Cut using fallback method. If not working, check browser permissions.');
         }
     } else {
-        alert('Please select text inside the editor.');
+        alert('Please select text to cut.');
     }
 }
 
 //paste clipboard text at cursor position
 async function pasteText() {
     const textArea = document.getElementById("textArea");
+    const selection = window.getSelection();
     textArea.focus();
+
+    // If selection lost, try to restore
+    if ((selection.rangeCount === 0 || !textArea.contains(selection.anchorNode)) && savedSelectionRange) {
+        selection.removeAllRanges();
+        selection.addRange(savedSelectionRange);
+    }
+
     try {
         const text = await navigator.clipboard.readText();
-        document.execCommand("insertText", false, text);
+        // Use insertText at the restored selection
+        if (selection.rangeCount > 0 && textArea.contains(selection.anchorNode)) {
+            document.execCommand("insertText", false, text);
+        } else {
+            // fallback: append at end
+            textArea.innerText += text;
+        }
     } catch (err) {
-        // Fallback: use execCommand('paste')
         document.execCommand('paste');
         alert('Pasted using fallback method. If not working, check browser permissions.');
     }
+    savedSelectionRange = null;
 }
 
 //copy the selected text
