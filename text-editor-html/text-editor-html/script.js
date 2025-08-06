@@ -1434,59 +1434,57 @@ tableGrid.addEventListener('mouseover', (e) => {
 });
 
 // Click to insert table (only once)
-// tableGrid.addEventListener('click', (e) => {
-//     if (!e.target.classList.contains('grid-cell')) return;
+tableGrid.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('grid-cell')) return;
 
-//     const row = parseInt(e.target.dataset.row);
-//     const col = parseInt(e.target.dataset.col);
+    const row = parseInt(e.target.dataset.row);
+    const col = parseInt(e.target.dataset.col);
 
-//     insertTable(row, col);         // ✅ Insert correct-sized table
-//     tableGrid.style.display = 'none'; // ✅ Hide the grid
-// });
+    insertTable(row, col);         // ✅ Insert correct-sized table
+    tableGrid.style.display = 'none'; // ✅ Hide the grid
+});
 
-// // ✅ Separate function for inserting the table
-// function insertTable(rows, cols) {
-//     const wrapper = document.createElement('div');
-//     wrapper.className = 'resizable-wrapper';
-//     wrapper.contentEditable = false;
-//     Object.assign(wrapper.style, {
-//         display: 'inline-block',
-//         resize: 'both',
-//         overflow: 'auto',
-//         padding: '2px',
-//         margin: '10px 0'
-//     });
+// ✅ Separate function for inserting the table
+function insertTable(rows, cols) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'resizable-wrapper';
+    wrapper.contentEditable = false;
+    Object.assign(wrapper.style, {
+        display: 'inline-block',
+        resize: 'both',
+        overflow: 'auto',
+        padding: '2px',
+        margin: '10px 0'
+    });
 
-//     const table = document.createElement('table');
-//     table.style.borderCollapse = 'collapse';
-//     table.style.width = '100%';
-//     table.style.height = '100%';
+    const table = document.createElement('table');
+    table.style.borderCollapse = 'collapse';
+    table.style.width = '100%';
+    table.style.height = '100%';
 
-//     for (let i = 0; i < rows; i++) {
-//         const tr = document.createElement('tr');
-//         for (let j = 0; j < cols; j++) {
-//             const td = document.createElement('td');
-//             td.contentEditable = "true";
-//             td.innerHTML = '&nbsp;';
-//             Object.assign(td.style, {
-//                 border: '1px solid #333',
-//                 padding: '5px',
-//                 textAlign: 'center',
-//                 outline: 'none',
-//                 boxShadow: 'none',
-//                 width: '100px'
-//             });
-//             tr.appendChild(td);
-//         }
-//         table.appendChild(tr);
-//     }
+    for (let i = 0; i < rows; i++) {
+        const tr = document.createElement('tr');
+        for (let j = 0; j < cols; j++) {
+            const td = document.createElement('td');
+            td.contentEditable = "true";
+            td.innerHTML = '&nbsp;';
+            Object.assign(td.style, {
+                border: '1px solid #333',
+                padding: '5px',
+                textAlign: 'center',
+                outline: 'none',
+                boxShadow: 'none',
+                width: '100px'
+            });
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
 
-//     wrapper.appendChild(table);
-//     textArea.appendChild(wrapper);
-//     tableGrid.style.display = 'none';
-// }
-
-
+    wrapper.appendChild(table);
+    textArea.appendChild(wrapper);
+    tableGrid.style.display = 'none';
+}
 
 
 
@@ -1495,29 +1493,31 @@ tableGrid.addEventListener('mouseover', (e) => {
 
 
 
-// function insertSpacing() {
-//     const textArea = document.getElementById('textArea');
-//     textArea.focus();
 
-//     const selection = window.getSelection();
-//     if (!selection.rangeCount) return;
 
-//     const range = selection.getRangeAt(0);
+function insertSpacing() {
+    const textArea = document.getElementById('textArea');
+    textArea.focus();
 
-//     // Create a span element with 100px width spacer
-//     const spacer = document.createElement('span');
-//     spacer.style.display = 'inline-block';
-//     spacer.style.width = '100px';
-//     spacer.innerHTML = '&nbsp;'; // Needed to keep the span from collapsing
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
 
-//     range.insertNode(spacer);
+    const range = selection.getRangeAt(0);
 
-//     // Move cursor after the inserted span
-//     range.setStartAfter(spacer);
-//     range.setEndAfter(spacer);
-//     selection.removeAllRanges();
-//     selection.addRange(range);
-// }
+    // Create a span element with 100px width spacer
+    const spacer = document.createElement('span');
+    spacer.style.display = 'inline-block';
+    spacer.style.width = '100px';
+    spacer.innerHTML = '&nbsp;'; // Needed to keep the span from collapsing
+
+    range.insertNode(spacer);
+
+    // Move cursor after the inserted span
+    range.setStartAfter(spacer);
+    range.setEndAfter(spacer);
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
 
 // // image uploading 
 // const fileInput = document.getElementById("fileInput");
