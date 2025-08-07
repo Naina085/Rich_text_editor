@@ -22,93 +22,92 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!files.length) return;
 
     for (const file of files) {
-      if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-        alert('Only image or video files are allowed.');
-        continue;
-      }
-
+      if (!file.type.startsWith('image/')) continue;
       const reader = new FileReader();
       reader.onload = function (event) {
-        const container = document.createElement('div');
-        container.style.position = 'absolute';
-        container.style.display = 'inline-block';
-        container.style.resize = 'both';
-        container.style.overflow = 'auto';
-        container.style.border = '1px solid #ccc';
-        container.style.minWidth = '50px';
-        container.style.minHeight = '50px';
-        container.style.maxWidth = '100%';
-        container.style.maxHeight = '100%';
-        container.style.width = '200px';
-        container.style.height = '200px';
-        container.style.left = `${e.offsetX}px`;
-        container.style.top = `${e.offsetY}px`;
-
-        const content = document.createElement('div');
-        content.style.width = '100%';
-        content.style.height = '100%';
-        content.style.cursor = 'move';
-        content.style.display = 'flex';
-        content.style.alignItems = 'center';
-        content.style.justifyContent = 'center';
-
-        let mediaElement;
-        if (file.type.startsWith('image/')) {
-          mediaElement = document.createElement('img');
-        } else {
-          mediaElement = document.createElement('video');
-          mediaElement.controls = true;
-          mediaElement.muted = true;
-        }
-
-        mediaElement.src = event.target.result;
-        mediaElement.style.maxWidth = '100%';
-        mediaElement.style.maxHeight = '100%';
-        mediaElement.style.objectFit = 'contain';
-        mediaElement.style.userSelect = 'none';
-        mediaElement.style.pointerEvents = 'none';
-
-        content.appendChild(mediaElement);
-        container.appendChild(content);
-        textArea.appendChild(container);
-
-        makeDraggable(container, content);
+        const img = document.createElement('img');
+        img.src = event.target.result;
+        img.className = 'editor-image img-left'; // default left align
+        img.style.maxWidth = '400px';
+        img.style.height = 'auto';
+        img.style.margin = '8px';
+        img.style.border = '1.5px dashed #888';
+        img.style.verticalAlign = 'top';
+        img.setAttribute('contenteditable', 'false');
+        img.style.userSelect = 'none';
+        img.style.cursor = 'pointer';
+        img.draggable = false;
+        img.ondragstart = function() { return false; };
+        textArea.appendChild(img);
       };
-
       reader.readAsDataURL(file);
     }
   });
 
-  function makeDraggable(container, handle) {
-    let isDragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    handle.addEventListener('mousedown', (e) => {
-      if (e.target.tagName === 'VIDEO' || e.target.tagName === 'IMG') return;
-      isDragging = true;
-      offsetX = e.clientX - container.offsetLeft;
-      offsetY = e.clientY - container.offsetTop;
-      container.style.zIndex = 1000;
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-
-      const rect = textArea.getBoundingClientRect();
-      const x = e.clientX - offsetX;
-      const y = e.clientY - offsetY;
-
-      const maxX = rect.width - container.offsetWidth;
-      const maxY = rect.height - container.offsetHeight;
-
-      container.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
-      container.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
-    });
-
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      container.style.zIndex = '';
-    });
+  // Alignment toolbar logic
+  let selectedImage = null;
+  let toolbar = document.getElementById('imageAlignToolbar');
+  if (!toolbar) {
+    toolbar = document.createElement('div');
+    toolbar.id = 'imageAlignToolbar';
+    toolbar.style.display = 'none';
+    toolbar.style.position = 'absolute';
+    toolbar.style.zIndex = 1000;
+    toolbar.style.background = '#fff';
+    toolbar.style.border = '1px solid #ccc';
+    toolbar.style.borderRadius = '4px';
+    toolbar.style.padding = '4px';
+    toolbar.style.boxShadow = '0 2px 8px #0002';
+    toolbar.innerHTML = `
+      <button type="button" data-align="left">Left</button>
+      <button type="button" data-align="center">Center</button>
+      <button type="button" data-align="right">Right</button>
+    `;
+    document.body.appendChild(toolbar);
   }
+
+  textArea.addEventListener('click', function(e) {
+    if (e.target.tagName === 'IMG' && e.target.classList.contains('editor-image')) {
+      selectedImage = e.target;
+      showImageAlignToolbar(selectedImage);
+    } else if (!toolbar.contains(e.target)) {
+      toolbar.style.display = 'none';
+      selectedImage = null;
+    }
+  });
+
+  function showImageAlignToolbar(img) {
+    const rect = img.getBoundingClientRect();
+    toolbar.style.top = (window.scrollY + rect.top - toolbar.offsetHeight - 8) + 'px';
+    toolbar.style.left = (window.scrollX + rect.left) + 'px';
+    toolbar.style.display = 'block';
+  }
+
+  toolbar.addEventListener('click', function(e) {
+    if (!selectedImage) return;
+    if (e.target.tagName === 'BUTTON') {
+      selectedImage.classList.remove('img-left', 'img-center', 'img-right');
+      const align = e.target.getAttribute('data-align');
+      selectedImage.classList.add('img-' + align);
+      // For center, allow resize
+      if (align === 'center') {
+        selectedImage.style.resize = 'both';
+        selectedImage.style.overflow = 'auto';
+        selectedImage.style.display = 'block';
+        selectedImage.style.marginLeft = 'auto';
+        selectedImage.style.marginRight = 'auto';
+      } else {
+        selectedImage.style.resize = 'none';
+        selectedImage.style.overflow = 'visible';
+        selectedImage.style.display = 'inline-block';
+        selectedImage.style.marginLeft = align === 'left' ? '' : '8px';
+        selectedImage.style.marginRight = align === 'right' ? '' : '8px';
+      }
+      // Always disable browser drag/copy
+      selectedImage.draggable = false;
+      selectedImage.ondragstart = function() { return false; };
+      toolbar.style.display = 'none';
+      selectedImage = null;
+    }
+  });
 });
