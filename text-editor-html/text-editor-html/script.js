@@ -558,6 +558,8 @@ function toggleFormat(format) {
 
     updateButtonStates();
 }
+
+
 //showing file bar
 // function MenuClick() {
 //     const menu = document.getElementsByClassName('file-menu')[0];
@@ -676,9 +678,39 @@ function submitText() {
 
 // Set text alignment
 function setAlignment(alignment) {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    const selectedNode = getSelectedBlockElement(range);
+
+    if (selectedNode) {
+        selectedNode.style.textAlign = alignment;
+    }
+
+    // Update your app's state if needed
     editorState.textAlign = alignment;
-    document.execCommand('justify' + alignment.charAt(0).toUpperCase() + alignment.slice(1), false, null);
+
     updateButtonStates();
+}
+function getSelectedBlockElement(range) {
+    let node = range.startContainer;
+
+    // If it's a text node, go up to its parent
+    if (node.nodeType === Node.TEXT_NODE) {
+        node = node.parentNode;
+    }
+
+    // Traverse up until a block element is found
+    while (node && !isBlockElement(node)) {
+        node = node.parentNode;
+    }
+
+    return node;
+}
+
+function isBlockElement(node) {
+    return node && node.nodeType === 1 && window.getComputedStyle(node).display === 'block';
 }
 
 // Update textarea styling
@@ -1042,7 +1074,7 @@ document.addEventListener("keydown", function (e) {
     }
 });
 
-
+let currentFileHandle = null;
 //when the user click on save as
 async function saveAs() {
     try {
@@ -1099,7 +1131,7 @@ function applyFormat(tag) {
     const range = selection.getRangeAt(0);
     const selectedText = selection.toString();
 
-    // Walk up to check if selection is inside the editor
+    // Ensure selection is inside editor
     let node = range.startContainer;
     let insideEditor = false;
     while (node) {
@@ -1110,21 +1142,24 @@ function applyFormat(tag) {
         node = node.parentNode;
     }
 
-    if (!insideEditor) {
-        alert("Please select text inside the editor.");
-        return;
-    }
+    if (!insideEditor || selectedText.trim() === "") return;
 
-    if (selectedText.trim() === "") return;
-
+    // Create tag wrapper and set text
     const wrapper = document.createElement(tag);
     wrapper.textContent = selectedText;
 
+    // Create a non-formatted span to prevent continuing the format
+    const resetSpan = document.createElement("span");
+    resetSpan.innerHTML = "\u200B"; // Zero-width space (invisible, keeps cursor out of the tag)
+
+    // Replace selection with wrapper and reset span
     range.deleteContents();
+    range.insertNode(resetSpan);
     range.insertNode(wrapper);
 
+    // Move cursor after the reset span
     const newRange = document.createRange();
-    newRange.setStartAfter(wrapper);
+    newRange.setStart(resetSpan, 1); // After zero-width space
     newRange.collapse(true);
 
     selection.removeAllRanges();
@@ -1293,92 +1328,6 @@ function createUntitledFile() {
 }
 
 //when the user clicks on table button
-// const tableBtn = document.getElementById('tableBtn');
-// const tableGrid = document.getElementById('tableGrid');
-
-// const maxRows = 10;
-// const maxCols = 10;
-
-// // Create 10x10 grid
-// for (let i = 0; i < maxRows; i++) {
-//     for (let j = 0; j < maxCols; j++) {
-//         const cell = document.createElement('div');
-//         cell.className = 'grid-cell';
-//         cell.dataset.row = i + 1;
-//         cell.dataset.col = j + 1;
-//         cell.style.width = '20px';
-//         cell.style.height = '20px';
-//         cell.style.border = '1px solid #ccc';
-//         cell.style.display = 'inline-block';
-//         cell.style.boxSizing = 'border-box';
-//         tableGrid.appendChild(cell);
-//     }
-//     tableGrid.appendChild(document.createElement('br'));
-// }
-
-// let selectedRows = 0;
-// let selectedCols = 0;
-
-// // Show/hide grid
-// tableBtn.addEventListener('click', () => {
-//     tableGrid.style.display = 'block';
-// });
-
-// document.addEventListener('click', (e) => {
-//     if (!tableGrid.contains(e.target) && e.target !== tableBtn) {
-//         tableGrid.style.display = 'none';
-//     }
-// });
-
-// tableGrid.addEventListener('mouseover', (e) => {
-//     if (!e.target.classList.contains('grid-cell')) return;
-
-//     selectedRows = parseInt(e.target.dataset.row);
-//     selectedCols = parseInt(e.target.dataset.col);
-
-//     const cells = document.querySelectorAll('.grid-cell');
-//     cells.forEach(cell => {
-//         const row = parseInt(cell.dataset.row);
-//         const col = parseInt(cell.dataset.col);
-//         cell.style.backgroundColor = (row <= selectedRows && col <= selectedCols) ? '#42a7f5' : '';
-//     });
-// });
-// tableGrid.addEventListener('click', () => {
-//     const wrapper = document.createElement('div');
-//     wrapper.className = 'resizable-wrapper';
-//     wrapper.contentEditable = false;
-//     wrapper.style.display = 'inline-block';
-//     wrapper.style.resize = 'both';
-//     wrapper.style.overflow = 'auto';
-//     wrapper.style.padding = '2px';
-//     wrapper.style.margin = '10px 0';
-
-//     const table = document.createElement('table');
-//     table.style.borderCollapse = 'collapse';
-//     table.style.width = '100%';
-//     table.style.height = '100%';
-
-//     for (let i = 0; i < selectedRows; i++) {
-//         const tr = document.createElement('tr');
-//         for (let j = 0; j < selectedCols; j++) {
-//             const td = document.createElement('td');
-//             td.contentEditable = "true";
-//             td.innerHTML = '&nbsp;';
-//             td.style.border = '1px solid #333';
-//             td.style.padding = '5px';
-//             td.style.textAlign = 'center';
-//             td.style.outline = 'none';
-//             td.style.boxShadow = 'none';
-//             td.style.width = '100px';
-//             tr.appendChild(td);
-//         }
-//         table.appendChild(tr);
-//     }
-
-//     wrapper.appendChild(table);
-//     textArea.appendChild(wrapper);
-//     tableGrid.style.display = 'none';
-// });
 const tableBtn = document.getElementById('tableBtn');
 const tableGrid = document.getElementById('tableGrid');
 
@@ -1500,24 +1449,31 @@ function insertSpacing() {
     const textArea = document.getElementById('textArea');
     textArea.focus();
 
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
+    // Give a tiny delay to allow focus to apply before accessing selection
+    setTimeout(() => {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
 
-    const range = selection.getRangeAt(0);
+        const range = selection.getRangeAt(0);
 
-    // Create a span element with 100px width spacer
-    const spacer = document.createElement('span');
-    spacer.style.display = 'inline-block';
-    spacer.style.width = '100px';
-    spacer.innerHTML = '&nbsp;'; // Needed to keep the span from collapsing
+        // Ensure the selection is actually inside textArea
+        if (!textArea.contains(range.startContainer)) return;
 
-    range.insertNode(spacer);
+        // Create a span element with 100px width spacer
+        const spacer = document.createElement('span');
+        spacer.style.display = 'inline-block';
+        spacer.style.width = '100px';
+        spacer.innerHTML = '\u00A0'; // Non-breaking space
 
-    // Move cursor after the inserted span
-    range.setStartAfter(spacer);
-    range.setEndAfter(spacer);
-    selection.removeAllRanges();
-    selection.addRange(range);
+        // Insert spacer and move cursor after it
+        range.insertNode(spacer);
+
+        // Move the caret after the spacer
+        range.setStartAfter(spacer);
+        range.setEndAfter(spacer);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }, 0);
 }
 
 // // image uploading 
@@ -1818,7 +1774,6 @@ function uploadPPT() {
 //adding pdf button
 async function openPDF() {
     try {
-        // Open file picker
         const [fileHandle] = await window.showOpenFilePicker({
             types: [{ description: 'PDF files', accept: { 'application/pdf': ['.pdf'] } }],
             multiple: false
@@ -1827,20 +1782,30 @@ async function openPDF() {
         const file = await fileHandle.getFile();
         const arrayBuffer = await file.arrayBuffer();
 
-        // Load PDF with PDF.js
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const textAreaDiv = document.getElementById("textArea");
-        textAreaDiv.innerHTML = ""; // Clear previous content
 
-        let htmlContent = "";
+        let htmlContent = "<br>"; // separator from previous content
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const textContent = await page.getTextContent();
-            // Each item as a span, each page as a paragraph
             const pageHtml = textContent.items.map(item => `<span>${item.str}</span>`).join(" ");
             htmlContent += `<p>${pageHtml}</p>`;
         }
-        textAreaDiv.innerHTML = htmlContent.trim();
+
+        // Append PDF content
+        textAreaDiv.insertAdjacentHTML('beforeend', htmlContent.trim());
+
+        // Move cursor to the end
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(textAreaDiv);
+        range.collapse(false); // move to end
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        textAreaDiv.focus(); // make sure the div is focused
+
     } catch (err) {
         console.error("Error:", err);
         alert("Failed to open or read PDF file.");
@@ -2033,8 +1998,8 @@ function insertExcelAtSavedCursor(data) {
 
 //         document.getElementById("olBtn").style.backgroundColor = "#ffffff";
 //         document.getElementById("olBtn").style.color = "black";
-//         document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-//         document.getElementById("ulBtn").style.color = "black";
+//         document.getElementById("ulButton").style.backgroundColor = "#ffffff";
+//         document.getElementById("ulButton").style.color = "black";
 
 //         return;
 //     }
@@ -2060,281 +2025,294 @@ function insertExcelAtSavedCursor(data) {
 //     if (type === "ol") {
 //         document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
 //         document.getElementById("olBtn").style.color = "white";
-//         document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-//         document.getElementById("ulBtn").style.color = "black";
+//         document.getElementById("ulButton").style.backgroundColor = "#ffffff";
+//         document.getElementById("ulButton").style.color = "black";
 //     } else {
-//         document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
-//         document.getElementById("ulBtn").style.color = "white";
+//         document.getElementById("ulButton").style.backgroundColor = "#3b82f6";
+//         document.getElementById("ulButton").style.color = "white";
 //         document.getElementById("olBtn").style.backgroundColor = "#ffffff";
 //         document.getElementById("olBtn").style.color = "black";
 //     }
 // }
-// let currentListType = null;
-// let currentListElement = null;
 
-// function toggleList(type) {
-//   document.getElementById("listTooltip").style.display = "none";
+let currentListType = null;
+let currentListElement = null;
 
-//   const textArea = document.getElementById("textArea");
-//   textArea.focus();
+function toggleList(type) {
+  document.getElementById("listTooltip").style.display = "none";
 
-//   const selection = window.getSelection();
-//   if (!selection.rangeCount) return;
+  const textArea = document.getElementById("textArea");
+  textArea.focus();
 
-//   const range = selection.getRangeAt(0);
-//   const container = range.startContainer;
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
 
-//   // Check if inside a list already
-//   let li = container;
-//   while (li && li.nodeName !== "LI") {
-//     li = li.parentNode;
-//   }
+  const range = selection.getRangeAt(0);
+  const container = range.startContainer;
 
-//   let existingList = null;
-//   if (li) {
-//     existingList = li.parentNode;
-//   }
+  // Check if inside a list already
+  let li = container;
+  while (li && li.nodeName !== "LI") {
+    li = li.parentNode;
+  }
 
-//   // If the list is already the same type, toggle off
-//   if (existingList && existingList.nodeName.toLowerCase() === type) {
-//     const spacer = document.createElement("div");
-//     spacer.innerHTML = "<br>";
-//     spacer.setAttribute("contenteditable", "false");
-//     spacer.style.height = "1px";
-//     spacer.style.userSelect = "none";
+  let existingList = null;
+  if (li) {
+    existingList = li.parentNode;
+  }
 
-//     existingList.parentNode.insertBefore(spacer, existingList.nextSibling);
+  // If the list is already the same type, toggle off
+  if (existingList && existingList.nodeName.toLowerCase() === type) {
+    const spacer = document.createElement("div");
+    spacer.innerHTML = "<br>";
+    spacer.setAttribute("contenteditable", "false");
+    spacer.style.height = "1px";
+    spacer.style.userSelect = "none";
 
-//     const p = document.createElement("p");
-//     p.innerHTML = "<br>";
-//     spacer.parentNode.insertBefore(p, spacer.nextSibling);
+    existingList.parentNode.insertBefore(spacer, existingList.nextSibling);
 
-//     const newRange = document.createRange();
-//     newRange.setStart(p, 0);
-//     newRange.setEnd(p, 0);
-//     selection.removeAllRanges();
-//     selection.addRange(newRange);
+    const p = document.createElement("p");
+    p.innerHTML = "<br>";
+    spacer.parentNode.insertBefore(p, spacer.nextSibling);
 
-//     currentListType = null;
-//     currentListElement = null;
+    const newRange = document.createRange();
+    newRange.setStart(p, 0);
+    newRange.setEnd(p, 0);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
 
-//     document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-//     document.getElementById("olBtn").style.color = "black";
-//     document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-//     document.getElementById("ulBtn").style.color = "black";
+    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("olBtn").style.color = "black";
+    document.getElementById("ulButton").style.backgroundColor = "#ffffff";
+    document.getElementById("ulButton").style.color = "black";
 
-//     return;
-//   }
+    return;
+  }
 
-//   // If a different list exists, replace it
-// // If a different list exists, convert only the current <li>
-// if (existingList && existingList.nodeName.toLowerCase() !== type) {
-//   const newList = document.createElement(type);
-//   if (type === "ul") newList.style.listStyleType = "circle";
+  // If a different list exists, replace it
+// If a different list exists, convert only the current <li>
+if (existingList && existingList.nodeName.toLowerCase() !== type) {
+  const newList = document.createElement(type);
+  if (type === "ul") newList.style.listStyleType = "circle";
 
-//   existingList.insertBefore(newList, li);
-//   existingList.removeChild(li);
-//   newList.appendChild(li);
+  existingList.insertBefore(newList, li);
+  existingList.removeChild(li);
+  newList.appendChild(li);
 
-//   // Reinsert the new list after the original list if it has other items
-//   if (existingList.nextSibling) {
-//     existingList.parentNode.insertBefore(newList, existingList.nextSibling);
-//   } else {
-//     existingList.parentNode.appendChild(newList);
-//   }
+  // Reinsert the new list after the original list if it has other items
+  if (existingList.nextSibling) {
+    existingList.parentNode.insertBefore(newList, existingList.nextSibling);
+  } else {
+    existingList.parentNode.appendChild(newList);
+  }
 
-//   // If original list becomes empty, remove it
-//   if (!existingList.hasChildNodes()) {
-//     existingList.remove();
-//   }
+  // If original list becomes empty, remove it
+  if (!existingList.hasChildNodes()) {
+    existingList.remove();
+  }
 
-//   currentListType = type;
-//   currentListElement = newList;
+  currentListType = type;
+  currentListElement = newList;
 
-//   const newRange = document.createRange();
-//   newRange.setStart(li, 0);
-//   newRange.setEnd(li, 0);
-//   selection.removeAllRanges();
-//   selection.addRange(newRange);
-// }
-//   else {
-//     // If no existing list, insert new one
-//     const list = document.createElement(type);
-//     const li = document.createElement("li");
-//     li.innerHTML = "<br>";
-//     list.appendChild(li);
-//     if (type === "ul") list.style.listStyleType = "circle";
+  const newRange = document.createRange();
+  newRange.setStart(li, 0);
+  newRange.setEnd(li, 0);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
+}
+  else {
+    // If no existing list, insert new one
+    const list = document.createElement(type);
+    const li = document.createElement("li");
+    li.innerHTML = "<br>";
+    list.appendChild(li);
+    if (type === "ul") list.style.listStyleType = "circle";
 
-//     range.deleteContents();
-//     range.insertNode(list);
+    range.deleteContents();
+    range.insertNode(list);
 
-//     const newRange = document.createRange();
-//     newRange.setStart(li, 0);
-//     newRange.setEnd(li, 0);
-//     selection.removeAllRanges();
-//     selection.addRange(newRange);
+    const newRange = document.createRange();
+    newRange.setStart(li, 0);
+    newRange.setEnd(li, 0);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
 
-//     currentListType = type;
-//     currentListElement = list;
-//   }
+    currentListType = type;
+    currentListElement = list;
+  }
 
-// }
-// document.getElementById("textArea").addEventListener("keydown", function (e) {
-//     const selection = window.getSelection();
-//     if (!selection.rangeCount) return;
+}
+document.getElementById("textArea").addEventListener("keydown", function (e) {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
 
-//     const range = selection.getRangeAt(0);
-//     const container = range.startContainer;
+    const range = selection.getRangeAt(0);
+    const container = range.startContainer;
 
-//     // Find nearest li element
-//     let li = container;
-//     while (li && li.nodeName !== "LI") {
-//         li = li.parentNode;
-//     }
+    // Find nearest li element
+    let li = container;
+    while (li && li.nodeName !== "LI") {
+        li = li.parentNode;
+    }
 
-//     // --- CASE 1: Inside a list item ---
-//     if (li) {
-//         const list = li.parentNode;
-//         const grandParent = list.parentNode;
+    // --- CASE 1: Inside a list item ---
+    if (li) {
+        const list = li.parentNode;
+        const grandParent = list.parentNode;
 
-//         // Handle Backspace in empty <li>
-//         if (
-//             e.key === "Backspace" &&
-//             li.textContent.trim() === "" &&
-//             range.startOffset === 0
-//         ) {
-//             e.preventDefault();
+        // Handle Backspace in empty <li>
+        if (
+            e.key === "Backspace" &&
+            li.textContent.trim() === "" &&
+            range.startOffset === 0
+        ) {
+            e.preventDefault();
 
-//             if (list.children.length === 1) {
-//                 const p = document.createElement("p");
-//                 p.innerHTML = "<br>";
-//                 grandParent.insertBefore(p, list.nextSibling);
-//                 list.remove();
+            if (list.children.length === 1) {
+                const p = document.createElement("p");
+                p.innerHTML = "<br>";
+                grandParent.insertBefore(p, list.nextSibling);
+                list.remove();
 
-//                 const newRange = document.createRange();
-//                 newRange.setStart(p, 0);
-//                 newRange.setEnd(p, 0);
-//                 selection.removeAllRanges();
-//                 selection.addRange(newRange);
-//             }
-//              else {
-//                 const prev = li.previousElementSibling;
-//                 list.removeChild(li);
-//                 if (prev) {
-//                     const newRange = document.createRange();
-//                     newRange.selectNodeContents(prev);
-//                     newRange.collapse(false);
-//                     selection.removeAllRanges();
-//                     selection.addRange(newRange);
-//                 }
-//             }
-//         }
+                const newRange = document.createRange();
+                newRange.setStart(p, 0);
+                newRange.setEnd(p, 0);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+            }
+             else {
+                const prev = li.previousElementSibling;
+                list.removeChild(li);
+                if (prev) {
+                    const newRange = document.createRange();
+                    newRange.selectNodeContents(prev);
+                    newRange.collapse(false);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+            }
+        }
 
-//         // Handle Tab / Shift+Tab for nesting and outdenting
-//         if (e.key === "Tab") {
-//             e.preventDefault();
+        // Handle Tab / Shift+Tab for nesting and outdenting
+        if (e.key === "Tab") {
+            e.preventDefault();
 
-//             const previousLi = li.previousElementSibling;
-//             if (e.shiftKey) {
-//                 // Shift+Tab → Outdent
-//                 if (list.parentNode.nodeName === "LI") {
-//                     const parentLi = list.parentNode;
-//                     const parentList = parentLi.parentNode;
+            const previousLi = li.previousElementSibling;
+            if (e.shiftKey) {
+                // Shift+Tab → Outdent
+                if (list.parentNode.nodeName === "LI") {
+                    const parentLi = list.parentNode;
+                    const parentList = parentLi.parentNode;
 
-//                     parentList.insertBefore(li, parentLi.nextSibling);
+                    parentList.insertBefore(li, parentLi.nextSibling);
 
-//                     const newRange = document.createRange();
-//                     newRange.setStart(li, 0);
-//                     newRange.setEnd(li, 0);
-//                     selection.removeAllRanges();
-//                     selection.addRange(newRange);
-//                 }
-//             } else {
-//                 // Tab → Indent
-//                 if (previousLi) {
-//                     let subList = previousLi.querySelector("ol, ul");
-//                     if (!subList) {
-//                         subList = document.createElement(list.nodeName);
-//                         subList.setAttribute("style", "margin-left: 20px;");
-//                         previousLi.appendChild(subList);
-//                     }
-//                     subList.appendChild(li);
+                    const newRange = document.createRange();
+                    newRange.setStart(li, 0);
+                    newRange.setEnd(li, 0);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+            } else {
+                // Tab → Indent
+                if (previousLi) {
+                    let subList = previousLi.querySelector("ol, ul");
+                    if (!subList) {
+                        subList = document.createElement(list.nodeName);
+                        subList.setAttribute("style", "margin-left: 20px;");
+                        previousLi.appendChild(subList);
+                    }
+                    subList.appendChild(li);
 
-//                     const newRange = document.createRange();
-//                     newRange.setStart(li, 0);
-//                     newRange.setEnd(li, 0);
-//                     selection.removeAllRanges();
-//                     selection.addRange(newRange);
-//                 }
-//             }
-//         }
+                    const newRange = document.createRange();
+                    newRange.setStart(li, 0);
+                    newRange.setEnd(li, 0);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+            }
+        }
 
-//         // --- CASE 2: Not inside a list ---
-//     } else if (e.key === "Tab") {
-//         e.preventDefault();
-//         const tabNode = document.createTextNode("\u00A0\u00A0\u00A0\u00A0"); // 4 non-breaking spaces
-//         range.insertNode(tabNode);
+        // --- CASE 2: Not inside a list ---
+    } else if (e.key === "Tab") {
+        e.preventDefault();
+        const tabNode = document.createTextNode("\u00A0\u00A0\u00A0\u00A0"); // 4 non-breaking spaces
+        range.insertNode(tabNode);
 
-//         // Move caret after inserted spaces
-//         range.setStartAfter(tabNode);
-//         range.setEndAfter(tabNode);
-//         selection.removeAllRanges();
-//         selection.addRange(range);
-//     }
-// });
-//     const infoBtn = document.getElementById("listInfoBtn");
-//     const tooltip = document.getElementById("listTooltip");
-//     const instructions = document.getElementById("listInstructions");
+        // Move caret after inserted spaces
+        range.setStartAfter(tabNode);
+        range.setEndAfter(tabNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+});
+    const infoBtn = document.getElementById("listInfoBtn");
+    const tooltip = document.getElementById("listTooltip");
+    const instructions = document.getElementById("listInstructions");
 
-//     // Hover tooltip
-//     document.getElementById("olBtn").addEventListener("mouseenter", () => {
-//       tooltip.style.display = "block";
-//     });
-//     document.getElementById("olBtn").addEventListener("mouseleave", () => {
-//       tooltip.style.display = "none";
-//     });
-//     document.getElementById("ulBtn").addEventListener("mouseenter", () => {
-//       tooltip.style.display = "block";
-//     });
-//     document.getElementById("ulBtn").addEventListener("mouseleave", () => {
-//       tooltip.style.display = "none";
-//     });
-//     document.addEventListener("selectionchange", () => {
-//   const selection = window.getSelection();
-//   if (!selection.rangeCount) return;
+    // Hover tooltip
+    document.getElementById("olBtn").addEventListener("mouseenter", () => {
+      tooltip.style.display = "block";
+    });
+    document.getElementById("olBtn").addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+    });
+    document.getElementById("ulButton").addEventListener("mouseenter", () => {
+      tooltip.style.display = "block";
+    });
+    document.getElementById("ulButton").addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+    });
+document.addEventListener("selectionchange", () => {
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
 
-//   const range = selection.getRangeAt(0);
-//   let node = range.startContainer;
+  const range = selection.getRangeAt(0);
+  let node = range.startContainer;
 
-//   // Traverse up to check if inside <li>
-//   while (node && node.nodeName !== "LI") {
-//     node = node.parentNode;
-//   }
+  const textArea = document.getElementById("textArea");
 
-//   // If inside <li>, set button highlight based on list type
-//   if (node) {
-//     const parentList = node.parentNode;
-//     const listType = parentList.nodeName.toLowerCase();
+  // Abort if selection is outside editor
+  let insideEditor = false;
+  let tempNode = node;
+  while (tempNode) {
+    if (tempNode === textArea) {
+      insideEditor = true;
+      break;
+    }
+    tempNode = tempNode.parentNode;
+  }
 
-//     if (listType === "ul") {
-//       document.getElementById("ulBtn").style.backgroundColor = "#3b82f6";
-//       document.getElementById("ulBtn").style.color = "white";
-//       document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-//       document.getElementById("olBtn").style.color = "black";
-//     } else if (listType === "ol") {
-//       document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
-//       document.getElementById("olBtn").style.color = "white";
-//       document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-//       document.getElementById("ulBtn").style.color = "black";
-//     }
-//   } else {
-//     // Not inside any <li> → reset button styles
-//     document.getElementById("olBtn").style.backgroundColor = "#ffffff";
-//     document.getElementById("olBtn").style.color = "black";
-//     document.getElementById("ulBtn").style.backgroundColor = "#ffffff";
-//     document.getElementById("ulBtn").style.color = "black";
-//   }
-// });
+  if (!insideEditor) return;
+
+  // Traverse up to check if inside <li>
+  while (node && node.nodeName !== "LI") {
+    node = node.parentNode;
+  }
+
+  // If inside <li>, set button highlight based on list type
+  if (node) {
+    const parentList = node.parentNode;
+    const listType = parentList.nodeName.toLowerCase();
+
+    if (listType === "ul") {
+      document.getElementById("ulButton").style.backgroundColor = "#3b82f6";
+      document.getElementById("ulButton").style.color = "white";
+      document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+      document.getElementById("olBtn").style.color = "black";
+    } else if (listType === "ol") {
+      document.getElementById("olBtn").style.backgroundColor = "#3b82f6";
+      document.getElementById("olBtn").style.color = "white";
+      document.getElementById("ulButton").style.backgroundColor = "#ffffff";
+      document.getElementById("ulButton").style.color = "black";
+    }
+  } else {
+    // Not inside any <li> → reset button styles
+    document.getElementById("olBtn").style.backgroundColor = "#ffffff";
+    document.getElementById("olBtn").style.color = "black";
+    document.getElementById("ulButton").style.backgroundColor = "#ffffff";
+    document.getElementById("ulButton").style.color = "black";
+  }
+});
 
 
 

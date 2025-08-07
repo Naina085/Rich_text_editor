@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Emoji Picker Example</title>
+</head>
+<body>
+
+<button id="emojiBtn">😊</button>
+<div id="textArea" contenteditable="true" style="border:1px solid #ccc; padding:10px; min-height:100px;"></div>
+
+<!-- ✅ Load compatible Emoji Button UMD version -->
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/emoji-button.min.js"></script>
+
+<script>
+  // ✅ Wait for page to load to avoid race conditions
+  window.onload = () => {
+    const picker = new EmojiButton();
+    const button = document.querySelector('#emojiBtn');
+    const textArea = document.getElementById('textArea');
+
+    button.addEventListener('click', () => {
+      picker.togglePicker(button);
+    });
+
+    picker.on('emoji', emoji => {
+      insertAtCursor(emoji);
+    });
+
+    function insertAtCursor(emoji) {
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
+
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      range.insertNode(document.createTextNode(emoji));
+
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      textArea.focus();
+    }
+  };
+</script>
+
+</body>
+</html>

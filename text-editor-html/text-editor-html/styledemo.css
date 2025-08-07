@@ -152,7 +152,7 @@ body::before {
 
 .toolbar-btn.active {
     background: rgb(59, 130, 246);
-    color:white;
+    color: white;
     box-shadow: 0 2px 8px rgba(76, 81, 255, 0.08);
 }
 
@@ -525,7 +525,7 @@ body::before {
     overflow: scroll;
     position: relative;
     white-space: pre-wrap;
-    z-index:1;
+    z-index: 1;
 }
 
 .text-area:focus {
@@ -638,6 +638,10 @@ body::before {
     margin-left: 80px;
     margin-top: -20px;
     width: 130px;
+}
+
+.headingbtn button:hover {
+    background-color: #42a7f5 !important;
 }
 
 #submitBtn {
@@ -962,6 +966,7 @@ canvas {
     box-sizing: border-box;
     cursor: pointer;
 }
+
 .grid-cell:hover {
     background-color: #42a7f5;
     cursor: pointer;
@@ -1601,12 +1606,13 @@ canvas {
 
 /* Landscape orientation adjustments for mobile */
 @media (max-width: 767px) and (orientation: landscape) {
-        #tableGrid {
+    #tableGrid {
         position: fixed !important;
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
     }
+
     .text-area {
         height: 180px;
     }
@@ -1754,8 +1760,8 @@ canvas {
     position: relative;
     top: 0px;
     left: -69px;
-    background:#ededed;
-    color:black;
+    background: #ededed;
+    color: black;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 12px;
@@ -1788,28 +1794,30 @@ canvas {
 .info-container:hover #listInstructions {
     display: block;
 }
+
 .text-area ol,
 .text-area ul {
-  margin: 0;
-  padding-left: 1.2em; /* Optional: Controls bullet/number spacing */
+    margin: 0;
+    padding-left: 1.2em;
+    /* Optional: Controls bullet/number spacing */
 }
 
 @media screen and (min-width: 1330px) {
-    .navbar ul li ul
-    {
+    .navbar ul li ul {
         margin-top: 30px;
     }
 }
 
 /* responsive */
-.mobileView , .Hide-show
-{
+.mobileView,
+.Hide-show {
     display: none;
 }
-.mobileView
-{
+
+.mobileView {
     display: none;
 }
+
 .more-btn {
     background-color: #0e3477;
     color: black;
@@ -1817,42 +1825,41 @@ canvas {
     padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
-  }
+}
 
-  .more-btn:hover {
+.more-btn:hover {
     background-color: #09244f;
-  }
+}
 
-  #moreToolbarContent button {
+#moreToolbarContent button {
     margin: 4px;
     padding: 6px;
     border-radius: 6px;
-  }
+}
 
 @media screen and (max-width: 600px) {
-            #tableGrid {
+    #tableGrid {
         position: fixed !important;
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
     }
-.hideInMobile
-{
-    display: none !important;
-}
-.right-more-option
-{
-    display: none;
-}
-.Hide-show
-{
-    display: block;
-}
+
+    .hideInMobile {
+        display: none !important;
+    }
+
+    .right-more-option {
+        display: none;
+    }
+
+    .Hide-show {
+        display: block;
+    }
 }
 
 
 /* current work */
-.MainMenu:hover .file-menu
-{
+.MainMenu:hover .file-menu {
     display: block !important;
 }

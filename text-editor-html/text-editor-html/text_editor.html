@@ -36,7 +36,7 @@
         width: 100vw;
         height: 100vh;
         backdrop-filter: blur(5px);
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: #00000033;
         z-index: 99;
         display: none;
       "></div>
@@ -48,7 +48,7 @@
                 <li class="file-navbar MainMenu">File
                     <ul class="file-menu">
                         <li onclick="createNewFile()">New file <i class="bi bi-file"></i></li>
-                        <li id="openBtn" onclick="openFile()">Open <i class="bi bi-folder2-open"></i></li>
+                        <li onclick="openFile()">Open <i class="bi bi-folder2-open"></i></li>
                         <li onclick="saveAsTextFile()">Save <i class="bi bi-floppy"></i></li>
                         <li onclick="saveAs()">Save As <i class="bi bi-floppy2-fill"></i></li>
                     </ul>
@@ -91,7 +91,7 @@
                 <li class="file-navbar-4 MainMenu">View</li>
                 <li class="file-navbar-5">Format
                     <ul class="file-menu">
-                        <li id="boldBtn" onclick="toggleFormat('bold')" title="Bold">Bold <strong>B</strong></li>
+                    <li id="boldBtn" onclick='toggleFormat("bold")' title="Bold">Bold <strong>B</strong></li>
                         <li id="italicBtn" onclick="toggleFormat('italic')" title="Italic">Italic <i>I</i></li>
                         <li id="underlineBtn" onclick="toggleFormat('underline')" title="Underline">Underline
                             <U>U</U>
@@ -110,39 +110,39 @@
                             </button></li>
                         <li class="file-navbar-6">Heading
                             <ul class="sub-menu">
-                                <li><button onclick="headingElement('h1')"
-                                        style="border:none;background-color: #f0f0f0;">
+                                <li class="headingbtn"><button onclick="headingElement('h1')"
+                                        style="border:none;background-color: #f0f0f0;width: 100%;">
                                         <h1>H1</h1>
 
                                     </button>
                                 </li>
-                                <li>
+                                <li class="headingbtn">
                                     <button onclick="headingElement('h2')"
-                                        style="border:none;background-color: #f0f0f0;">
+                                        style="border:none;background-color: #f0f0f0;width: 100%;">
                                         <H2>H2</H2>
                                     </button>
                                 </li>
-                                <li>
+                                <li class="headingbtn">
                                     <button onclick="headingElement('h3')"
-                                        style="border:none;background-color: #f0f0f0;">
+                                        style="border:none;background-color: #f0f0f0;width: 100%;">
                                         <h3>H3</h3>
                                     </button>
                                 </li>
-                                <li>
+                                <li class="headingbtn">
                                     <button onclick="headingElement('h4')"
-                                        style="border:none;background-color: #f0f0f0;">
+                                        style="border:none;background-color: #f0f0f0;width: 100%;">
                                         <h4>H4</h4>
                                     </button>
                                 </li>
-                                <li>
+                                <li class="headingbtn">
                                     <button onclick="headingElement('h5')"
-                                        style="border:none;background-color: #f0f0f0;">
+                                        style="border:none;background-color: #f0f0f0;width: 100%;">
                                         <h5>H5</h5>
                                     </button>
                                 </li>
-                                <li>
+                                <li class="headingbtn">
                                     <button onclick="headingElement('h6')"
-                                        style="border:none;background-color: #f0f0f0;">
+                                        style="border:none;background-color: #f0f0f0;width: 100%;">
                                         <h6>H6</h6>
                                     </button>
                                 </li>
@@ -333,7 +333,7 @@
                 </div>
                 <div class="ullist"
                     style="height:36px;width:40px;text-align:center;padding-top:5px;display:flex;">
-                    <button style="border: none;margin-right: 10px;margin-left: 10px;" id="ulBtn"
+                    <button style="border: none;margin-right: 10px;margin-left: 10px;" id="ulButton"
                         onclick="setTimeout(() => toggleList('ul'), 0)"><i class="bi bi-list-ul"
                             style="font-size: 15px;"></i></button>
                 </div> -->
@@ -354,7 +354,7 @@
 
                     <button class="more-option"
                         style="position: relative;left: -4px;;border: none;height:36px;width:40px;text-align:center;border-radius: 6px;border:none;background-color: white;"
-                        id="ulBtn" onclick="setTimeout(() => toggleList('ul'), 0)"><i class="bi bi-list-ul"
+                        id="ulButton" onclick="setTimeout(() => toggleList('ul'), 0)"><i class="bi bi-list-ul"
                             style="font-size: 15px;"></i></button>
                     <!-- Tooltip on hover -->
                     <!-- <div id="listTooltip"
@@ -424,7 +424,7 @@
 
                 <!-- Unordered List -->
                 <div class="ullist more-option mobileView right-more-option" style="margin: 5px;">
-                    <button id="ulBtn" class="toolbar-btn" onclick="setTimeout(() => toggleList('ul'), 0)"
+                    <button id="ulButton" class="toolbar-btn" onclick="setTimeout(() => toggleList('ul'), 0)"
                         style="border: none; background-color: white;"><i class="bi bi-list-ul"
                             style="font-size: 15px;"></i></button>
                 </div>
@@ -511,7 +511,7 @@
                 style="font-size:14px; font-weight:500; color:#374151; margin-bottom:6px; display:block;">Video
                 URL</label>
             <input type="text" id="videoSource" placeholder="https://www.youtube.com/watch?v=... or direct MP4 URL"
-                style="width:450px; padding:12px 16px; font-size:14px; border:2px solid #e5e7eb; border-radius:8px;" />
+                style="width:420px; padding:12px 16px; font-size:14px; border:2px solid #e5e7eb; border-radius:8px;" />
         </div>
 
         <div class="form-row" style="display:flex; gap:16px;">
